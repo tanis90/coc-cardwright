@@ -1,5 +1,5 @@
 [project]
-name = "coc-generator"
+name = "coc-cardwright"
 version = "0.1.0"
 description = "COC 7th Edition 480-point buy character card CLI"
 requires-python = ">=3.10"
