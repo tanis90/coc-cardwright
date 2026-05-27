@@ -149,6 +149,11 @@ def render(data: dict) -> str:
         "skill_table": skill_table,
         "background": data.get("background", {}),
         "assets": data.get("assets", {}),
+        "weapons": data.get("weapons", []),
+        "items": data.get("items", []),
+        "mythos": data.get("mythos", 0),
+        "friends": data.get("friends", ""),
+        "experienced_modules": data.get("experienced_modules", ""),
     }
 
     template_path = Path(__file__).parent / "data" / "templates" / "card.html"

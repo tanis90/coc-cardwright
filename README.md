@@ -53,15 +53,16 @@ coc verify character.json
 
 如果校验不通过，`valid` 为 `false`，`errors` 数组包含所有违规项，每条 error 都有 `code`、`field`、`expected`、`actual`、`message`，方便大模型解析并自动修正。
 
-### 2. 生成 HTML 角色卡
+### 2. 生成 HTML 角色卡（双面打印版）
 
 ```bash
 coc render character.json -o card.html
 ```
 
 - 必须先通过校验，否则拒绝生成
-- 生成的 HTML 用浏览器打开后，可直接打印为 PDF
-- 适配 A4 纸张
+- 生成的 HTML 为**双面版**：第 1 页正面（属性/技能/武器），第 2 页背面（背景/物品/资产/神话/好友/经历模组）
+- 浏览器打开 → 打印 → 选择「双面打印」→ 即可得到完整的 A4 双面角色卡
+- 适配 A4 纸张，精确 210mm × 297mm
 
 ### 3. 查询职业列表
 
@@ -146,6 +147,27 @@ CLI 是唯一的规则 truth source，校验不通过即报错，不允许渲染
       "射击(手枪)": 20
     }
   },
+  "weapons": [
+    {
+      "name": "手枪",
+      "skill": "射击(手枪)",
+      "damage": "1D10",
+      "range": "15m",
+      "attacks": 1,
+      "ammo": 8,
+      "malf": 100
+    }
+  ],
+  "items": ["手电筒", "笔记本", "香烟", "怀表", "照相机"],
+  "assets": {
+    "cash": "$25",
+    "consumption": "贫困",
+    "assets": "$1500",
+    "items": "一间狭小的公寓、一辆旧汽车"
+  },
+  "mythos": 0,
+  "friends": "警局的旧同事汤姆、线人小混混杰米",
+  "experienced_modules": "《敦威治的恐怖》",
   "background": {
     "appearance": "...",
     "belief": "...",

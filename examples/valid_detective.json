@@ -35,6 +35,27 @@
       "射击(手枪)": 20
     }
   },
+  "weapons": [
+    {
+      "name": "手枪",
+      "skill": "射击(手枪)",
+      "damage": "1D10",
+      "range": "15m",
+      "attacks": 1,
+      "ammo": 8,
+      "malf": 100
+    }
+  ],
+  "items": ["手电筒", "笔记本", "香烟", "怀表", "照相机"],
+  "assets": {
+    "cash": "$25",
+    "consumption": "贫困",
+    "assets": "$1500",
+    "items": "一间狭小的公寓、一辆旧汽车"
+  },
+  "mythos": 0,
+  "friends": "警局的旧同事汤姆、线人小混混杰米",
+  "experienced_modules": "《敦威治的恐怖》",
   "background": {
     "appearance": "总是穿着皱巴巴的灰色风衣，帽檐压得很低，右手食指有长期吸烟留下的焦黄痕迹。",
     "belief": "真相值得一切代价，即使代价是自己。",
