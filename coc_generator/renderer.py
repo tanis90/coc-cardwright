@@ -193,16 +193,15 @@ def render(data: dict) -> str:
     skill_table_left, skill_table_right = build_skill_tables(data)
     weapons = _enrich_weapons(data.get("weapons", []) or [], skill_totals)
 
-    # Background story items
+    # Background story items (fixed 3 lines each for consistent layout)
     background = data.get("background", {}) or {}
     story_left = []
     for label, key in STORY_LEFT_ITEMS:
         val = background.get(key, "")
-        lines = max(3, min(4, len(val) // 22 + 1)) if val else 3
-        story_left.append({"label": label, "value": val, "lines": lines})
+        story_left.append({"label": label, "value": val, "lines": 3})
     
     desc = background.get("description", "")
-    desc_lines = max(8, sum(item["lines"] for item in story_left) + 2)
+    desc_lines = 16
 
     context = {
         "basic": basic,
