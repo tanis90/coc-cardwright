@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>{{ basic.name }} - COC 7th 角色卡</title>
+<style>
+@page { size: A4; margin: 10mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 10pt;
+  line-height: 1.4;
+  color: #222;
+  background: #fff;
+  padding: 10mm;
+  max-width: 210mm;
+  margin: 0 auto;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 2px solid #333;
+  padding-bottom: 4pt;
+  margin-bottom: 8pt;
+}
+.card-header h1 {
+  font-size: 16pt;
+  font-weight: bold;
+}
+.card-header .meta {
+  font-size: 9pt;
+  color: #555;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4pt 8pt;
+  margin-bottom: 8pt;
+  font-size: 9.5pt;
+}
+.info-grid .label {
+  color: #555;
+  font-size: 8pt;
+}
+.info-grid .value {
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  min-height: 14pt;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10pt;
+  margin-bottom: 8pt;
+}
+
+.section-title {
+  font-size: 10pt;
+  font-weight: bold;
+  border-bottom: 1px solid #333;
+  margin-bottom: 4pt;
+  padding-bottom: 2pt;
+}
+
+.attr-table, .derived-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5pt;
+}
+.attr-table td, .derived-table td {
+  padding: 2pt 4pt;
+  border: 1px solid #ccc;
+}
+.attr-table .attr-name {
+  width: 40%;
+  background: #f5f5f5;
+}
+.attr-table .attr-value {
+  width: 30%;
+  text-align: center;
+  font-weight: bold;
+}
+.attr-table .attr-hint {
+  width: 30%;
+  text-align: center;
+  color: #666;
+  font-size: 8pt;
+}
+
+.derived-table .der-name {
+  width: 50%;
+  background: #f5f5f5;
+}
+.derived-table .der-value {
+  width: 50%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.skills-section {
+  margin-bottom: 8pt;
+}
+.skills-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+}
+.skills-table th {
+  background: #333;
+  color: #fff;
+  padding: 2pt 4pt;
+  text-align: left;
+  font-weight: normal;
+}
+.skills-table td {
+  padding: 1pt 4pt;
+  border-bottom: 1px solid #ddd;
+}
+.skills-table .skill-group {
+  background: #eee;
+  font-weight: bold;
+  padding: 2pt 4pt;
+}
+.skills-table .num {
+  text-align: right;
+  width: 8%;
+}
+.skills-table .total {
+  font-weight: bold;
+}
+
+.points-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10pt;
+  margin-bottom: 8pt;
+  font-size: 9pt;
+}
+.points-box {
+  border: 1px solid #ccc;
+  padding: 4pt;
+}
+.points-box .title {
+  font-weight: bold;
+  margin-bottom: 2pt;
+}
+
+.background-section {
+  margin-top: 8pt;
+}
+.background-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4pt 8pt;
+  font-size: 9pt;
+}
+.background-item {
+  border: 1px solid #ccc;
+  padding: 4pt;
+  min-height: 36pt;
+}
+.background-item .label {
+  font-size: 8pt;
+  color: #555;
+  margin-bottom: 2pt;
+}
+.background-item .value {
+  font-size: 9pt;
+}
+
+@media print {
+  body { padding: 0; }
+  .page-break { page-break-before: always; }
+}
+</style>
+</head>
+<body>
+
+<div class="card-header">
+  <h1>调查员角色卡</h1>
+  <div class="meta">Call of Cthulhu 7th Edition &middot; 480购点制</div>
+</div>
+
+<div class="info-grid">
+  <div>
+    <div class="label">调查员姓名</div>
+    <div class="value">{{ basic.name }}</div>
+  </div>
+  <div>
+    <div class="label">玩家</div>
+    <div class="value">{{ basic.player }}</div>
+  </div>
+  <div>
+    <div class="label">职业</div>
+    <div class="value">{{ basic.job }}</div>
+  </div>
+  <div>
+    <div class="label">时代</div>
+    <div class="value">{{ basic.era or '1920s' }}</div>
+  </div>
+  <div>
+    <div class="label">年龄</div>
+    <div class="value">{{ basic.age }}</div>
+  </div>
+  <div>
+    <div class="label">性别</div>
+    <div class="value">{{ basic.gender }}</div>
+  </div>
+  <div>
+    <div class="label">居住地</div>
+    <div class="value">{{ basic.location or '' }}</div>
+  </div>
+  <div>
+    <div class="label">出生地</div>
+    <div class="value">{{ basic.hometown or '' }}</div>
+  </div>
+</div>
+
+<div class="main-grid">
+  <div>
+    <div class="section-title">属性</div>
+    <table class="attr-table">
+      {% for key in attr_keys %}
+      <tr>
+        <td class="attr-name">{{ attr_names[key] }} ({{ key.upper() }})</td>
+        <td class="attr-value">{{ attrs.get(key, 0) }}</td>
+        <td class="attr-hint"></td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td class="attr-name">幸运 (LUC)</td>
+        <td class="attr-value">{{ luck }}</td>
+        <td class="attr-hint"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div>
+    <div class="section-title">衍生属性</div>
+    <table class="derived-table">
+      <tr><td class="der-name">生命值 (HP)</td><td class="der-value">{{ derived.hp }}</td></tr>
+      <tr><td class="der-name">魔法值 (MP)</td><td class="der-value">{{ derived.mp }}</td></tr>
+      <tr><td class="der-name">理智值 (SAN)</td><td class="der-value">{{ derived.san }}</td></tr>
+      <tr><td class="der-name">伤害加值 (DB)</td><td class="der-value">{{ derived.db }}</td></tr>
+      <tr><td class="der-name">体格</td><td class="der-value">{{ derived.build }}</td></tr>
+      <tr><td class="der-name">移动力 (MOV)</td><td class="der-value">{{ derived.mov }}</td></tr>
+      <tr><td class="der-name">闪避</td><td class="der-value">{{ derived.dodge }}</td></tr>
+      <tr><td class="der-name">母语</td><td class="der-value">{{ derived.native_language }}</td></tr>
+      <tr><td class="der-name">信用评级</td><td class="der-value">{{ credit_rating }}</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="points-summary">
+  <div class="points-box">
+    <div class="title">职业点数 {{ pro_used }} / {{ pro_total }}</div>
+    <div>剩余: {{ pro_total - pro_used }}</div>
+    {% if job %}<div style="font-size:8pt;color:#555;margin-top:2pt;">{{ job.formula_text }}</div>{% endif %}
+  </div>
+  <div class="points-box">
+    <div class="title">兴趣点数 {{ interest_used }} / {{ interest_total }}</div>
+    <div>剩余: {{ interest_total - interest_used }}</div>
+    <div style="font-size:8pt;color:#555;margin-top:2pt;">智力(INT) × 2</div>
+  </div>
+</div>
+
+<div class="skills-section">
+  <div class="section-title">技能</div>
+  <table class="skills-table">
+    <thead>
+      <tr>
+        <th>技能</th>
+        <th class="num">初始</th>
+        <th class="num">职业</th>
+        <th class="num">兴趣</th>
+        <th class="num total">最终</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in skill_table %}
+      {% if row.type == 'header' %}
+      <tr><td colspan="5" class="skill-group">{{ row.name }}</td></tr>
+      {% else %}
+      <tr>
+        <td>{{ row.name }}</td>
+        <td class="num">{{ row.init }}</td>
+        <td class="num">{% if row.pro > 0 %}+{{ row.pro }}{% else %}-{% endif %}</td>
+        <td class="num">{% if row.interest > 0 %}+{{ row.interest }}{% else %}-{% endif %}</td>
+        <td class="num total">{{ row.total }}</td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if background %}
+<div class="background-section">
+  <div class="section-title">背景</div>
+  <div class="background-grid">
+    {% if background.appearance %}
+    <div class="background-item">
+      <div class="label">形象描述</div>
+      <div class="value">{{ background.appearance }}</div>
+    </div>
+    {% endif %}
+    {% if background.belief %}
+    <div class="background-item">
+      <div class="label">思想与信念</div>
+      <div class="value">{{ background.belief }}</div>
+    </div>
+    {% endif %}
+    {% if background.important_person %}
+    <div class="background-item">
+      <div class="label">重要之人</div>
+      <div class="value">{{ background.important_person }}</div>
+    </div>
+    {% endif %}
+    {% if background.important_place %}
+    <div class="background-item">
+      <div class="label">意义非凡之地</div>
+      <div class="value">{{ background.important_place }}</div>
+    </div>
+    {% endif %}
+    {% if background.important_item %}
+    <div class="background-item">
+      <div class="label">宝贵之物</div>
+      <div class="value">{{ background.important_item }}</div>
+    </div>
+    {% endif %}
+    {% if background.trait %}
+    <div class="background-item">
+      <div class="label">特质</div>
+      <div class="value">{{ background.trait }}</div>
+    </div>
+    {% endif %}
+    {% if background.scar %}
+    <div class="background-item">
+      <div class="label">伤口与疤痕</div>
+      <div class="value">{{ background.scar }}</div>
+    </div>
+    {% endif %}
+    {% if background.madness %}
+    <div class="background-item">
+      <div class="label">精神症状</div>
+      <div class="value">{{ background.madness }}</div>
+    </div>
+    {% endif %}
+    {% if background.description %}
+    <div class="background-item" style="grid-column: span 2;">
+      <div class="label">个人介绍</div>
+      <div class="value">{{ background.description }}</div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+</body>
+</html>

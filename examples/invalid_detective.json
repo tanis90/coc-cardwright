@@ -1,0 +1,33 @@
+{
+  "basic": {
+    "name": "测试角色",
+    "player": "Test",
+    "job": "私家侦探",
+    "age": 25,
+    "gender": "男"
+  },
+  "attributes": {
+    "str": 50,
+    "con": 50,
+    "dex": 50,
+    "app": 50,
+    "pow": 50,
+    "siz": 50,
+    "edu": 50,
+    "int": 50
+  },
+  "luck": 100,
+  "credit_rating": 50,
+  "skill_allocations": {
+    "pro": {
+      "侦查": 60,
+      "聆听": 50,
+      "图书馆使用": 50,
+      "克苏鲁神话": 10
+    },
+    "interest": {
+      "潜行": 80,
+      "锁匠": 50
+    }
+  }
+}
