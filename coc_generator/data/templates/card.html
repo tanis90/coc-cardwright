@@ -9,264 +9,352 @@
 
 body {
   font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 9.5pt;
-  line-height: 1.35;
+  font-size: 8.5pt;
+  line-height: 1.3;
   color: #222;
   background: #e8e8e8;
 }
 
-/* Each page is exactly A4 */
 .page {
   width: 210mm;
   height: 297mm;
-  padding: 10mm;
-  margin: 0 auto 10mm;
+  padding: 6mm 8mm;
+  margin: 0 auto 8mm;
   background: #fff;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
 }
 
 @media print {
   body { background: #fff; }
-  .page {
-    margin: 0;
-    box-shadow: none;
-    page-break-after: always;
-  }
+  .page { margin: 0; box-shadow: none; page-break-after: always; }
   .page:last-child { page-break-after: auto; }
 }
 
-/* Header */
-.card-header {
+/* ---------- PaperSection ---------- */
+.paper-section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  outline: 1pt solid #222;
+}
+.paper-section > .header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
+  color: #fff;
+  padding: 0.35em 0.6em;
+  line-height: 1;
+}
+.paper-section > .header h1 {
+  font-size: 1em;
+  font-weight: normal;
+  display: flex;
+  gap: 0.3em;
   align-items: baseline;
-  border-bottom: 2px solid #333;
-  padding-bottom: 3pt;
-  margin-bottom: 6pt;
 }
-.card-header h1 {
-  font-size: 14pt;
-  font-weight: bold;
-}
-.card-header .meta {
-  font-size: 8pt;
-  color: #555;
+.paper-section > .header .title { font-size: 1.15em; }
+.paper-section > .header .subtitle { font-size: 0.9em; opacity: 0.85; }
+.paper-section > .body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.25em 0.4em 0.3em;
 }
 
-/* Info grid */
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 3pt 6pt;
-  margin-bottom: 6pt;
-  font-size: 9pt;
-}
-.info-grid .label {
-  color: #555;
-  font-size: 7.5pt;
-}
-.info-grid .value {
-  font-weight: bold;
-  border-bottom: 1px solid #ccc;
-  min-height: 12pt;
+/* ---------- Layout rows ---------- */
+.section-row {
+  display: flex;
+  gap: 0.5em;
+  align-items: stretch;
+  flex-wrap: wrap;
 }
 
-/* Section title */
-.section-title {
-  font-size: 9pt;
-  font-weight: bold;
-  border-bottom: 1px solid #333;
-  margin-bottom: 3pt;
-  padding-bottom: 1pt;
+/* ---------- WritableRow ---------- */
+.wr {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.3em;
+  line-height: 1.2;
 }
-
-/* Two column layout */
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8pt;
+.wr .lbl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
-
-/* Tables */
-.attr-table, .derived-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 9pt;
-}
-.attr-table td, .derived-table td {
-  padding: 1.5pt 3pt;
-  border: 1px solid #ccc;
-}
-.attr-table .attr-name {
-  width: 45%;
-  background: #f5f5f5;
-}
-.attr-table .attr-value {
-  width: 30%;
+.wr .lbl-t { font-size: 1em; }
+.wr .lbl-h { font-size: 0.6em; color: #666; margin-top: -0.1em; }
+.wr .val {
+  flex: 1 1 auto;
+  border-bottom: 1px solid #b2b2b2;
+  min-width: 1.5em;
   text-align: center;
-  font-weight: bold;
-}
-.attr-table .attr-hint {
-  width: 25%;
-  text-align: center;
-  color: #666;
-  font-size: 7.5pt;
+  padding: 0.05em 0;
 }
 
-.derived-table .der-name {
-  width: 55%;
-  background: #f5f5f5;
+/* ---------- Derived attributes ---------- */
+.units {
+  display: flex;
+  gap: 0.3em;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.2em;
 }
-.derived-table .der-value {
-  width: 45%;
-  text-align: center;
-  font-weight: bold;
+.unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05em;
 }
+.unit .l { font-size: 0.8em; }
+.unit .v { font-size: 1.1em; font-weight: bold; }
+.udiv { width: 1px; background: #ccc; align-self: stretch; }
 
-.points-summary {
+/* ---------- Status checkboxes ---------- */
+.status-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6pt;
-  margin-top: 4pt;
-  font-size: 8pt;
+  gap: 1px;
+  padding: 0.15em;
 }
-.points-box {
-  border: 1px solid #ccc;
-  padding: 3pt;
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  padding: 0.15em 0.3em;
+  font-size: 0.8em;
 }
-.points-box .title {
-  font-weight: bold;
-  margin-bottom: 1pt;
-  font-size: 8.5pt;
+.status-item:nth-child(odd) { background: #f5f5f5; }
+.status-item:nth-child(even) { background: #ddd; }
+.cb { width: 0.85em; height: 0.85em; border: 1px solid #222; background: #fff; flex-shrink: 0; }
+
+/* ---------- Skill section ---------- */
+.skill-section { flex: 1 1 auto; min-height: 0; }
+.skill-section > .header {
+  justify-content: space-between;
+  padding: 0.3em 0.5em;
+}
+.skill-hl, .skill-hr {
+  display: flex;
+  gap: 0.3em;
+  align-items: center;
+  font-size: 0.82em;
+}
+.pbox {
+  background: #fff;
+  color: #222;
+  padding: 0.1em 0.35em;
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+}
+.pbox b { font-weight: bold; }
+.lbox {
+  background: #fff;
+  color: #222;
+  padding: 0.1em 0.3em;
+  font-size: 0.9em;
 }
 
-/* Skills */
-.skills-section { margin-top: 4pt; }
-.skills-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 8pt;
+.skill-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
 }
-.skills-table th {
-  background: #333;
-  color: #fff;
-  padding: 1.5pt 3pt;
-  text-align: left;
+
+/* Skill tables */
+.skt {
+  flex: 1;
+  border-collapse: collapse;
+  font-size: 0.82em;
+  color: #222;
+  --c0: #fff; --c1: #eee; --c2: #ddd; --c3: #ccc;
+  --lh: 1.35em;
+}
+.skt th {
+  line-height: calc(var(--lh) + 0.1em);
+  padding: 0.05em 0.2em;
+  text-align: center;
   font-weight: normal;
-  font-size: 7.5pt;
 }
-.skills-table td {
-  padding: 1pt 3pt;
+.skt td {
+  line-height: var(--lh);
+  padding: 0 0.2em;
+  text-align: center;
+  border: none;
+}
+.td3 { background: var(--c3); }
+.td2 { background: var(--c2); }
+.td1 { background: var(--c1); }
+.td0 { background: var(--c0); }
+
+.gname {
+  width: 1.2em;
+  padding: 0.15em;
+  line-height: 1.3em;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  border: 1pt solid #222;
+  border-left: none;
+  border-bottom: none;
+  font-size: 0.9em;
+}
+.sname {
+  text-align: left;
+  width: 6.5em;
+  padding-left: 0.2em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sname .mk {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border: 1px solid #222;
+  margin-right: 0.15em;
+  vertical-align: middle;
+}
+.sname .mk.on { background: #222; }
+.grow-box {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border: 1px solid #222;
+  vertical-align: middle;
+}
+
+.skill-divider {
+  width: 1px;
+  background: #222;
+  align-self: stretch;
+}
+
+/* ---------- Weapon ---------- */
+.wpn-body { padding: 0; }
+.wpn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78em;
+  color: #222;
+  --wc0: #fff; --wc1: #eee; --wc2: #ddd; --wc3: #ccc;
+  table-layout: fixed;
+}
+.wpn-table th:first-child, .wpn-table td:first-child { width: 16%; }
+.wpn-table th:nth-child(2), .wpn-table td:nth-child(2) { width: 14%; }
+.wpn-table th:nth-child(3), .wpn-table td:nth-child(3) { width: 8%; }
+.wpn-table th:nth-child(4), .wpn-table td:nth-child(4) { width: 12%; }
+.wpn-table th:nth-child(5), .wpn-table td:nth-child(5) { width: 10%; }
+.wpn-table th:nth-child(6), .wpn-table td:nth-child(6) { width: 8%; }
+.wpn-table th:nth-child(7), .wpn-table td:nth-child(7) { width: 8%; }
+.wpn-table th:nth-child(8), .wpn-table td:nth-child(8) { width: 8%; }
+.wpn-table th:nth-child(9), .wpn-table td:nth-child(9) { width: 8%; }
+.wpn-table th {
+  padding: 0.25em 0.15em;
+  text-align: center;
+  font-weight: normal;
+}
+.wpn-table td {
+  padding: 0.15em 0.15em;
+  text-align: center;
   border-bottom: 1px solid #ddd;
 }
-.skills-table .skill-group {
-  background: #eee;
+.wc3 { background: var(--wc3); }
+.wc2 { background: var(--wc2); }
+
+/* ---------- Battle ---------- */
+.battle-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.25em;
+  padding: 0.3em 0.3em 0.5em;
+}
+
+/* ---------- Back page ---------- */
+.story-body {
+  display: flex;
+  gap: 0.5em;
+  padding: 0.3em 0.4em;
+}
+.story-col { display: flex; flex-direction: column; }
+
+.warea {
+  position: relative;
+  margin-bottom: 0.15em;
+}
+.warea .wlbl {
+  position: absolute;
+  top: 0; left: 0.2em;
   font-weight: bold;
-  padding: 1.5pt 3pt;
-  font-size: 7.5pt;
+  font-size: 0.88em;
+  line-height: 1.5em;
+  z-index: 2;
 }
-.skills-table .num {
-  text-align: right;
-  width: 8%;
+.warea .wlines {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.skills-table .total {
-  font-weight: bold;
-}
-
-/* Weapons */
-.weapon-section { margin-top: 4pt; }
-.weapon-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 8pt;
-}
-.weapon-table th {
-  background: #444;
-  color: #fff;
-  padding: 1.5pt 3pt;
-  text-align: left;
-  font-weight: normal;
-  font-size: 7.5pt;
-}
-.weapon-table td {
-  padding: 1pt 3pt;
-  border-bottom: 1px solid #ddd;
+.warea .wline { border-bottom: 1px solid #b2b2b2; height: 1.5em; }
+.warea .wtxt {
+  position: relative;
+  z-index: 1;
+  padding: 0 0.2em 0 4.5em;
+  line-height: 1.5em;
+  font-size: 0.88em;
+  word-break: break-all;
+  min-height: 3em;
 }
 
-/* Back page layouts */
-.back-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4pt 6pt;
+.back-grid {
+  display: flex;
+  gap: 0.5em;
 }
-.back-grid-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 4pt 6pt;
-  margin-top: 4pt;
-}
-.back-item {
-  border: 1px solid #ccc;
-  padding: 3pt;
-}
-.back-item .label {
-  font-size: 7.5pt;
-  color: #555;
-  margin-bottom: 1pt;
-}
-.back-item .value {
-  font-size: 8.5pt;
-}
-.back-item-tall {
-  border: 1px solid #ccc;
-  padding: 3pt;
-  min-height: 60pt;
-}
-.back-item-tall .label {
-  font-size: 7.5pt;
-  color: #555;
-  margin-bottom: 1pt;
-}
-.back-item-tall .value {
-  font-size: 8.5pt;
-}
+.back-col { display: flex; flex-direction: column; gap: 0.3em; }
 
-/* Mythos box */
+.bitem {
+  border: 1pt solid #222;
+  padding: 0.3em;
+}
+.bitem .blbl { font-size: 0.8em; margin-bottom: 0.1em; }
+.bitem .bval { font-size: 0.9em; word-break: break-all; }
+
 .mythos-box {
-  border: 1px solid #800;
-  padding: 3pt;
+  border: 1pt solid #800;
   background: #fff8f8;
 }
-.mythos-box .label {
-  font-size: 7.5pt;
-  color: #800;
-  font-weight: bold;
-}
-.mythos-box .value {
-  font-size: 10pt;
-  font-weight: bold;
-  color: #800;
-}
+.mythos-box > .header { background: #800; }
 
-/* Footer */
-.page-footer {
-  position: absolute;
-  bottom: 6mm;
-  left: 10mm;
-  right: 10mm;
-  text-align: center;
-  font-size: 7pt;
+.inspiration {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7em;
   color: #888;
-  border-top: 1px solid #ddd;
-  padding-top: 2pt;
+  padding: 0.2em 0;
 }
 
-/* Compact mode for back page stories */
-.story-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 3pt 5pt;
+/* Avatar placeholder */
+.avatar-box {
+  width: 7em;
+  min-height: 8em;
+  border: 1pt solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 0.85em;
+  flex-shrink: 0;
 }
 </style>
 </head>
@@ -274,245 +362,343 @@ body {
 
 <!-- ==================== FRONT PAGE ==================== -->
 <div class="page">
-  <div class="card-header">
-    <h1>调查员角色卡</h1>
-    <div class="meta">Call of Cthulhu 7th Edition &middot; 480购点制</div>
-  </div>
 
-  <div class="info-grid">
-    <div><div class="label">调查员姓名</div><div class="value">{{ basic.name }}</div></div>
-    <div><div class="label">玩家</div><div class="value">{{ basic.player }}</div></div>
-    <div><div class="label">职业</div><div class="value">{{ basic.job }}</div></div>
-    <div><div class="label">时代</div><div class="value">{{ basic.era or '1920s' }}</div></div>
-    <div><div class="label">年龄</div><div class="value">{{ basic.age }}</div></div>
-    <div><div class="label">性别</div><div class="value">{{ basic.gender }}</div></div>
-    <div><div class="label">居住地</div><div class="value">{{ basic.location or '' }}</div></div>
-    <div><div class="label">出生地</div><div class="value">{{ basic.hometown or '' }}</div></div>
-  </div>
-
-  <div class="two-col">
-    <div>
-      <div class="section-title">属性</div>
-      <table class="attr-table">
-        {% for key in attr_keys %}
-        <tr>
-          <td class="attr-name">{{ attr_names[key] }} ({{ key.upper() }})</td>
-          <td class="attr-value">{{ attrs.get(key, 0) }}</td>
-          <td class="attr-hint"></td>
-        </tr>
-        {% endfor %}
-        <tr>
-          <td class="attr-name">幸运 (LUC)</td>
-          <td class="attr-value">{{ luck }}</td>
-          <td class="attr-hint"></td>
-        </tr>
-      </table>
+  <!-- Row 1: Investigator | Attributes | Luck | Avatar -->
+  <div class="section-row">
+    <!-- Investigator -->
+    <div class="paper-section" style="flex: 3.2;">
+      <div class="header"><h1><span class="title">调查员</span><span class="subtitle">Investigator</span></h1></div>
+      <div class="body" style="gap: 0.15em; justify-content: space-between;">
+        <div class="wr"><div class="lbl"><div class="lbl-t">姓名</div></div><div class="val">{{ basic.name }}</div></div>
+        <div class="wr"><div class="lbl"><div class="lbl-t">玩家</div></div><div class="val">{{ basic.player }}</div></div>
+        <div class="wr"><div class="lbl"><div class="lbl-t">时代</div></div><div class="val">{{ basic.era or '1920s' }}</div></div>
+        <div class="wr"><div class="lbl"><div class="lbl-t">职业</div></div><div class="val">{{ basic.job }}</div></div>
+        <div class="section-row" style="gap: 0.4em;">
+          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">年龄</div></div><div class="val">{{ basic.age }}</div></div>
+          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">性别</div></div><div class="val">{{ basic.gender }}</div></div>
+        </div>
+        <div class="section-row" style="gap: 0.4em;">
+          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">住地</div></div><div class="val">{{ basic.location or '' }}</div></div>
+          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">故乡</div></div><div class="val">{{ basic.hometown or '' }}</div></div>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <div class="section-title">衍生属性</div>
-      <table class="derived-table">
-        <tr><td class="der-name">生命值 (HP)</td><td class="der-value">{{ derived.hp }}</td></tr>
-        <tr><td class="der-name">魔法值 (MP)</td><td class="der-value">{{ derived.mp }}</td></tr>
-        <tr><td class="der-name">理智值 (SAN)</td><td class="der-value">{{ derived.san }}</td></tr>
-        <tr><td class="der-name">伤害加值 (DB)</td><td class="der-value">{{ derived.db }}</td></tr>
-        <tr><td class="der-name">体格</td><td class="der-value">{{ derived.build }}</td></tr>
-        <tr><td class="der-name">移动力 (MOV)</td><td class="der-value">{{ derived.mov }}</td></tr>
-        <tr><td class="der-name">闪避</td><td class="der-value">{{ derived.dodge }}</td></tr>
-        <tr><td class="der-name">母语</td><td class="der-value">{{ derived.native_language }}</td></tr>
-        <tr><td class="der-name">信用评级</td><td class="der-value">{{ credit_rating }}</td></tr>
+    <!-- Attributes -->
+    <div class="paper-section" style="flex: 2.6;">
+      <div class="header"><h1><span class="title">属性</span><span class="subtitle">Characteristics</span></h1></div>
+      <div class="body" style="flex-direction: row; gap: 0.4em; padding: 0.3em 0.4em;">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.1em;">
+          {% for key in ['str','con','dex','app','pow'] %}
+          <div class="wr"><div class="lbl"><div class="lbl-t">{{ attr_names[key] }}</div><div class="lbl-h">{{ key.upper() }}</div></div><div class="val">{{ attrs.get(key,0) }}</div></div>
+          {% endfor %}
+        </div>
+        <div style="width: 1px; background: #ccc;"></div>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.1em;">
+          {% for key in ['siz','edu','int'] %}
+          <div class="wr"><div class="lbl"><div class="lbl-t">{{ attr_names[key] }}</div><div class="lbl-h">{{ key.upper() }}{% if key=='edu' %} 知识{% endif %}{% if key=='int' %} 灵感{% endif %}</div></div><div class="val">{{ attrs.get(key,0) }}</div></div>
+          {% endfor %}
+          <div style="flex: 1;"></div>
+          <div class="wr"><div class="lbl"><div class="lbl-t">总点数</div></div><div class="val">480</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Luck -->
+    <div class="paper-section" style="flex: 1.2;">
+      <div class="header"><h1><span class="title">幸运</span><span class="subtitle">Luck</span></h1></div>
+      <div class="body" style="align-items: center; justify-content: center;">
+        <div class="wr" style="width: 100%;"><div class="lbl"><div class="lbl-t">幸运</div></div><div class="val">{{ luck }}</div></div>
+        <div style="font-size: 0.75em; color: #666; margin-top: 0.3em;">3D6×5</div>
+      </div>
+    </div>
+
+    <!-- Avatar -->
+    <div class="avatar-box">形象</div>
+  </div>
+
+  <!-- Row 2: Derived attributes -->
+  <div class="section-row">
+    <div class="paper-section" style="flex: 1.6;">
+      <div class="header"><h1><span class="title">理智值</span><span class="subtitle">Sanity</span></h1></div>
+      <div class="body"><div class="units">
+        <div class="unit"><div class="l">当前理智</div><div class="v">{{ derived.san }}</div></div>
+        <div class="udiv"></div>
+        <div class="unit"><div class="l">起始理智</div><div class="v">{{ derived.san }}</div></div>
+        <div class="udiv"></div>
+        <div class="unit"><div class="l">最大理智</div><div class="v">{{ derived.san }}</div></div>
+      </div></div>
+    </div>
+    <div class="paper-section" style="flex: 1.2;">
+      <div class="header"><h1><span class="title">生命值</span><span class="subtitle">HP</span></h1></div>
+      <div class="body"><div class="units">
+        <div class="unit"><div class="l">当前生命</div><div class="v">{{ derived.hp }}</div></div>
+        <div class="udiv"></div>
+        <div class="unit"><div class="l">最大生命</div><div class="v">{{ derived.hp }}</div></div>
+      </div></div>
+    </div>
+    <div class="paper-section" style="flex: 1.2;">
+      <div class="header"><h1><span class="title">魔法值</span><span class="subtitle">MP</span></h1></div>
+      <div class="body"><div class="units">
+        <div class="unit"><div class="l">当前魔法</div><div class="v">{{ derived.mp }}</div></div>
+        <div class="udiv"></div>
+        <div class="unit"><div class="l">最大魔法</div><div class="v">{{ derived.mp }}</div></div>
+      </div></div>
+    </div>
+    <div class="paper-section" style="flex: 1.3;">
+      <div class="header"><h1><span class="title">身体状态</span></h1></div>
+      <div class="body" style="padding: 0.1em;"><div class="status-grid">
+        <div class="status-item"><div class="cb"></div><span>重伤</span></div>
+        <div class="status-item"><div class="cb"></div><span>昏迷</span></div>
+        <div class="status-item"><div class="cb"></div><span>濒死</span></div>
+        <div class="status-item"><div class="cb"></div><span>死亡</span></div>
+      </div></div>
+    </div>
+    <div class="paper-section" style="flex: 1.3;">
+      <div class="header"><h1><span class="title">精神状态</span></h1></div>
+      <div class="body" style="padding: 0.1em;"><div class="status-grid">
+        <div class="status-item"><div class="cb"></div><span>临时疯狂</span></div>
+        <div class="status-item"><div class="cb"></div><span>永久疯狂</span></div>
+        <div class="status-item" style="grid-column: span 2;"><div class="cb"></div><span>不定期疯狂</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- Skill Section -->
+  <div class="paper-section skill-section">
+    <div class="header">
+      <div class="skill-hl">
+        <div class="pbox">职业点数 <b>{{ pro_used }}</b> / {{ pro_total }}</div>
+        <div class="pbox">兴趣点数 <b>{{ interest_used }}</b> / {{ interest_total }}</div>
+      </div>
+      <h1><span class="title">技能表</span><span class="subtitle">Skill</span></h1>
+      <div class="skill-hr">
+        <span>技能成功率上限</span>
+        <div class="lbox">本职 {{ pro_cap }}</div>
+        <div class="lbox">其它 {{ interest_cap }}</div>
+      </div>
+    </div>
+    <div class="body skill-body">
+
+      <!-- Left column -->
+      <table class="skt">
+        <thead>
+          <tr>
+            <th class="td3"></th>
+            <th class="td3" style="text-align:left;">技能</th>
+            <th class="td2">基础%</th>
+            <th class="td3">职业%</th>
+            <th class="td2">兴趣%</th>
+            <th class="td3">成长%</th>
+            <th class="td2">成功率%</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for group in skill_table_left %}
+          {% set group_start = loop.index0 %}
+          {% for skill in group.skills %}
+          <tr>
+            {% if loop.first %}
+            <td class="gname" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
+            {% endif %}
+            <td class="sname td{{ loop.index0 % 2 }}">
+              <span class="mk{% if skill.is_occupation %} on{% endif %}"></span>{{ skill.name }}
+            </td>
+            <td class="td{{ (loop.index0 + 1) % 2 }}">{{ skill.init }}</td>
+            <td class="td{{ loop.index0 % 2 }}">{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
+            <td class="td{{ (loop.index0 + 1) % 2 }}">{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
+            <td class="td{{ loop.index0 % 2 }}"><span class="grow-box"></span></td>
+            <td class="td{{ (loop.index0 + 1) % 2 }}">{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
+          </tr>
+          {% endfor %}
+        {% endfor %}
+        </tbody>
       </table>
-      <div class="points-summary">
-        <div class="points-box">
-          <div class="title">职业 {{ pro_used }} / {{ pro_total }}</div>
-          <div>剩余: {{ pro_total - pro_used }}</div>
-          {% if job %}<div style="font-size:7pt;color:#555;">{{ job.formula_text }}</div>{% endif %}
-        </div>
-        <div class="points-box">
-          <div class="title">兴趣 {{ interest_used }} / {{ interest_total }}</div>
-          <div>剩余: {{ interest_total - interest_used }}</div>
-          <div style="font-size:7pt;color:#555;">INT × 2</div>
-        </div>
+
+      <div class="skill-divider"></div>
+
+      <!-- Right column -->
+      <table class="skt">
+        <thead>
+          <tr>
+            <th class="td3"></th>
+            <th class="td3" style="text-align:left;">技能</th>
+            <th class="td2">基础%</th>
+            <th class="td3">职业%</th>
+            <th class="td2">兴趣%</th>
+            <th class="td3">成长%</th>
+            <th class="td2">成功率%</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for group in skill_table_right %}
+          {% for skill in group.skills %}
+          <tr>
+            {% if loop.first %}
+            <td class="gname" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
+            {% endif %}
+            <td class="sname td{{ loop.index0 % 2 }}">
+              <span class="mk{% if skill.is_occupation %} on{% endif %}"></span>{{ skill.name }}
+            </td>
+            <td class="td{{ (loop.index0 + 1) % 2 }}">{{ skill.init }}</td>
+            <td class="td{{ loop.index0 % 2 }}">{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
+            <td class="td{{ (loop.index0 + 1) % 2 }}">{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
+            <td class="td{{ loop.index0 % 2 }}"><span class="grow-box"></span></td>
+            <td class="td{{ (loop.index0 + 1) % 2 }}">{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
+          </tr>
+          {% endfor %}
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Row: Weapon + Battle -->
+  <div class="section-row">
+    <div class="paper-section" style="flex: 3;">
+      <div class="header"><h1><span class="title">武器</span><span class="subtitle">Weapons</span></h1></div>
+      <div class="body wpn-body">
+        <table class="wpn-table">
+          <thead>
+            <tr>
+              <th class="wc3">武器名称</th>
+              <th class="wc2">使用技能</th>
+              <th class="wc3">%</th>
+              <th class="wc2">伤害</th>
+              <th class="wc3">射程</th>
+              <th class="wc2">贯穿</th>
+              <th class="wc3">次数</th>
+              <th class="wc2">装弹量</th>
+              <th class="wc3">故障</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in range(5) %}
+            {% set w = weapons[i] if i < weapons|length else None %}
+            <tr>
+              <td>{{ w.name if w else '' }}</td>
+              <td>{{ w.skill if w else '' }}</td>
+              <td>{{ w.success_rate if w else '' }}</td>
+              <td>{{ w.damage if w else '' }}</td>
+              <td>{{ w.range if w else '' }}</td>
+              <td>{{ w.penetration if w else '' }}</td>
+              <td>{{ w.attacks if w else '' }}</td>
+              <td>{{ w.ammo if w else '' }}</td>
+              <td>{{ w.malf if w else '' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="paper-section" style="flex: 1;">
+      <div class="header"><h1><span class="title">战斗</span><span class="subtitle">Combat</span></h1></div>
+      <div class="body battle-body">
+        <div class="wr"><div class="lbl"><div class="lbl-t">伤害加值</div><div class="lbl-h">DB</div></div><div class="val">{{ derived.db }}</div></div>
+        <div class="wr"><div class="lbl"><div class="lbl-t">体格</div></div><div class="val">{{ derived.build }}</div></div>
+        <div class="wr"><div class="lbl"><div class="lbl-t">护甲</div></div><div class="val"></div></div>
+        <div class="wr"><div class="lbl"><div class="lbl-t">移动力</div></div><div class="val">{{ derived.mov }}</div></div>
       </div>
     </div>
   </div>
 
-  <div class="skills-section">
-    <div class="section-title">技能</div>
-    <table class="skills-table">
-      <thead>
-        <tr>
-          <th>技能</th>
-          <th class="num">初始</th>
-          <th class="num">职业</th>
-          <th class="num">兴趣</th>
-          <th class="num total">最终</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in skill_table %}
-        {% if row.type == 'header' %}
-        <tr><td colspan="5" class="skill-group">{{ row.name }}</td></tr>
-        {% else %}
-        <tr>
-          <td>{{ row.name }}</td>
-          <td class="num">{{ row.init }}</td>
-          <td class="num">{% if row.pro > 0 %}+{{ row.pro }}{% else %}-{% endif %}</td>
-          <td class="num">{% if row.interest > 0 %}+{{ row.interest }}{% else %}-{% endif %}</td>
-          <td class="num total">{{ row.total }}</td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="inspiration">
+    <span>COC 7th Edition &middot; 480购点制</span>
+    <span>{{ basic.name }} &middot; {{ basic.job }}</span>
   </div>
-
-  {% if weapons %}
-  <div class="weapon-section">
-    <div class="section-title">武器</div>
-    <table class="weapon-table">
-      <thead>
-        <tr>
-          <th>武器</th>
-          <th>技能</th>
-          <th>伤害</th>
-          <th>射程</th>
-          <th>攻击次数</th>
-          <th>装弹量</th>
-          <th>故障值</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for w in weapons %}
-        <tr>
-          <td>{{ w.name }}</td>
-          <td>{{ w.skill }}</td>
-          <td>{{ w.damage }}</td>
-          <td>{{ w.range }}</td>
-          <td>{{ w.attacks }}</td>
-          <td>{{ w.ammo }}</td>
-          <td>{{ w.malf }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% endif %}
-
-  <div class="page-footer">正面 &middot; {{ basic.name }} &middot; {{ basic.job }}</div>
 </div>
 
 <!-- ==================== BACK PAGE ==================== -->
 <div class="page">
-  <div class="card-header">
-    <h1>调查员角色卡 &mdash; 背面</h1>
-    <div class="meta">{{ basic.name }} &middot; {{ basic.job }}</div>
-  </div>
 
-  {% if background %}
-  <div class="section-title">背景故事</div>
-  <div class="story-grid">
-    {% if background.appearance %}
-    <div class="back-item-tall">
-      <div class="label">形象描述</div>
-      <div class="value">{{ background.appearance }}</div>
-    </div>
-    {% endif %}
-    {% if background.belief %}
-    <div class="back-item-tall">
-      <div class="label">思想与信念</div>
-      <div class="value">{{ background.belief }}</div>
-    </div>
-    {% endif %}
-    {% if background.important_person %}
-    <div class="back-item-tall">
-      <div class="label">重要之人</div>
-      <div class="value">{{ background.important_person }}</div>
-    </div>
-    {% endif %}
-    {% if background.important_place %}
-    <div class="back-item-tall">
-      <div class="label">意义非凡之地</div>
-      <div class="value">{{ background.important_place }}</div>
-    </div>
-    {% endif %}
-    {% if background.important_item %}
-    <div class="back-item-tall">
-      <div class="label">宝贵之物</div>
-      <div class="value">{{ background.important_item }}</div>
-    </div>
-    {% endif %}
-    {% if background.trait %}
-    <div class="back-item-tall">
-      <div class="label">特质</div>
-      <div class="value">{{ background.trait }}</div>
-    </div>
-    {% endif %}
-    {% if background.scar %}
-    <div class="back-item-tall">
-      <div class="label">伤口与疤痕</div>
-      <div class="value">{{ background.scar }}</div>
-    </div>
-    {% endif %}
-    {% if background.madness %}
-    <div class="back-item-tall">
-      <div class="label">精神症状</div>
-      <div class="value">{{ background.madness }}</div>
-    </div>
-    {% endif %}
-  </div>
-  {% endif %}
-
-  {% if background.description %}
-  <div class="back-item-tall" style="margin-top: 3pt;">
-    <div class="label">个人介绍</div>
-    <div class="value">{{ background.description }}</div>
-  </div>
-  {% endif %}
-
-  <div class="back-grid-3" style="margin-top: 4pt;">
-    <div class="back-item">
-      <div class="label">随身物品</div>
-      <div class="value">
-        {% if items %}
-          {% for item in items %}{{ item }}{% if not loop.last %}、{% endif %}{% endfor %}
-        {% else %}—{% endif %}
+  <!-- Background Story -->
+  <div class="paper-section">
+    <div class="header"><h1><span class="title">背景故事</span><span class="subtitle">Story</span></h1></div>
+    <div class="body story-body">
+      <div class="story-col" style="flex: 2;">
+        {% for item in story_left %}
+        <div class="warea">
+          <div class="wlbl">{{ item.label }}</div>
+          <div class="wlines">
+            {% for i in range(item.lines) %}<div class="wline"></div>{% endfor %}
+          </div>
+          <div class="wtxt" style="min-height: {{ item.lines * 1.5 }}em;">{{ item.value }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="story-col" style="flex: 3;">
+        <div class="warea">
+          <div class="wlbl">个人介绍</div>
+          <div class="wlines">
+            {% for i in range(desc_lines) %}<div class="wline"></div>{% endfor %}
+          </div>
+          <div class="wtxt" style="min-height: {{ desc_lines * 1.5 }}em;">{{ desc }}</div>
+        </div>
       </div>
     </div>
-    <div class="back-item">
-      <div class="label">现金</div>
-      <div class="value">{{ assets.cash or '—' }}</div>
+  </div>
+
+  <!-- Items / Assets / Mythos -->
+  <div class="section-row">
+    <div class="back-grid" style="flex: 2; flex-direction: column;">
+      <div class="section-row" style="flex: 1;">
+        <div class="paper-section" style="flex: 1;">
+          <div class="header"><h1><span class="title">随身物品</span><span class="subtitle">Items</span></h1></div>
+          <div class="body" style="padding: 0.3em;">
+            <div class="bitem" style="border: none; padding: 0;">
+              <div class="bval">{% if items %}{% for item in items %}{{ item }}{% if not loop.last %}、{% endif %}{% endfor %}{% else %}—{% endif %}</div>
+            </div>
+          </div>
+        </div>
+        <div class="paper-section" style="flex: 1;">
+          <div class="header"><h1><span class="title">资产</span><span class="subtitle">Assets</span></h1></div>
+          <div class="body" style="padding: 0.3em; gap: 0.2em;">
+            <div class="wr"><div class="lbl"><div class="lbl-t">消费水平</div></div><div class="val">{{ assets.consumption or '' }}</div></div>
+            <div class="wr"><div class="lbl"><div class="lbl-t">现金</div></div><div class="val">{{ assets.cash or '' }}</div></div>
+            <div class="wr"><div class="lbl"><div class="lbl-t">资产</div></div><div class="val">{{ assets.assets or '' }}</div></div>
+            <div class="wr"><div class="lbl"><div class="lbl-t">资产详情</div></div><div class="val">{{ assets.items or '' }}</div></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="mythos-box">
-      <div class="label">克苏鲁神话</div>
-      <div class="value">{{ mythos }}</div>
-    </div>
-    <div class="back-item">
-      <div class="label">消费水平</div>
-      <div class="value">{{ assets.consumption or '—' }}</div>
-    </div>
-    <div class="back-item">
-      <div class="label">资产</div>
-      <div class="value">{{ assets.assets or '—' }}</div>
-    </div>
-    <div class="back-item">
-      <div class="label">资产详情</div>
-      <div class="value">{{ assets.items or '—' }}</div>
+    <div class="paper-section mythos-box" style="flex: 1;">
+      <div class="header"><h1><span class="title">克苏鲁神话</span><span class="subtitle">Mythos</span></h1></div>
+      <div class="body" style="padding: 0.4em; align-items: center; justify-content: center;">
+        <div style="font-size: 1.8em; font-weight: bold; color: #800;">{{ mythos }}</div>
+      </div>
     </div>
   </div>
 
-  <div class="two-col" style="margin-top: 4pt;">
-    <div class="back-item-tall">
-      <div class="label">好友与联系人</div>
-      <div class="value">{{ friends or '—' }}</div>
+  <!-- Friends / Experience -->
+  <div class="section-row" style="flex: 1;">
+    <div class="paper-section" style="flex: 2;">
+      <div class="header"><h1><span class="title">好友与联系人</span><span class="subtitle">Friends</span></h1></div>
+      <div class="body" style="padding: 0.4em;">
+        <div class="warea" style="flex: 1;">
+          <div class="wlines">
+            {% for i in range(4) %}<div class="wline"></div>{% endfor %}
+          </div>
+          <div class="wtxt" style="min-height: 6em;">{{ friends or '—' }}</div>
+        </div>
+      </div>
     </div>
-    <div class="back-item-tall">
-      <div class="label">经历模组</div>
-      <div class="value">{{ experienced_modules or '—' }}</div>
+    <div class="paper-section" style="flex: 1;">
+      <div class="header"><h1><span class="title">经历模组</span><span class="subtitle">Experience</span></h1></div>
+      <div class="body" style="padding: 0.4em;">
+        <div class="warea" style="flex: 1;">
+          <div class="wlines">
+            {% for i in range(4) %}<div class="wline"></div>{% endfor %}
+          </div>
+          <div class="wtxt" style="min-height: 6em;">{{ experienced_modules or '—' }}</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="page-footer">背面 &middot; {{ basic.name }} &middot; {{ basic.job }} &middot; COC 7th Edition 480购点制</div>
+  <div class="inspiration">
+    <span>COC 7th Edition &middot; 480购点制</span>
+    <span>背面 &middot; {{ basic.name }} &middot; {{ basic.job }}</span>
+  </div>
 </div>
 
 </body>

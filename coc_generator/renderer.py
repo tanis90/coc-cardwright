@@ -1,6 +1,6 @@
 """HTML renderer for character cards."""
 
-import json
+import math
 from pathlib import Path
 
 from jinja2 import Template
@@ -11,101 +11,147 @@ from .data.skills import SKILL_MAP
 from .data.jobs import JOBS
 
 
-# Skill display order (grouped)
-SKILL_GROUPS = [
-    ("侦查类", ["侦查", "聆听", "图书馆使用", "读唇"]),
-    ("社交", ["取悦", "话术", "恐吓", "说服", "心理学"]),
-    ("隐匿", ["潜行", "追踪", "乔装", "妙手", "锁匠"]),
-    ("运动", ["攀爬", "跳跃", "游泳", "潜水", "骑术", "投掷"]),
-    ("战斗", ["闪避", "格斗(斗殴)", "格斗(刀剑)", "格斗(矛)", "格斗(斧)", "格斗(绞索)", "格斗(链锯)", "格斗(链枷)", "格斗(鞭)", "射击(手枪)", "射击(步/霰)", "射击(冲锋枪)", "射击(弓弩)", "射击(机枪)", "射击(重武器)", "炮术", "爆破"]),
-    ("学识", ["会计", "法律", "历史", "考古学", "图书馆使用", "神秘学", "估价", "母语(汉语)", "母语(英语)", "母语(日语)", "外语(汉语)", "外语(英语)", "外语(日语)", "外语(法语)", "外语(俄语)", "外语(德语)", "外语(韩语)", "外语(粤语)", "外语(拉丁语)", "外语(荷兰语)", "外语(挪威语)", "外语(丹麦语)", "外语(印度语)", "外语(西班牙语)", "外语(葡萄牙语)", "外语(阿拉伯语)"]),
-    ("技艺", ["技艺(表演)", "技艺(音乐)", "技艺(绘画)", "技艺(艺术)", "技艺(摄影)", "技艺(写作)", "技艺(书法)", "技艺(打字)", "技艺(速记)", "技艺(伪造)", "技艺(烹饪)", "技艺(裁缝)", "技艺(理发)", "技艺(技术制图)", "技艺(耕作)", "技艺(木工)", "技艺(铁匠)", "技艺(焊接)", "技艺(管道工)"]),
-    ("科学", ["科学(数学)", "科学(物理)", "科学(化学)", "科学(药学)", "科学(地质学)", "科学(生物学)", "科学(动物学)", "科学(植物学)", "科学(天文学)", "科学(密码学)", "科学(气象学)", "科学(工程学)", "科学(鉴证)", "科学(制药)"]),
-    ("生存", ["生存(沙漠)", "生存(森林)", "生存(荒岛)", "生存(高山)", "生存(海上)"]),
-    ("驾驶", ["汽车驾驶", "驾驶(船)", "驾驶(马车)", "驾驶(飞行器)"]),
-    ("医疗", ["急救", "医学", "精神分析", "催眠"]),
-    ("其他", ["电气维修", "机械维修", "导航", "操作重型机械", "驯兽", "计算机使用Ω", "电子学Ω", "博物学"]),
-]
+# ---------------------------------------------------------------------------
+# Skill grouping - matches trpg-saikou's 10 groups
+# ---------------------------------------------------------------------------
+
+# Left column groups (indices 0-5)
+LEFT_GROUP_NAMES = ["特殊", "探索", "社交", "战斗", "医疗", "运动"]
+# Right column groups (indices 6-9)
+RIGHT_GROUP_NAMES = ["知识", "技术", "操纵", "其它"]
+
+# Core skills shown in each group (mimics blank card layout)
+_CORE_SKILLS = {
+    "特殊": ["信用评级", "克苏鲁神话"],
+    "探索": ["侦查", "聆听", "图书馆使用", "计算机使用Ω", "潜行", "追踪", "导航"],
+    "社交": ["话术", "说服", "取悦", "恐吓", "心理学", "母语(汉语)", "外语(英语)"],
+    "战斗": ["闪避", "格斗(斗殴)", "格斗(刀剑)", "射击(手枪)", "射击(步/霰)", "投掷"],
+    "医疗": ["急救", "医学", "精神分析"],
+    "运动": ["攀爬", "跳跃", "游泳"],
+    "知识": ["博物学", "神秘学", "考古学", "人类学", "估价", "会计", "法律", "历史", "电子学Ω", "科学(数学)", "科学(物理)"],
+    "技术": ["乔装", "妙手", "锁匠", "机械维修", "电气维修", "驯兽", "技艺(表演)", "技艺(音乐)", "生存(森林)"],
+    "操纵": ["汽车驾驶", "骑术", "驾驶(船)", "操作重型机械"],
+    "其它": [],
+}
+
+# Skills that are always worth showing
+_ALWAYS_SHOW = {"信用评级", "克苏鲁神话", "侦查", "聆听", "图书馆使用"}
 
 
-def build_skill_table(data: dict) -> list[dict]:
-    """Build a flat skill table for rendering.
+def _get_skill_group(skill_name: str) -> str:
+    """Determine which of the 10 groups a skill belongs to."""
+    if skill_name in ("信用评级", "克苏鲁神话"):
+        return "特殊"
+    if skill_name in ("侦查", "聆听", "图书馆使用", "计算机使用Ω", "潜行", "追踪", "导航", "读唇"):
+        return "探索"
+    if skill_name in ("话术", "说服", "取悦", "恐吓", "心理学") or skill_name.startswith(("母语(", "外语(")):
+        return "社交"
+    if skill_name in ("闪避", "投掷", "炮术", "爆破") or skill_name.startswith(("格斗(", "射击(")):
+        return "战斗"
+    if skill_name in ("急救", "医学", "精神分析", "催眠"):
+        return "医疗"
+    if skill_name in ("攀爬", "跳跃", "游泳", "潜水"):
+        return "运动"
+    if skill_name in ("博物学", "神秘学", "考古学", "人类学", "估价", "会计", "法律", "历史", "电子学Ω") or skill_name.startswith("科学("):
+        return "知识"
+    if skill_name in ("乔装", "妙手", "锁匠", "机械维修", "电气维修", "驯兽") or skill_name.startswith(("技艺(", "生存(")):
+        return "技术"
+    if skill_name in ("汽车驾驶", "骑术", "操作重型机械") or skill_name.startswith("驾驶("):
+        return "操纵"
+    return "其它"
+
+
+def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
+    """Build left and right skill table data.
     
-    Only show:
-    1. Skills with pro/interest points allocated
-    2. Recommended skills (侦查, 聆听, 图书馆使用)
-    3. Occupation skills for this job
+    Always shows core skills (like blank card) plus any extra allocated skills.
+    Returns (left_groups, right_groups) where each group is {"group_name", "skills": [...]}.
     """
-    from .data.skills import RECOMMENDED_SKILLS
-    from .data.jobs import JOBS
-    
     attrs = data.get("attributes", {})
     skill_allocs = data.get("skill_allocations", {})
     pro_allocs = skill_allocs.get("pro", {})
     interest_allocs = skill_allocs.get("interest", {})
     job_name = data.get("basic", {}).get("job", "")
     job = JOBS.get(job_name)
-
-    # Determine which skills to show
-    show_skills = set()
-    # All allocated skills
-    show_skills.update(pro_allocs.keys())
-    show_skills.update(interest_allocs.keys())
-    # Recommended skills
-    show_skills.update(RECOMMENDED_SKILLS)
-    # Always show credit rating if it has points
-    if "信用评级" in pro_allocs or "信用评级" in interest_allocs:
-        show_skills.add("信用评级")
-
-    # Build rows
-    rows = []
-    seen = set()
-
-    # First, grouped skills
-    for group_name, skill_names in SKILL_GROUPS:
-        group_rows = []
+    
+    occupation_skills = set(job.get("occupation_skills", [])) if job else set()
+    allocated_skills = set(pro_allocs.keys()) | set(interest_allocs.keys())
+    
+    # Build per-group skill name lists
+    group_names: dict[str, list[str]] = {g: [] for g in (LEFT_GROUP_NAMES + RIGHT_GROUP_NAMES)}
+    
+    for group_name in LEFT_GROUP_NAMES + RIGHT_GROUP_NAMES:
+        core = _CORE_SKILLS.get(group_name, [])
+        seen = set()
+        # Always show all core skills (like blank card)
+        for s in core:
+            seen.add(s)
+            group_names[group_name].append(s)
+        
+        # Add allocated skills not in core list
+        for skill_name in sorted(allocated_skills):
+            if skill_name not in seen and _get_skill_group(skill_name) == group_name:
+                group_names[group_name].append(skill_name)
+                seen.add(skill_name)
+    
+    def _build_group(group_name: str) -> dict | None:
+        skill_names = group_names.get(group_name, [])
+        if not skill_names:
+            return None
+        rows = []
         for name in skill_names:
-            if name not in show_skills:
-                continue
             init = get_skill_init(name, attrs)
             pro = pro_allocs.get(name, 0)
             interest = interest_allocs.get(name, 0)
             total = init + pro + interest
-            group_rows.append({
+            rows.append({
                 "name": name,
                 "init": init,
                 "pro": pro,
                 "interest": interest,
                 "total": total,
+                "is_occupation": name in occupation_skills,
             })
-            seen.add(name)
+        return {"group_name": group_name, "skills": rows, "size": len(rows)}
+    
+    left_groups = [_build_group(g) for g in LEFT_GROUP_NAMES]
+    left_groups = [g for g in left_groups if g is not None]
+    
+    right_groups = [_build_group(g) for g in RIGHT_GROUP_NAMES]
+    right_groups = [g for g in right_groups if g is not None]
+    
+    return left_groups, right_groups
 
-        if group_rows:
-            rows.append({"type": "header", "name": group_name})
-            rows.extend({"type": "skill", **r} for r in group_rows)
 
-    # Then, any remaining skills not in groups
-    remaining = []
-    for name in sorted(show_skills):
-        if name in seen:
-            continue
-        init = get_skill_init(name, attrs)
-        pro = pro_allocs.get(name, 0)
-        interest = interest_allocs.get(name, 0)
-        total = init + pro + interest
-        remaining.append({
-            "name": name,
-            "init": init,
-            "pro": pro,
-            "interest": interest,
-            "total": total,
-        })
+# ---------------------------------------------------------------------------
+# Weapon success rate helper
+# ---------------------------------------------------------------------------
 
-    if remaining:
-        rows.append({"type": "header", "name": "其他"})
-        rows.extend({"type": "skill", **r} for r in remaining)
+def _enrich_weapons(weapons: list[dict], skill_totals: dict[str, int]) -> list[dict]:
+    """Add computed success_rate to each weapon based on its skill."""
+    result = []
+    for w in weapons:
+        wc = dict(w)
+        skill_name = wc.get("skill", "")
+        wc["success_rate"] = skill_totals.get(skill_name, "")
+        result.append(wc)
+    return result
 
-    return rows
+
+# ---------------------------------------------------------------------------
+# Story background items
+# ---------------------------------------------------------------------------
+
+STORY_LEFT_ITEMS = [
+    ("形象描述", "appearance"),
+    ("思想与信念", "belief"),
+    ("重要之人", "important_person"),
+    ("意义非凡之地", "important_place"),
+    ("宝贵之物", "important_item"),
+    ("特质", "trait"),
+    ("伤口与疤痕", "scar"),
+    ("精神症状", "madness"),
+]
 
 
 def render(data: dict) -> str:
@@ -127,10 +173,32 @@ def render(data: dict) -> str:
     pro_total = calc_pro_points(job_name, attrs) if job else 0
     interest_total = calc_interest_points(attrs)
     skill_allocs = data.get("skill_allocations", {})
-    pro_used = sum(skill_allocs.get("pro", {}).values())
-    interest_used = sum(skill_allocs.get("interest", {}).values())
+    pro_allocs = skill_allocs.get("pro", {})
+    interest_allocs = skill_allocs.get("interest", {})
+    pro_used = sum(pro_allocs.values())
+    interest_used = sum(interest_allocs.values())
 
-    skill_table = build_skill_table(data)
+    # Build skill total map for weapon lookups
+    skill_totals = {}
+    for name in set(pro_allocs) | set(interest_allocs) | set(SKILL_MAP.keys()):
+        init = get_skill_init(name, attrs)
+        pro = pro_allocs.get(name, 0)
+        interest = interest_allocs.get(name, 0)
+        skill_totals[name] = init + pro + interest
+
+    skill_table_left, skill_table_right = build_skill_tables(data)
+    weapons = _enrich_weapons(data.get("weapons", []) or [], skill_totals)
+
+    # Background story items
+    background = data.get("background", {}) or {}
+    story_left = []
+    for label, key in STORY_LEFT_ITEMS:
+        val = background.get(key, "")
+        lines = max(3, min(4, len(val) // 22 + 1)) if val else 3
+        story_left.append({"label": label, "value": val, "lines": lines})
+    
+    desc = background.get("description", "")
+    desc_lines = max(8, sum(item["lines"] for item in story_left) + 2)
 
     context = {
         "basic": basic,
@@ -144,16 +212,24 @@ def render(data: dict) -> str:
         "credit_rating": data.get("credit_rating", 0),
         "pro_total": pro_total,
         "pro_used": pro_used,
+        "pro_remaining": pro_total - pro_used,
         "interest_total": interest_total,
         "interest_used": interest_used,
-        "skill_table": skill_table,
-        "background": data.get("background", {}),
-        "assets": data.get("assets", {}),
-        "weapons": data.get("weapons", []),
-        "items": data.get("items", []),
+        "interest_remaining": interest_total - interest_used,
+        "pro_cap": 80,
+        "interest_cap": 60,
+        "skill_table_left": skill_table_left,
+        "skill_table_right": skill_table_right,
+        "background": background,
+        "assets": data.get("assets", {}) or {},
+        "weapons": weapons,
+        "items": data.get("items", []) or [],
         "mythos": data.get("mythos", 0),
-        "friends": data.get("friends", ""),
-        "experienced_modules": data.get("experienced_modules", ""),
+        "friends": data.get("friends", "") or "",
+        "experienced_modules": data.get("experienced_modules", "") or "",
+        "story_left": story_left,
+        "desc": desc,
+        "desc_lines": desc_lines,
     }
 
     template_path = Path(__file__).parent / "data" / "templates" / "card.html"
