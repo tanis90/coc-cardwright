@@ -501,14 +501,14 @@ body {
             {% if loop.first %}
             <td class="gname" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
             {% endif %}
-            <td class="sname td{{ loop.index0 % 2 }}">
+            <td class="sname td{{ skill.stripe }}">
               <span class="mk{% if skill.is_occupation %} on{% endif %}"></span>{{ skill.name }}
             </td>
-            <td class="td{{ (loop.index0 + 1) % 2 }}">{{ skill.init }}</td>
-            <td class="td{{ loop.index0 % 2 }}">{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
-            <td class="td{{ (loop.index0 + 1) % 2 }}">{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
-            <td class="td{{ loop.index0 % 2 }}"><span class="grow-box"></span></td>
-            <td class="td{{ (loop.index0 + 1) % 2 }}">{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
+            <td class="td{{ 1 - skill.stripe }}">{{ skill.init }}</td>
+            <td class="td{{ skill.stripe }}">{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
+            <td class="td{{ 1 - skill.stripe }}">{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
+            <td class="td{{ skill.stripe }}"><span class="grow-box"></span></td>
+            <td class="td{{ 1 - skill.stripe }}">{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
           </tr>
           {% endfor %}
         {% endfor %}
@@ -537,14 +537,14 @@ body {
             {% if loop.first %}
             <td class="gname" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
             {% endif %}
-            <td class="sname td{{ loop.index0 % 2 }}">
+            <td class="sname td{{ skill.stripe }}">
               <span class="mk{% if skill.is_occupation %} on{% endif %}"></span>{{ skill.name }}
             </td>
-            <td class="td{{ (loop.index0 + 1) % 2 }}">{{ skill.init }}</td>
-            <td class="td{{ loop.index0 % 2 }}">{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
-            <td class="td{{ (loop.index0 + 1) % 2 }}">{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
-            <td class="td{{ loop.index0 % 2 }}"><span class="grow-box"></span></td>
-            <td class="td{{ (loop.index0 + 1) % 2 }}">{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
+            <td class="td{{ 1 - skill.stripe }}">{{ skill.init }}</td>
+            <td class="td{{ skill.stripe }}">{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
+            <td class="td{{ 1 - skill.stripe }}">{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
+            <td class="td{{ skill.stripe }}"><span class="grow-box"></span></td>
+            <td class="td{{ 1 - skill.stripe }}">{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
           </tr>
           {% endfor %}
         {% endfor %}

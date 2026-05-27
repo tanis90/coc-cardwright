@@ -94,7 +94,7 @@ def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
                 group_names[group_name].append(skill_name)
                 seen.add(skill_name)
     
-    def _build_group(group_name: str) -> dict | None:
+    def _build_group(group_name: str, stripe_counter: list[int]) -> dict | None:
         skill_names = group_names.get(group_name, [])
         if not skill_names:
             return None
@@ -111,13 +111,17 @@ def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
                 "interest": interest,
                 "total": total,
                 "is_occupation": name in occupation_skills,
+                "stripe": stripe_counter[0] % 2,
             })
+            stripe_counter[0] += 1
         return {"group_name": group_name, "skills": rows, "size": len(rows)}
     
-    left_groups = [_build_group(g) for g in LEFT_GROUP_NAMES]
+    left_counter = [0]
+    left_groups = [_build_group(g, left_counter) for g in LEFT_GROUP_NAMES]
     left_groups = [g for g in left_groups if g is not None]
     
-    right_groups = [_build_group(g) for g in RIGHT_GROUP_NAMES]
+    right_counter = [0]
+    right_groups = [_build_group(g, right_counter) for g in RIGHT_GROUP_NAMES]
     right_groups = [g for g in right_groups if g is not None]
     
     return left_groups, right_groups
