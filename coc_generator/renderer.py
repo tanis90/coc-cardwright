@@ -73,6 +73,22 @@ def _get_skill_group(skill_name: str) -> str:
     return "其它"
 
 
+def _is_occupation_skill(skill_name: str, occupation_skills: set[str]) -> bool:
+    """Match concrete specializations against open-ended occupation entries."""
+    if skill_name in occupation_skills:
+        return True
+
+    group_name = skill_name.split("(", 1)[0] if "(" in skill_name else ""
+    if not group_name:
+        return False
+
+    return any(
+        allowed.startswith(f"{group_name}(")
+        and any(marker in allowed for marker in ("任一", "如", "等", "类", "/"))
+        for allowed in occupation_skills
+    )
+
+
 def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
     """Build left and right skill table data.
     
@@ -85,8 +101,10 @@ def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
     interest_allocs = skill_allocs.get("interest", {})
     job_name = data.get("basic", {}).get("job", "")
     job = JOBS.get(job_name)
+    credit_rating = data.get("credit_rating", 0)
     
     occupation_skills = set(job.get("occupation_skills", [])) if job else set()
+    occupation_skills.add("信用评级")
     allocated_skills = set(pro_allocs.keys()) | set(interest_allocs.keys())
     
     # Build per-group skill name lists
@@ -113,7 +131,7 @@ def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
         rows = []
         for name in skill_names:
             init = get_skill_init(name, attrs)
-            pro = pro_allocs.get(name, 0)
+            pro = credit_rating if name == "信用评级" and isinstance(credit_rating, int) else pro_allocs.get(name, 0)
             interest = interest_allocs.get(name, 0)
             total = init + pro + interest
             rows.append({
@@ -122,7 +140,7 @@ def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
                 "pro": pro,
                 "interest": interest,
                 "total": total,
-                "is_occupation": name in occupation_skills,
+                "is_occupation": _is_occupation_skill(name, occupation_skills),
                 "stripe": stripe_counter[0] % 2,
             })
             stripe_counter[0] += 1
@@ -204,7 +222,8 @@ def render(data: dict) -> str:
     skill_allocs = data.get("skill_allocations", {})
     pro_allocs = skill_allocs.get("pro", {})
     interest_allocs = skill_allocs.get("interest", {})
-    pro_used = sum(pro_allocs.values())
+    credit_rating = data.get("credit_rating", 0)
+    pro_used = sum(pro_allocs.values()) + (credit_rating if isinstance(credit_rating, int) else 0)
     interest_used = sum(interest_allocs.values())
 
     # Build skill total map for weapon lookups
@@ -282,7 +301,7 @@ def render(data: dict) -> str:
         "derived": derived,
         "job": job,
         "job_name": job_name,
-        "credit_rating": data.get("credit_rating", 0),
+        "credit_rating": credit_rating,
         "pro_total": pro_total,
         "pro_used": pro_used,
         "pro_remaining": pro_total - pro_used,

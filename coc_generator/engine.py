@@ -1,8 +1,6 @@
 """Rule engine for COC 7th Edition character validation and calculation."""
 
 import math
-from typing import Any
-
 from .schema import ATTR_KEYS, ATTR_NAMES, Error, ValidationResult
 from .data.skills import SKILL_MAP
 from .data.jobs import JOBS
@@ -95,11 +93,11 @@ def calc_pro_points(job_name: str, attrs: dict) -> int:
         return 0
 
     formula = job["point_formula"]
-    max_points = 0
+    total = 0
     for group in formula:
-        group_sum = sum(attrs.get(attr, 0) * mult for attr, mult in group)
-        max_points = max(max_points, group_sum)
-    return max_points
+        values = [attrs.get(attr, 0) * mult for attr, mult in group]
+        total += max(values) if values else 0
+    return total
 
 
 def calc_interest_points(attrs: dict) -> int:
@@ -113,15 +111,86 @@ def get_skill_init(skill_name: str, attrs: dict) -> int:
     """Get the base/init value of a skill."""
     info = SKILL_MAP.get(skill_name)
     if not info:
+        group_name = skill_name.split("(", 1)[0] if "(" in skill_name else ""
+        group_info = SKILL_MAP.get(group_name)
+        if group_info:
+            return attrs.get("edu", 0) if group_info.get("dynamic") == "edu" else group_info.get("init", 0)
         return 0  # custom skill
 
     dynamic = info.get("dynamic")
-    if dynamic == "edu":
+    if dynamic == "edu" or skill_name.startswith("母语("):
         return attrs.get("edu", 0)
     elif dynamic == "dex_half":
         return math.floor(attrs.get("dex", 0) / 2)
     else:
         return info.get("init", 0)
+
+
+def _is_plain_int(value: object) -> bool:
+    """JSON integer, excluding booleans which are int subclasses in Python."""
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _validate_allocations(allocs: object, kind: str, errors: list[Error]) -> dict[str, int]:
+    """Validate skill allocation point values and return only usable entries."""
+    if not isinstance(allocs, dict):
+        errors.append(Error(
+            code="SKILL_ALLOCATIONS_NOT_OBJECT",
+            field=f"skill_allocations.{kind}",
+            expected="object",
+            actual=type(allocs).__name__,
+            message=f"{'职业' if kind == 'pro' else '兴趣'}技能点分配必须是对象",
+        ))
+        return {}
+
+    valid: dict[str, int] = {}
+    for skill_name, points in allocs.items():
+        field = f"skill_allocations.{kind}.{skill_name}"
+        if not isinstance(skill_name, str):
+            errors.append(Error(
+                code="SKILL_NAME_NOT_STRING",
+                field=f"skill_allocations.{kind}",
+                expected="技能名字符串",
+                actual=skill_name,
+                message="技能名必须是字符串",
+            ))
+            continue
+        if not _is_plain_int(points):
+            errors.append(Error(
+                code="SKILL_POINTS_NOT_INTEGER",
+                field=field,
+                expected="非负整数",
+                actual=points,
+                message=f"技能【{skill_name}】分配点数必须是非负整数",
+            ))
+            continue
+        if points < 0:
+            errors.append(Error(
+                code="SKILL_POINTS_NEGATIVE",
+                field=field,
+                expected=">=0",
+                actual=points,
+                message=f"技能【{skill_name}】分配点数不能为负数",
+            ))
+            continue
+        valid[skill_name] = points
+    return valid
+
+
+def _is_allowed_occupation_skill(skill_name: str, allowed_skills: set[str]) -> bool:
+    if skill_name in allowed_skills:
+        return True
+
+    group_name = skill_name.split("(", 1)[0] if "(" in skill_name else ""
+    if not group_name:
+        return False
+
+    # Some source jobs contain open-ended specializations, e.g.
+    # 技艺(生活类，如烹饪、裁缝、理发) or 生存(高山/冰山).
+    for allowed in allowed_skills:
+        if allowed.startswith(f"{group_name}(") and any(marker in allowed for marker in ("任一", "如", "等", "类", "/")):
+            return True
+    return False
 
 
 # ---------------------------------------------------------------------------
@@ -144,7 +213,40 @@ def validate(data: dict) -> ValidationResult:
             age = 0
 
     # --- Attributes ---
-    attrs = data.get("attributes", {})
+    attrs_raw = data.get("attributes", {})
+    attrs = {}
+    if not isinstance(attrs_raw, dict):
+        errors.append(Error(
+            code="ATTRIBUTES_NOT_OBJECT",
+            field="attributes",
+            expected="object",
+            actual=type(attrs_raw).__name__,
+            message="attributes 必须是对象",
+        ))
+        attrs_raw = {}
+
+    # Check type/range before using attributes in calculations.
+    for key in ATTR_KEYS:
+        val = attrs_raw.get(key, 0)
+        if not _is_plain_int(val):
+            errors.append(Error(
+                code="ATTR_NOT_INTEGER",
+                field=f"attributes.{key}",
+                expected="整数",
+                actual=val,
+                message=f"属性【{ATTR_NAMES.get(key, key)}({key.upper()})】必须是整数",
+            ))
+            attrs[key] = 0
+            continue
+        attrs[key] = val
+        if not ATTR_MIN <= val <= ATTR_MAX:
+            errors.append(Error(
+                code="ATTR_OUT_OF_RANGE",
+                field=f"attributes.{key}",
+                expected=f"{ATTR_MIN}~{ATTR_MAX}",
+                actual=val,
+                message=f"属性【{ATTR_NAMES.get(key, key)}({key.upper()})】为{val}，超出范围{ATTR_MIN}~{ATTR_MAX}",
+            ))
 
     # Check sum
     total = sum(attrs.get(k, 0) for k in ATTR_KEYS)
@@ -156,18 +258,6 @@ def validate(data: dict) -> ValidationResult:
             actual=total,
             message=f"8项属性总和为{total}，必须等于{TOTAL_ATTR_POINTS}",
         ))
-
-    # Check range
-    for key in ATTR_KEYS:
-        val = attrs.get(key, 0)
-        if not ATTR_MIN <= val <= ATTR_MAX:
-            errors.append(Error(
-                code="ATTR_OUT_OF_RANGE",
-                field=f"attributes.{key}",
-                expected=f"{ATTR_MIN}~{ATTR_MAX}",
-                actual=val,
-                message=f"属性【{ATTR_NAMES.get(key, key)}({key.upper()})】为{val}，超出范围{ATTR_MIN}~{ATTR_MAX}",
-            ))
 
     # --- Job exists ---
     job = JOBS.get(job_name)
@@ -182,7 +272,16 @@ def validate(data: dict) -> ValidationResult:
 
     # --- Luck ---
     luck = data.get("luck", 0)
-    if not 15 <= luck <= 90:
+    if not _is_plain_int(luck):
+        errors.append(Error(
+            code="LUCK_NOT_INTEGER",
+            field="luck",
+            expected="整数",
+            actual=luck,
+            message="幸运值必须是整数",
+        ))
+        luck = 0
+    elif not 15 <= luck <= 90:
         errors.append(Error(
             code="LUCK_OUT_OF_RANGE",
             field="luck",
@@ -193,8 +292,17 @@ def validate(data: dict) -> ValidationResult:
 
     # --- Skill allocations ---
     skill_allocs = data.get("skill_allocations", {})
-    pro_allocs = skill_allocs.get("pro", {})
-    interest_allocs = skill_allocs.get("interest", {})
+    if not isinstance(skill_allocs, dict):
+        errors.append(Error(
+            code="SKILL_ALLOCATIONS_NOT_OBJECT",
+            field="skill_allocations",
+            expected="object",
+            actual=type(skill_allocs).__name__,
+            message="skill_allocations 必须是对象",
+        ))
+        skill_allocs = {}
+    pro_allocs = _validate_allocations(skill_allocs.get("pro", {}), "pro", errors)
+    interest_allocs = _validate_allocations(skill_allocs.get("interest", {}), "interest", errors)
 
     # Cthulhu Mythos check
     if "克苏鲁神话" in pro_allocs and pro_allocs["克苏鲁神话"] > 0:
@@ -217,8 +325,18 @@ def validate(data: dict) -> ValidationResult:
     if job:
         # --- Credit rating ---
         credit = data.get("credit_rating", 0)
+        credit_for_points = 0
         cr_min, cr_max = job["credit_range"]
-        if not cr_min <= credit <= cr_max:
+        if not _is_plain_int(credit):
+            errors.append(Error(
+                code="CREDIT_RATING_NOT_INTEGER",
+                field="credit_rating",
+                expected="整数",
+                actual=credit,
+                message="信用评级必须是整数",
+            ))
+        elif not cr_min <= credit <= cr_max:
+            credit_for_points = credit if credit >= 0 else 0
             errors.append(Error(
                 code="CREDIT_RATING_OUT_OF_RANGE",
                 field="credit_rating",
@@ -226,10 +344,12 @@ def validate(data: dict) -> ValidationResult:
                 actual=credit,
                 message=f"信用评级{credit}超出职业【{job_name}】允许范围{cr_min}~{cr_max}",
             ))
+        else:
+            credit_for_points = credit
 
         # --- Pro points total ---
         pro_total = calc_pro_points(job_name, attrs)
-        pro_used = sum(pro_allocs.values())
+        pro_used = sum(pro_allocs.values()) + credit_for_points
         if pro_used > pro_total:
             errors.append(Error(
                 code="PRO_POINTS_OVERFLOW",
@@ -254,7 +374,7 @@ def validate(data: dict) -> ValidationResult:
         # --- Occupation skills enforcement ---
         allowed_skills = set(job["occupation_skills"])
         for skill_name, points in pro_allocs.items():
-            if skill_name not in allowed_skills:
+            if not _is_allowed_occupation_skill(skill_name, allowed_skills):
                 errors.append(Error(
                     code="PRO_SKILL_NOT_OCCUPATION",
                     field=f"skill_allocations.pro.{skill_name}",

@@ -107,9 +107,9 @@ $ coc verify detective.json
     "mov": 7,
     "dodge": 30,
     "native_language": 70,
-    "pro_points_total": 220,
-    "pro_points_used": 140,
-    "pro_points_remaining": 80,
+    "pro_points_total": 260,
+    "pro_points_used": 165,
+    "pro_points_remaining": 95,
     "interest_points_total": 160,
     "interest_points_used": 110,
     "interest_points_remaining": 50
@@ -294,9 +294,9 @@ CLI 是唯一的规则权威，校验不通过即报错，拒绝渲染 HTML。
 | 兴趣点数 | INT × 2，不得超过上限 |
 | 职业技能上限 | 最终值（初始+职业点）≤ 80 |
 | 兴趣技能上限 | 最终值（初始+兴趣点）≤ 60 |
+| 信用评级 | 必须在职业允许范围内，并计入职业点数使用量 |
 | 本职技能 | 职业点数**只能**投给该职业的本职技能 |
 | 克苏鲁神话 | **禁止**分配任何点数 |
-| 信用评级 | 必须在职业允许的范围内 |
 
 ---
 

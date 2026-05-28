@@ -211,7 +211,7 @@ coc_generator/data/
 @dataclass
 class Job:
     name: str                              # "私家侦探"
-    point_formula: list[list[tuple]]       # [[("edu", 2), ("dex", 2)]] 取max
+    point_formula: list[list[tuple]]       # 每组内部取max，各组结果相加
     credit_range: tuple[int, int]          # (9, 30)
     # 本职技能池：所有允许投入职业点数的技能名
     # 包含固定技能、多选一展开后的所有选项、分组技能展开后的所有子技能
@@ -298,9 +298,9 @@ def validate_attributes(attrs: dict) -> list[Error]:
 ```python
 def calc_pro_points(job: Job, attrs: dict) -> int:
     """
-    职业点数 = max(各组计算结果)
+    职业点数 = sum(max(每个公式组内的候选项))
     例如 [[('edu',4)]] → edu*4
-    例如 [[('edu',2)], [('str',2),('dex',2)]] → max(edu*2, str*2, dex*2)
+    例如 [[('edu',2)], [('str',2),('dex',2)]] → edu*2 + max(str*2, dex*2)
     """
     ...
 
@@ -355,6 +355,8 @@ def validate_credit_rating(job: Job, credit: int) -> list[Error]:
         return [Error("CREDIT_RATING_OUT_OF_RANGE", ...)]
     return []
 ```
+
+信用评级是独立输入字段，但规则上仍视为技能点投入：`credit_rating` 必须计入职业点数使用量，并在技能表中显示为“信用评级”的职业点/成功率。
 
 ### 3.3 CLI 命令
 

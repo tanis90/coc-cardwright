@@ -2,1470 +2,1576 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>亚瑟·布莱克伍德 - COC 7th 角色卡</title>
+<title>亚瑟·布莱克伍德 - COC 7th 角色档案卡</title>
 <style>
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC",
+    "WenQuanYi Micro Hei", sans-serif;
+  --font-title: "FangSong", "STFangsong", "Songti SC", "SimSun", serif;
+  --font-story: "Songti SC", "SimSun", "Noto Serif CJK SC",
+    "Source Han Serif SC", serif;
+  --font-number: Georgia, "Times New Roman", serif;
+  --ink: #241f1a;
+  --muted: #6e665d;
+  --line: #d8cdbd;
+  --line-strong: #7c6e5d;
+  --paper: #fbf4e8;
+  --panel: #fffdf7;
+  --wash: #f4eadb;
+  --accent: #8a2f2b;
+  --accent-soft: #f3e3dc;
+  --red: #8a2f2b;
+  --blue: #3d657f;
+  --olive: #65723e;
+  --rust: #9a573a;
+  --teal: #3f756f;
+  --green: #56724c;
+  --indigo: #5e5f8c;
+  --gold: #9a762f;
+  --slate: #526a73;
+  --violet: #725a82;
+}
 
 body {
-  font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 8.5pt;
-  line-height: 1.3;
-  color: #222;
-  background: #e8e8e8;
+  font-family: var(--font-ui);
+  font-size: 8pt;
+  line-height: 1.35;
+  color: var(--ink);
+  background: #d9d9d6;
 }
 
 .page {
   width: 210mm;
   height: 297mm;
-  padding: 6mm 8mm;
+  padding: 7mm 8mm;
   margin: 0 auto 8mm;
-  background: #fff;
-  position: relative;
+  background: var(--paper);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.4em;
+  gap: 3mm;
+  position: relative;
 }
 
 @media print {
+  :root {
+    --ink: #241f1a;
+    --muted: #5f574e;
+    --line: #cdbcaa;
+    --line-strong: #6f5f4e;
+    --paper: #fff8ec;
+    --panel: #fffdf7;
+    --wash: #f5ead8;
+    --accent: #8a2f2b;
+    --accent-soft: #f3e3dc;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   body { background: #fff; }
-  .page { margin: 0; box-shadow: none; page-break-after: always; }
-  .page:last-child { page-break-after: auto; }
+  .page {
+    margin: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+  .page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+  .portrait {
+    background:
+      linear-gradient(135deg, transparent 49.4%, rgba(154,118,47,0.18) 50%, transparent 50.6%),
+      linear-gradient(45deg, transparent 49.4%, rgba(154,118,47,0.18) 50%, transparent 50.6%),
+      #fff;
+  }
+  .skill-table tbody tr:nth-child(even) td {
+    background: #fbf3e7;
+  }
 }
 
-/* ---------- PaperSection ---------- */
-.paper-section {
+.sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1.4pt solid var(--ink);
+  padding-bottom: 2mm;
+  min-height: 12mm;
+}
+.sheet-title {
+  font-family: var(--font-title);
+  font-size: 19pt;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.sheet-meta {
+  color: var(--muted);
+  font-size: 7pt;
+  text-align: right;
+}
+
+.panel {
+  --panel-accent: var(--accent);
+  --panel-tint: var(--accent-soft);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--panel-accent);
+  min-width: 0;
+  overflow: hidden;
+}
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 1.6mm;
+  min-height: 7mm;
+  padding: 1.2mm 2mm 0.9mm;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-tint);
+  color: var(--ink);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.panel-title::before {
+  content: "";
+  width: 1.2mm;
+  height: 4mm;
+  background: var(--panel-accent);
+  border-radius: 1px;
+  flex: 0 0 auto;
+}
+.panel-subtitle {
+  margin-left: auto;
+  color: var(--panel-accent);
+  font-size: 6.5pt;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.identity-panel { --panel-accent: var(--red); --panel-tint: #f5e5de; }
+.attr-panel { --panel-accent: var(--blue); --panel-tint: #e6eef2; }
+.portrait-panel { --panel-accent: var(--gold); --panel-tint: #f3ead5; }
+.vitals-panel { --panel-accent: var(--green); --panel-tint: #e8f0e3; }
+.body-panel { --panel-accent: var(--rust); --panel-tint: #f2e4db; }
+.mind-panel { --panel-accent: var(--violet); --panel-tint: #eee5f1; }
+.skills-panel { --panel-accent: var(--red); --panel-tint: #f5e5de; }
+.weapons-panel { --panel-accent: var(--slate); --panel-tint: #e7eef0; }
+.combat-panel { --panel-accent: var(--rust); --panel-tint: #f2e4db; }
+.story-panel { --panel-accent: var(--red); --panel-tint: #f5e5de; }
+.items-panel { --panel-accent: var(--gold); --panel-tint: #f4ecd5; }
+.assets-panel { --panel-accent: var(--green); --panel-tint: #e8f0e3; }
+.mythos-panel { --panel-accent: var(--red); --panel-tint: #f6dfdc; }
+.contacts-panel { --panel-accent: var(--blue); --panel-tint: #e6eef2; }
+.experience-panel { --panel-accent: var(--indigo); --panel-tint: #e8e8f4; }
+
+.front-grid {
+  display: grid;
+  grid-template-columns: 78mm 66mm 1fr;
+  gap: 3mm;
+  height: 48mm;
+}
+.identity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9mm;
+  padding: 1.4mm;
+}
+.field {
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 0.7mm 1.2mm;
+  min-height: 6.5mm;
+}
+.field-label {
+  display: block;
+  color: var(--panel-accent);
+  font-size: 6.2pt;
+  line-height: 1;
+  margin-bottom: 0.5mm;
+}
+.field-value {
+  display: block;
+  font-size: 8pt;
+  line-height: 1.2;
+  min-height: 3.4mm;
+  word-break: break-word;
+}
+.field-wide { grid-column: span 3; }
+
+.attr-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4mm;
+  padding: 2mm;
+}
+.stat-box,
+.metric {
+  border: 1px solid var(--line);
+  background: #fff;
+  min-width: 0;
+  text-align: center;
+}
+.stat-box {
+  border-top: 2px solid color-mix(in srgb, var(--panel-accent) 72%, white);
+  min-height: 15mm;
+  padding: 1.3mm 1mm;
+}
+.stat-key {
+  color: var(--panel-accent);
+  font-size: 6.3pt;
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-label {
+  color: var(--muted);
+  font-size: 6pt;
+  margin-top: 0.7mm;
+}
+.stat-value {
+  font-family: var(--font-number);
+  font-variant-numeric: tabular-nums;
+  font-size: 14pt;
+  font-weight: 700;
+  line-height: 1.05;
+  margin-top: 0.8mm;
+}
+
+.portrait-panel {
   display: flex;
   flex-direction: column;
-  outline: 1pt solid #222;
 }
-.paper-section > .header {
+.portrait {
+  margin: 2mm;
+  flex: 1;
+  border: 1px solid var(--line-strong);
+  background:
+    linear-gradient(135deg, transparent 49.4%, rgba(34,33,31,0.08) 50%, transparent 50.6%),
+    linear-gradient(45deg, transparent 49.4%, rgba(34,33,31,0.08) 50%, transparent 50.6%),
+    #fffefa;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #222;
-  color: #fff;
-  padding: 0.35em 0.6em;
-  line-height: 1;
-}
-.paper-section > .header h1 {
-  font-size: 1em;
-  font-weight: normal;
-  display: flex;
-  gap: 0.3em;
-  align-items: baseline;
-}
-.paper-section > .header .title { font-size: 1.15em; }
-.paper-section > .header .subtitle { font-size: 0.9em; opacity: 0.85; }
-.paper-section > .body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 0.25em 0.4em 0.3em;
+  color: rgba(34,33,31,0.22);
+  font-family: "SimSun", "Songti SC", serif;
+  font-size: 24pt;
 }
 
-/* ---------- Layout rows ---------- */
-.section-row {
-  display: flex;
-  gap: 0.5em;
-  align-items: stretch;
-  flex-wrap: wrap;
+.status-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 3mm;
+  height: 30mm;
 }
-
-/* ---------- WritableRow ---------- */
-.wr {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.3em;
-  line-height: 1.2;
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4mm;
+  padding: 2mm;
 }
-.wr .lbl {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-shrink: 0;
+.metric {
+  min-height: 9.5mm;
+  padding: 1mm;
+  border-top: 2px solid color-mix(in srgb, var(--panel-accent) 65%, white);
+}
+.metric-label {
+  color: var(--muted);
+  font-size: 6pt;
   white-space: nowrap;
 }
-.wr .lbl-t { font-size: 1em; }
-.wr .lbl-h { font-size: 0.6em; color: #666; margin-top: -0.1em; }
-.wr .val {
+.metric-value {
+  font-family: var(--font-number);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 11pt;
+  line-height: 1.05;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.3mm;
+  padding: 2mm;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 1mm;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel-tint) 70%, white);
+  padding: 1mm 1.4mm;
+  min-height: 6.5mm;
+  white-space: nowrap;
+}
+.chip::before {
+  content: "";
+  width: 3mm;
+  height: 3mm;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+}
+
+.skill-panel {
   flex: 1 1 auto;
-  border-bottom: 1px solid #b2b2b2;
-  min-width: 1.5em;
-  text-align: center;
-  padding: 0.05em 0;
-}
-
-/* ---------- Derived attributes ---------- */
-.units {
-  display: flex;
-  gap: 0.3em;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0.2em;
-}
-.unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.05em;
-}
-.unit .l { font-size: 0.8em; }
-.unit .v { font-size: 1.1em; font-weight: bold; }
-.udiv { width: 1px; background: #ccc; align-self: stretch; }
-
-/* ---------- Status checkboxes ---------- */
-.status-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  padding: 0.15em;
-}
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 0.25em;
-  padding: 0.15em 0.3em;
-  font-size: 0.8em;
-}
-.status-item:nth-child(odd) { background: #f5f5f5; }
-.status-item:nth-child(even) { background: #ddd; }
-.cb { width: 0.85em; height: 0.85em; border: 1px solid #222; background: #fff; flex-shrink: 0; }
-
-/* ---------- Skill section ---------- */
-.skill-section { flex: 1 1 auto; min-height: 0; }
-.skill-section > .header {
-  justify-content: space-between;
-  padding: 0.3em 0.5em;
-}
-.skill-hl, .skill-hr {
-  display: flex;
-  gap: 0.3em;
-  align-items: center;
-  font-size: 0.82em;
-}
-.pbox {
-  background: #fff;
-  color: #222;
-  padding: 0.1em 0.35em;
-  display: flex;
-  align-items: center;
-  gap: 0.2em;
-}
-.pbox b { font-weight: bold; }
-.lbox {
-  background: #fff;
-  color: #222;
-  padding: 0.1em 0.3em;
-  font-size: 0.9em;
-}
-
-.skill-body {
-  display: flex;
-  flex: 1;
   min-height: 0;
 }
-
-/* Skill tables */
-.skt {
-  flex: 1;
+.skill-panel .panel-title {
+  min-height: 8mm;
+}
+.point-summary {
+  display: flex;
+  gap: 1.5mm;
+  align-items: center;
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 6.5pt;
+  font-weight: 400;
+}
+.point-pill {
+  border: 1px solid var(--line);
+  background: #fff8ef;
+  padding: 0.6mm 1.3mm;
+}
+.skill-body {
+  height: calc(100% - 8mm);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm;
+  padding: 1.6mm;
+  min-height: 0;
+}
+.skill-table {
+  font-family: var(--font-ui);
+  width: 100%;
   border-collapse: collapse;
-  font-size: 0.82em;
-  color: #222;
-  --c0: #fff; --c1: #eee; --c2: #ddd; --c3: #ccc;
-  --lh: 1.35em;
+  table-layout: fixed;
+  font-size: 6.65pt;
+  line-height: 1.15;
 }
-.skt th {
-  line-height: calc(var(--lh) + 0.1em);
-  padding: 0.05em 0.2em;
+.skill-table th {
+  color: var(--muted);
+  font-weight: 400;
+  border-bottom: 1px solid var(--line-strong);
+  padding: 0.8mm 0.6mm;
   text-align: center;
-  font-weight: normal;
 }
-.skt td {
-  line-height: var(--lh);
-  padding: 0 0.2em;
+.skill-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.55mm 0.6mm;
   text-align: center;
-  border: none;
+  height: 4.4mm;
 }
-.td3 { background: var(--c3); }
-.td2 { background: var(--c2); }
-.td1 { background: var(--c1); }
-.td0 { background: var(--c0); }
-
-.gname {
-  width: 1.2em;
-  padding: 0.15em;
-  line-height: 1.3em;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  border: 1pt solid #222;
-  border-left: none;
-  border-bottom: none;
-  font-size: 0.9em;
+.skill-table tbody tr:nth-child(even) td {
+  background: #faf7f0;
 }
-.sname {
-  text-align: left;
-  width: 6.5em;
-  padding-left: 0.2em;
+.skill-table .group-cell {
+  width: 7.5mm;
+  color: var(--group-ink, var(--accent));
+  font-weight: 700;
+  border-right: 1px solid var(--line);
+  border-left: 2px solid var(--group-ink, var(--accent));
+  background: var(--group-bg, var(--accent-soft));
+}
+.tone-red { --group-ink: var(--red); --group-bg: #f4e1dc; }
+.tone-blue { --group-ink: var(--blue); --group-bg: #e4edf2; }
+.tone-olive { --group-ink: var(--olive); --group-bg: #edf0df; }
+.tone-rust { --group-ink: var(--rust); --group-bg: #f2e2d9; }
+.tone-teal { --group-ink: var(--teal); --group-bg: #e2efec; }
+.tone-green { --group-ink: var(--green); --group-bg: #e5efdf; }
+.tone-indigo { --group-ink: var(--indigo); --group-bg: #e8e8f4; }
+.tone-gold { --group-ink: var(--gold); --group-bg: #f3ead2; }
+.tone-slate { --group-ink: var(--slate); --group-bg: #e5ecee; }
+.tone-neutral { --group-ink: var(--muted); --group-bg: #ece8df; }
+.skill-name {
+  text-align: left !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.sname .mk {
+.skill-name .mark {
   display: inline-block;
-  width: 0.75em;
-  height: 0.75em;
-  border: 1px solid #222;
-  margin-right: 0.15em;
+  width: 2mm;
+  height: 2mm;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  margin-right: 1mm;
   vertical-align: middle;
 }
-.sname .mk.on { background: #222; }
-.grow-box {
+.skill-name .mark.on {
+  background: var(--red);
+  border-color: var(--red);
+}
+.grow {
   display: inline-block;
-  width: 0.75em;
-  height: 0.75em;
-  border: 1px solid #222;
+  width: 2.4mm;
+  height: 2.4mm;
+  border: 1px solid var(--line-strong);
   vertical-align: middle;
 }
 
-.skill-divider {
-  width: 1px;
-  background: #222;
-  align-self: stretch;
+.combat-row {
+  display: grid;
+  grid-template-columns: 1fr 52mm;
+  gap: 3mm;
+  height: 32mm;
 }
-
-/* ---------- Weapon ---------- */
-.wpn-body { padding: 0; }
-.wpn-table {
+.weapon-table {
+  font-family: var(--font-ui);
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.78em;
-  color: #222;
-  --wc0: #fff; --wc1: #eee; --wc2: #ddd; --wc3: #ccc;
   table-layout: fixed;
+  font-size: 6.8pt;
 }
-.wpn-table th:first-child, .wpn-table td:first-child { width: 16%; }
-.wpn-table th:nth-child(2), .wpn-table td:nth-child(2) { width: 14%; }
-.wpn-table th:nth-child(3), .wpn-table td:nth-child(3) { width: 8%; }
-.wpn-table th:nth-child(4), .wpn-table td:nth-child(4) { width: 12%; }
-.wpn-table th:nth-child(5), .wpn-table td:nth-child(5) { width: 10%; }
-.wpn-table th:nth-child(6), .wpn-table td:nth-child(6) { width: 8%; }
-.wpn-table th:nth-child(7), .wpn-table td:nth-child(7) { width: 8%; }
-.wpn-table th:nth-child(8), .wpn-table td:nth-child(8) { width: 8%; }
-.wpn-table th:nth-child(9), .wpn-table td:nth-child(9) { width: 8%; }
-.wpn-table th {
-  padding: 0.25em 0.15em;
+.weapon-table th,
+.weapon-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.9mm 0.6mm;
   text-align: center;
-  font-weight: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.wpn-table td {
-  padding: 0.15em 0.15em;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
+.weapon-table th {
+  color: var(--muted);
+  font-weight: 400;
 }
-.wc3 { background: var(--wc3); }
-.wc2 { background: var(--wc2); }
-
-/* ---------- Battle ---------- */
-.battle-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.25em;
-  padding: 0.3em 0.3em 0.5em;
+.weapon-table td:first-child,
+.weapon-table th:first-child {
+  text-align: left;
 }
-
-/* ---------- Back page ---------- */
-.story-body {
-  display: flex;
-  gap: 0.5em;
-  padding: 0.3em 0.4em;
-  align-items: flex-start;
-}
-.story-desc-col {
-  flex: 1.3;
-  display: flex;
-  flex-direction: column;
-}
-.story-grid {
-  flex: 1;
+.combat-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.2em;
-  align-content: start;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5mm;
+  padding: 2mm;
 }
 
-.warea {
-  position: relative;
-  border-bottom: 1px solid #b2b2b2;
+.back-story {
+  height: 146mm;
 }
-.warea .wlbl {
-  position: absolute;
-  top: 0; left: 0.2em;
-  font-weight: bold;
-  font-size: 0.85em;
-  line-height: 1.5em;
-  z-index: 2;
+.story-layout {
+  height: calc(100% - 7mm);
+  display: grid;
+  grid-template-columns: 72mm 1fr;
+  gap: 3mm;
+  padding: 2mm;
 }
-.warea .wlines {
-  position: absolute;
-  top: 1.5em; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
+.text-box,
+.story-card {
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 2mm;
+  overflow: hidden;
+  min-width: 0;
 }
-.warea .wline { border-bottom: 1px solid #ddd; height: 1.5em; }
-.warea .wtxt {
-  position: relative;
-  z-index: 1;
-  padding: 1.5em 0.2em 0.1em 3.2em;
-  line-height: 1.5em;
-  font-size: 0.85em;
-  word-break: break-all;
+.text-box {
+  height: 100%;
+}
+.box-title {
+  color: var(--card-accent, var(--panel-accent, var(--accent)));
+  font-weight: 700;
+  font-size: 7.2pt;
+  margin-bottom: 1.4mm;
+}
+.box-body {
+  font-family: var(--font-story);
+  color: #302d29;
+  font-size: 7.2pt;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.story-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2mm;
+  min-height: 0;
+}
+.story-card {
+  --card-accent: var(--red);
+  min-height: 31mm;
+  border-top: 2px solid var(--card-accent);
+}
+.story-card:nth-child(2) { --card-accent: var(--olive); }
+.story-card:nth-child(3) { --card-accent: var(--blue); }
+.story-card:nth-child(4) { --card-accent: var(--gold); }
+.story-card:nth-child(5) { --card-accent: var(--rust); }
+.story-card:nth-child(6) { --card-accent: var(--green); }
+.story-card:nth-child(7) { --card-accent: var(--teal); }
+.story-card:nth-child(8) { --card-accent: var(--violet); }
+.story-card .box-body {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.back-grid {
+.back-info {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 30mm;
+  gap: 3mm;
+  height: 54mm;
+}
+.tag-list {
   display: flex;
-  gap: 0.5em;
+  flex-wrap: wrap;
+  gap: 1.5mm;
+  padding: 2mm;
+  align-content: flex-start;
 }
-.back-col { display: flex; flex-direction: column; gap: 0.3em; }
-
-.bitem {
-  border: 1pt solid #222;
-  padding: 0.3em;
+.tag {
+  border: 1px solid var(--line);
+  background: #f7edd6;
+  color: #4e3b16;
+  padding: 1mm 1.5mm;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.bitem .blbl { font-size: 0.8em; margin-bottom: 0.1em; }
-.bitem .bval { font-size: 0.9em; word-break: break-all; }
-
-.mythos-box {
-  border: 1pt solid #800;
-  background: #fff8f8;
+.asset-table {
+  font-family: var(--font-ui);
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 7.2pt;
 }
-.mythos-box > .header { background: #800; }
-
-.inspiration {
-  margin-top: auto;
+.asset-table th,
+.asset-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 1.4mm 1.5mm;
+  vertical-align: top;
+  word-break: break-word;
+}
+.asset-table th {
+  width: 20mm;
+  color: var(--muted);
+  font-weight: 400;
+  text-align: left;
+}
+.mythos-value {
+  font-family: var(--font-number);
+  font-variant-numeric: tabular-nums;
   display: flex;
-  justify-content: space-between;
-  font-size: 0.7em;
-  color: #888;
-  padding: 0.2em 0;
-}
-
-/* Avatar placeholder */
-.avatar-box {
-  width: 7em;
-  min-height: 8em;
-  border: 1pt solid #222;
-  display: flex;
+  height: calc(100% - 7mm);
   align-items: center;
   justify-content: center;
-  color: #888;
-  font-size: 0.85em;
-  flex-shrink: 0;
+  color: var(--red);
+  font-size: 24pt;
+  font-weight: 700;
+}
+.back-notes {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm;
+}
+.back-notes .text-box {
+  height: calc(100% - 7mm);
+}
+
+.sheet-foot {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 6.5pt;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1mm;
 }
 </style>
 </head>
 <body>
 
-<!-- ==================== FRONT PAGE ==================== -->
-<div class="page">
-
-  <!-- Row 1: Investigator | Attributes | Luck | Avatar -->
-  <div class="section-row">
-    <!-- Investigator -->
-    <div class="paper-section" style="flex: 3.2;">
-      <div class="header"><h1><span class="title">调查员</span><span class="subtitle">Investigator</span></h1></div>
-      <div class="body" style="gap: 0.15em; justify-content: space-between;">
-        <div class="wr"><div class="lbl"><div class="lbl-t">姓名</div></div><div class="val">亚瑟·布莱克伍德</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">玩家</div></div><div class="val">Alice</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">时代</div></div><div class="val">1920s</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">职业</div></div><div class="val">私家侦探</div></div>
-        <div class="section-row" style="gap: 0.4em;">
-          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">年龄</div></div><div class="val">32</div></div>
-          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">性别</div></div><div class="val">男</div></div>
-        </div>
-        <div class="section-row" style="gap: 0.4em;">
-          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">住地</div></div><div class="val"></div></div>
-          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">故乡</div></div><div class="val">波士顿</div></div>
-        </div>
-      </div>
+<section class="page">
+  <header class="sheet-head">
+    <div>
+      <div class="sheet-title">调查员档案</div>
+      <div class="sheet-meta">Call of Cthulhu 7th Edition / 480 Point Buy</div>
     </div>
+    <div class="sheet-meta">亚瑟·布莱克伍德 / 私家侦探</div>
+  </header>
 
-    <!-- Attributes -->
-    <div class="paper-section" style="flex: 2.6;">
-      <div class="header"><h1><span class="title">属性</span><span class="subtitle">Characteristics</span></h1></div>
-      <div class="body" style="flex-direction: row; gap: 0.4em; padding: 0.3em 0.4em;">
-        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.1em;">
-          
-          <div class="wr"><div class="lbl"><div class="lbl-t">力量</div><div class="lbl-h">STR</div></div><div class="val">50</div></div>
-          
-          <div class="wr"><div class="lbl"><div class="lbl-t">体质</div><div class="lbl-h">CON</div></div><div class="val">50</div></div>
-          
-          <div class="wr"><div class="lbl"><div class="lbl-t">敏捷</div><div class="lbl-h">DEX</div></div><div class="val">60</div></div>
-          
-          <div class="wr"><div class="lbl"><div class="lbl-t">外貌</div><div class="lbl-h">APP</div></div><div class="val">55</div></div>
-          
-          <div class="wr"><div class="lbl"><div class="lbl-t">意志</div><div class="lbl-h">POW</div></div><div class="val">50</div></div>
-          
+  <div class="front-grid">
+    <section class="panel identity-panel">
+      <div class="panel-title">身份记录<span class="panel-subtitle">Identity</span></div>
+      <div class="identity-grid">
+        
+        <div class="field field-wide">
+          <span class="field-label">姓名</span>
+          <span class="field-value">亚瑟·布莱克伍德</span>
         </div>
-        <div style="width: 1px; background: #ccc;"></div>
-        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.1em;">
-          
-          <div class="wr"><div class="lbl"><div class="lbl-t">体型</div><div class="lbl-h">SIZ</div></div><div class="val">65</div></div>
-          
-          <div class="wr"><div class="lbl"><div class="lbl-t">教育</div><div class="lbl-h">EDU 知识</div></div><div class="val">70</div></div>
-          
-          <div class="wr"><div class="lbl"><div class="lbl-t">智力</div><div class="lbl-h">INT 灵感</div></div><div class="val">80</div></div>
-          
-          <div style="flex: 1;"></div>
-          <div class="wr"><div class="lbl"><div class="lbl-t">总点数</div></div><div class="val">480</div></div>
+        
+        <div class="field field-wide">
+          <span class="field-label">职业</span>
+          <span class="field-value">私家侦探</span>
         </div>
+        
+        <div class="field">
+          <span class="field-label">玩家</span>
+          <span class="field-value">Alice</span>
+        </div>
+        
+        <div class="field">
+          <span class="field-label">时代</span>
+          <span class="field-value">1920s</span>
+        </div>
+        
+        <div class="field">
+          <span class="field-label">年龄</span>
+          <span class="field-value">32</span>
+        </div>
+        
+        <div class="field">
+          <span class="field-label">性别</span>
+          <span class="field-value">男</span>
+        </div>
+        
+        <div class="field">
+          <span class="field-label">住地</span>
+          <span class="field-value"></span>
+        </div>
+        
+        <div class="field">
+          <span class="field-label">故乡</span>
+          <span class="field-value">波士顿</span>
+        </div>
+        
       </div>
-    </div>
+    </section>
 
-    <!-- Luck -->
-    <div class="paper-section" style="flex: 1.2;">
-      <div class="header"><h1><span class="title">幸运</span><span class="subtitle">Luck</span></h1></div>
-      <div class="body" style="align-items: center; justify-content: center;">
-        <div class="wr" style="width: 100%;"><div class="lbl"><div class="lbl-t">幸运</div></div><div class="val">60</div></div>
-        <div style="font-size: 0.75em; color: #666; margin-top: 0.3em;">3D6×5</div>
+    <section class="panel attr-panel">
+      <div class="panel-title">属性<span class="panel-subtitle">Characteristics</span></div>
+      <div class="attr-grid">
+        
+        <div class="stat-box">
+          <div class="stat-key">STR</div>
+          <div class="stat-label">力量</div>
+          <div class="stat-value">50</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-key">CON</div>
+          <div class="stat-label">体质</div>
+          <div class="stat-value">50</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-key">DEX</div>
+          <div class="stat-label">敏捷</div>
+          <div class="stat-value">60</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-key">APP</div>
+          <div class="stat-label">外貌</div>
+          <div class="stat-value">55</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-key">POW</div>
+          <div class="stat-label">意志</div>
+          <div class="stat-value">50</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-key">SIZ</div>
+          <div class="stat-label">体型</div>
+          <div class="stat-value">65</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-key">EDU</div>
+          <div class="stat-label">教育</div>
+          <div class="stat-value">70</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-key">INT</div>
+          <div class="stat-label">智力</div>
+          <div class="stat-value">80</div>
+        </div>
+        
       </div>
-    </div>
+    </section>
 
-    <!-- Avatar -->
-    <div class="avatar-box">形象</div>
+    <section class="panel portrait-panel">
+      <div class="panel-title">档案照片<span class="panel-subtitle">Portrait</span></div>
+      <div class="portrait">亚</div>
+    </section>
   </div>
 
-  <!-- Row 2: Derived attributes -->
-  <div class="section-row">
-    <div class="paper-section" style="flex: 1.6;">
-      <div class="header"><h1><span class="title">理智值</span><span class="subtitle">Sanity</span></h1></div>
-      <div class="body"><div class="units">
-        <div class="unit"><div class="l">当前理智</div><div class="v">50</div></div>
-        <div class="udiv"></div>
-        <div class="unit"><div class="l">起始理智</div><div class="v">50</div></div>
-        <div class="udiv"></div>
-        <div class="unit"><div class="l">最大理智</div><div class="v">50</div></div>
-      </div></div>
-    </div>
-    <div class="paper-section" style="flex: 1.2;">
-      <div class="header"><h1><span class="title">生命值</span><span class="subtitle">HP</span></h1></div>
-      <div class="body"><div class="units">
-        <div class="unit"><div class="l">当前生命</div><div class="v">11</div></div>
-        <div class="udiv"></div>
-        <div class="unit"><div class="l">最大生命</div><div class="v">11</div></div>
-      </div></div>
-    </div>
-    <div class="paper-section" style="flex: 1.2;">
-      <div class="header"><h1><span class="title">魔法值</span><span class="subtitle">MP</span></h1></div>
-      <div class="body"><div class="units">
-        <div class="unit"><div class="l">当前魔法</div><div class="v">10</div></div>
-        <div class="udiv"></div>
-        <div class="unit"><div class="l">最大魔法</div><div class="v">10</div></div>
-      </div></div>
-    </div>
-    <div class="paper-section" style="flex: 1.3;">
-      <div class="header"><h1><span class="title">身体状态</span></h1></div>
-      <div class="body" style="padding: 0.1em;"><div class="status-grid">
-        <div class="status-item"><div class="cb"></div><span>重伤</span></div>
-        <div class="status-item"><div class="cb"></div><span>昏迷</span></div>
-        <div class="status-item"><div class="cb"></div><span>濒死</span></div>
-        <div class="status-item"><div class="cb"></div><span>死亡</span></div>
-      </div></div>
-    </div>
-    <div class="paper-section" style="flex: 1.3;">
-      <div class="header"><h1><span class="title">精神状态</span></h1></div>
-      <div class="body" style="padding: 0.1em;"><div class="status-grid">
-        <div class="status-item"><div class="cb"></div><span>临时疯狂</span></div>
-        <div class="status-item"><div class="cb"></div><span>永久疯狂</span></div>
-        <div class="status-item" style="grid-column: span 2;"><div class="cb"></div><span>不定期疯狂</span></div>
-      </div></div>
-    </div>
+  <div class="status-row">
+    <section class="panel vitals-panel">
+      <div class="panel-title">状态与衍生值<span class="panel-subtitle">Vitals</span></div>
+      <div class="metrics-grid">
+        
+        <div class="metric">
+          <div class="metric-label">理智 / SAN</div>
+          <div class="metric-value">50</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">生命 / HP</div>
+          <div class="metric-value">11</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">魔法 / MP</div>
+          <div class="metric-value">10</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">幸运 / Luck</div>
+          <div class="metric-value">60</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">闪避 / Dodge</div>
+          <div class="metric-value">30</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">移动 / MOV</div>
+          <div class="metric-value">7</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">伤害加值 / DB</div>
+          <div class="metric-value">0</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">体格 / Build</div>
+          <div class="metric-value">0</div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <section class="panel body-panel">
+      <div class="panel-title">身体状态</div>
+      <div class="chips">
+        
+        <span class="chip">重伤</span>
+        
+        <span class="chip">昏迷</span>
+        
+        <span class="chip">濒死</span>
+        
+        <span class="chip">死亡</span>
+        
+      </div>
+    </section>
+    
+    <section class="panel mind-panel">
+      <div class="panel-title">精神状态</div>
+      <div class="chips">
+        
+        <span class="chip">临时疯狂</span>
+        
+        <span class="chip">不定期疯狂</span>
+        
+        <span class="chip">永久疯狂</span>
+        
+      </div>
+    </section>
+    
   </div>
 
-  <!-- Skill Section -->
-  <div class="paper-section skill-section">
-    <div class="header">
-      <div class="skill-hl">
-        <div class="pbox">职业点数 <b>140</b> / 220</div>
-        <div class="pbox">兴趣点数 <b>110</b> / 160</div>
-      </div>
-      <h1><span class="title">技能表</span><span class="subtitle">Skill</span></h1>
-      <div class="skill-hr">
-        <span>技能成功率上限</span>
-        <div class="lbox">本职 80</div>
-        <div class="lbox">其它 60</div>
+  <section class="panel skill-panel skills-panel">
+    <div class="panel-title">
+      技能
+      <span class="panel-subtitle">Skills</span>
+      <div class="point-summary">
+        <span class="point-pill">职业 165 / 260</span>
+        <span class="point-pill">兴趣 110 / 160</span>
+        <span class="point-pill">上限 80 / 60</span>
       </div>
     </div>
-    <div class="body skill-body">
-
-      <!-- Left column -->
-      <table class="skt">
+    <div class="skill-body">
+      
+      <table class="skill-table">
         <thead>
           <tr>
-            <th class="td3"></th>
-            <th class="td3" style="text-align:left;">技能</th>
-            <th class="td2">基础%</th>
-            <th class="td3">职业%</th>
-            <th class="td2">兴趣%</th>
-            <th class="td3">成长%</th>
-            <th class="td2">成功率%</th>
+            <th style="width:7.5mm;"></th>
+            <th style="width:auto;text-align:left;">技能</th>
+            <th style="width:10mm;">基础</th>
+            <th style="width:10mm;">职业</th>
+            <th style="width:10mm;">兴趣</th>
+            <th style="width:9mm;">成长</th>
+            <th style="width:11mm;">成功</th>
           </tr>
         </thead>
         <tbody>
-        
           
           
           <tr>
             
-            <td class="gname" rowspan="2">特殊</td>
+            <td class="group-cell tone-red" rowspan="2">特殊</td>
             
-            <td class="sname td0">
-              <span class="mk"></span>信用评级
-            </td>
-            <td class="td1">0</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark on"></span>信用评级</td>
+            <td>0</td>
+            <td>25</td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>25</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>克苏鲁神话
-            </td>
-            <td class="td0">0</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>克苏鲁神话</td>
+            <td>0</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
           
           
           <tr>
             
-            <td class="gname" rowspan="7">探索</td>
+            <td class="group-cell tone-blue" rowspan="7">探索</td>
             
-            <td class="sname td0">
-              <span class="mk on"></span>侦查
-            </td>
-            <td class="td1">25</td>
-            <td class="td0">45</td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1">70</td>
+            <td class="skill-name"><span class="mark on"></span>侦查</td>
+            <td>25</td>
+            <td>45</td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>70</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>聆听
-            </td>
-            <td class="td0">20</td>
-            <td class="td1"></td>
-            <td class="td0">35</td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">55</td>
+            <td class="skill-name"><span class="mark"></span>聆听</td>
+            <td>20</td>
+            <td></td>
+            <td>35</td>
+            <td><span class="grow"></span></td>
+            <td>55</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk on"></span>图书馆使用
-            </td>
-            <td class="td1">20</td>
-            <td class="td0">30</td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1">50</td>
+            <td class="skill-name"><span class="mark on"></span>图书馆使用</td>
+            <td>20</td>
+            <td>30</td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>50</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk on"></span>计算机使用Ω
-            </td>
-            <td class="td0">5</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">5</td>
+            <td class="skill-name"><span class="mark on"></span>计算机使用Ω</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>5</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>潜行
-            </td>
-            <td class="td1">20</td>
-            <td class="td0"></td>
-            <td class="td1">30</td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1">50</td>
+            <td class="skill-name"><span class="mark"></span>潜行</td>
+            <td>20</td>
+            <td></td>
+            <td>30</td>
+            <td><span class="grow"></span></td>
+            <td>50</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>追踪
-            </td>
-            <td class="td0">10</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>追踪</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>导航
-            </td>
-            <td class="td1">10</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>导航</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
           
           
           <tr>
             
-            <td class="gname" rowspan="7">社交</td>
+            <td class="group-cell tone-olive" rowspan="7">社交</td>
             
-            <td class="sname td1">
-              <span class="mk on"></span>话术
-            </td>
-            <td class="td0">5</td>
-            <td class="td1">20</td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">25</td>
+            <td class="skill-name"><span class="mark on"></span>话术</td>
+            <td>5</td>
+            <td>20</td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>25</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk on"></span>说服
-            </td>
-            <td class="td1">10</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1">10</td>
+            <td class="skill-name"><span class="mark on"></span>说服</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>10</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk on"></span>取悦
-            </td>
-            <td class="td0">15</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">15</td>
+            <td class="skill-name"><span class="mark on"></span>取悦</td>
+            <td>15</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>15</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk on"></span>恐吓
-            </td>
-            <td class="td1">15</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1">15</td>
+            <td class="skill-name"><span class="mark on"></span>恐吓</td>
+            <td>15</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>15</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk on"></span>心理学
-            </td>
-            <td class="td0">10</td>
-            <td class="td1">25</td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">35</td>
+            <td class="skill-name"><span class="mark on"></span>心理学</td>
+            <td>10</td>
+            <td>25</td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>35</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>母语(汉语)
-            </td>
-            <td class="td1">0</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>母语(汉语)</td>
+            <td>70</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>外语(英语)
-            </td>
-            <td class="td0">1</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>外语(英语)</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
           
           
           <tr>
             
-            <td class="gname" rowspan="6">战斗</td>
+            <td class="group-cell tone-rust" rowspan="6">战斗</td>
             
-            <td class="sname td0">
-              <span class="mk"></span>闪避
-            </td>
-            <td class="td1">30</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>闪避</td>
+            <td>30</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk on"></span>格斗(斗殴)
-            </td>
-            <td class="td0">25</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">25</td>
+            <td class="skill-name"><span class="mark on"></span>格斗(斗殴)</td>
+            <td>25</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>25</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk on"></span>格斗(刀剑)
-            </td>
-            <td class="td1">20</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1">20</td>
+            <td class="skill-name"><span class="mark on"></span>格斗(刀剑)</td>
+            <td>20</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>20</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk on"></span>射击(手枪)
-            </td>
-            <td class="td0">20</td>
-            <td class="td1"></td>
-            <td class="td0">20</td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">40</td>
+            <td class="skill-name"><span class="mark on"></span>射击(手枪)</td>
+            <td>20</td>
+            <td></td>
+            <td>20</td>
+            <td><span class="grow"></span></td>
+            <td>40</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk on"></span>射击(步/霰)
-            </td>
-            <td class="td1">25</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1">25</td>
+            <td class="skill-name"><span class="mark on"></span>射击(步/霰)</td>
+            <td>25</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>25</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>投掷
-            </td>
-            <td class="td0">20</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>投掷</td>
+            <td>20</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
           
           
           <tr>
             
-            <td class="gname" rowspan="3">医疗</td>
+            <td class="group-cell tone-teal" rowspan="3">医疗</td>
             
-            <td class="sname td0">
-              <span class="mk"></span>急救
-            </td>
-            <td class="td1">30</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>急救</td>
+            <td>30</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>医学
-            </td>
-            <td class="td0">1</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>医学</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>精神分析
-            </td>
-            <td class="td1">1</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>精神分析</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
           
           
           <tr>
             
-            <td class="gname" rowspan="3">运动</td>
+            <td class="group-cell tone-green" rowspan="3">运动</td>
             
-            <td class="sname td1">
-              <span class="mk"></span>攀爬
-            </td>
-            <td class="td0">20</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>攀爬</td>
+            <td>20</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>跳跃
-            </td>
-            <td class="td1">20</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>跳跃</td>
+            <td>20</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>游泳
-            </td>
-            <td class="td0">20</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>游泳</td>
+            <td>20</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
+          
         </tbody>
       </table>
-
-      <div class="skill-divider"></div>
-
-      <!-- Right column -->
-      <table class="skt">
+      
+      <table class="skill-table">
         <thead>
           <tr>
-            <th class="td3"></th>
-            <th class="td3" style="text-align:left;">技能</th>
-            <th class="td2">基础%</th>
-            <th class="td3">职业%</th>
-            <th class="td2">兴趣%</th>
-            <th class="td3">成长%</th>
-            <th class="td2">成功率%</th>
+            <th style="width:7.5mm;"></th>
+            <th style="width:auto;text-align:left;">技能</th>
+            <th style="width:10mm;">基础</th>
+            <th style="width:10mm;">职业</th>
+            <th style="width:10mm;">兴趣</th>
+            <th style="width:9mm;">成长</th>
+            <th style="width:11mm;">成功</th>
           </tr>
         </thead>
         <tbody>
-        
+          
           
           <tr>
             
-            <td class="gname" rowspan="11">知识</td>
+            <td class="group-cell tone-indigo" rowspan="11">知识</td>
             
-            <td class="sname td0">
-              <span class="mk"></span>博物学
-            </td>
-            <td class="td1">10</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>博物学</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>神秘学
-            </td>
-            <td class="td0">5</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>神秘学</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>考古学
-            </td>
-            <td class="td1">1</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>考古学</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>人类学
-            </td>
-            <td class="td0">1</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>人类学</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>估价
-            </td>
-            <td class="td1">5</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>估价</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>会计
-            </td>
-            <td class="td0">5</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>会计</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk on"></span>法律
-            </td>
-            <td class="td1">5</td>
-            <td class="td0">20</td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1">25</td>
+            <td class="skill-name"><span class="mark on"></span>法律</td>
+            <td>5</td>
+            <td>20</td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>25</td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>历史
-            </td>
-            <td class="td0">5</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>历史</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>电子学Ω
-            </td>
-            <td class="td1">1</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>电子学Ω</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>科学(数学)
-            </td>
-            <td class="td0">10</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>科学(数学)</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>科学(物理)
-            </td>
-            <td class="td1">1</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>科学(物理)</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
+          
           
           <tr>
             
-            <td class="gname" rowspan="9">技术</td>
+            <td class="group-cell tone-gold" rowspan="9">技术</td>
             
-            <td class="sname td1">
-              <span class="mk on"></span>乔装
-            </td>
-            <td class="td0">5</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">5</td>
+            <td class="skill-name"><span class="mark on"></span>乔装</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td>5</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>妙手
-            </td>
-            <td class="td1">10</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>妙手</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk on"></span>锁匠
-            </td>
-            <td class="td0">1</td>
-            <td class="td1"></td>
-            <td class="td0">25</td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0">26</td>
+            <td class="skill-name"><span class="mark on"></span>锁匠</td>
+            <td>1</td>
+            <td></td>
+            <td>25</td>
+            <td><span class="grow"></span></td>
+            <td>26</td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>机械维修
-            </td>
-            <td class="td1">10</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>机械维修</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>电气维修
-            </td>
-            <td class="td0">10</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>电气维修</td>
+            <td>10</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>驯兽
-            </td>
-            <td class="td1">5</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>驯兽</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>技艺(表演)
-            </td>
-            <td class="td0">5</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>技艺(表演)</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>技艺(音乐)
-            </td>
-            <td class="td1">5</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>技艺(音乐)</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>生存(森林)
-            </td>
-            <td class="td0">5</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>生存(森林)</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
+          
           
           <tr>
             
-            <td class="gname" rowspan="4">操纵</td>
+            <td class="group-cell tone-slate" rowspan="4">操纵</td>
             
-            <td class="sname td0">
-              <span class="mk"></span>汽车驾驶
-            </td>
-            <td class="td1">20</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>汽车驾驶</td>
+            <td>20</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>骑术
-            </td>
-            <td class="td0">5</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>骑术</td>
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td0">
-              <span class="mk"></span>驾驶(船)
-            </td>
-            <td class="td1">1</td>
-            <td class="td0"></td>
-            <td class="td1"></td>
-            <td class="td0"><span class="grow-box"></span></td>
-            <td class="td1"></td>
+            <td class="skill-name"><span class="mark"></span>驾驶(船)</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
           <tr>
             
-            <td class="sname td1">
-              <span class="mk"></span>操作重型机械
-            </td>
-            <td class="td0">1</td>
-            <td class="td1"></td>
-            <td class="td0"></td>
-            <td class="td1"><span class="grow-box"></span></td>
-            <td class="td0"></td>
+            <td class="skill-name"><span class="mark"></span>操作重型机械</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td><span class="grow"></span></td>
+            <td></td>
           </tr>
           
-        
+          
         </tbody>
       </table>
+      
     </div>
+  </section>
+
+  <div class="combat-row">
+    <section class="panel weapons-panel">
+      <div class="panel-title">武器与装备动作<span class="panel-subtitle">Weapons</span></div>
+      <table class="weapon-table">
+        <thead>
+          <tr>
+            <th style="width:23%;">名称</th>
+            <th style="width:20%;">技能</th>
+            <th style="width:8%;">%</th>
+            <th style="width:16%;">伤害</th>
+            <th style="width:10%;">射程</th>
+            <th style="width:8%;">贯穿</th>
+            <th style="width:7%;">次数</th>
+            <th style="width:8%;">故障</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>手枪</td>
+            <td>射击(手枪)</td>
+            <td>40</td>
+            <td>1D10</td>
+            <td>15m</td>
+            <td></td>
+            <td>1</td>
+            <td>100</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </section>
+    <section class="panel combat-panel">
+      <div class="panel-title">战斗摘要<span class="panel-subtitle">Combat</span></div>
+      <div class="combat-grid">
+        <div class="metric"><div class="metric-label">DB</div><div class="metric-value">0</div></div>
+        <div class="metric"><div class="metric-label">体格</div><div class="metric-value">0</div></div>
+        <div class="metric"><div class="metric-label">MOV</div><div class="metric-value">7</div></div>
+        <div class="metric"><div class="metric-label">闪避</div><div class="metric-value">30</div></div>
+      </div>
+    </section>
   </div>
 
-  <!-- Row: Weapon + Battle -->
-  <div class="section-row">
-    <div class="paper-section" style="flex: 3;">
-      <div class="header"><h1><span class="title">武器</span><span class="subtitle">Weapons</span></h1></div>
-      <div class="body wpn-body">
-        <table class="wpn-table">
-          <thead>
-            <tr>
-              <th class="wc3">武器名称</th>
-              <th class="wc2">使用技能</th>
-              <th class="wc3">%</th>
-              <th class="wc2">伤害</th>
-              <th class="wc3">射程</th>
-              <th class="wc2">贯穿</th>
-              <th class="wc3">次数</th>
-              <th class="wc2">装弹量</th>
-              <th class="wc3">故障</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-            
-            <tr>
-              <td>手枪</td>
-              <td>射击(手枪)</td>
-              <td>40</td>
-              <td>1D10</td>
-              <td>15m</td>
-              <td></td>
-              <td>1</td>
-              <td>8</td>
-              <td>100</td>
-            </tr>
-            
-            
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            
-            
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            
-            
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            
-            
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            
-          </tbody>
-        </table>
+  <footer class="sheet-foot">
+    <span>正面 / 生成式 HTML 角色档案卡</span>
+    <span>亚瑟·布莱克伍德 / 私家侦探</span>
+  </footer>
+</section>
+
+<section class="page">
+  <header class="sheet-head">
+    <div>
+      <div class="sheet-title">背景档案</div>
+      <div class="sheet-meta">Personal History / Connections / Assets</div>
+    </div>
+    <div class="sheet-meta">亚瑟·布莱克伍德 / 私家侦探</div>
+  </header>
+
+  <section class="panel back-story story-panel">
+    <div class="panel-title">个人介绍与背景条目<span class="panel-subtitle">Story</span></div>
+    <div class="story-layout">
+      <div class="text-box">
+        <div class="box-title">个人介绍</div>
+        <div class="box-body">亚瑟曾是波士顿警局的明日之星，直到他执意调查一桩'已结案'的权贵谋杀案。如今他是这座城市阴影中的猎犬，专门嗅出那些被人刻意掩埋的真相。</div>
+      </div>
+      <div class="story-cards">
+        
+        <article class="story-card">
+          <div class="box-title">形象描述</div>
+          <div class="box-body">总是穿着皱巴巴的灰色风衣，帽檐压得很低，右手食指有长期吸烟留下的焦黄痕迹。</div>
+        </article>
+        
+        <article class="story-card">
+          <div class="box-title">思想与信念</div>
+          <div class="box-body">真相值得一切代价，即使代价是自己。</div>
+        </article>
+        
+        <article class="story-card">
+          <div class="box-title">重要之人</div>
+          <div class="box-body">已故的搭档马库斯·韦恩，三年前在一场所谓的'意外'中丧生。</div>
+        </article>
+        
+        <article class="story-card">
+          <div class="box-title">意义非凡之地</div>
+          <div class="box-body">老城区的'黑猫'地下酒吧，他和马库斯曾经常去的地方。</div>
+        </article>
+        
+        <article class="story-card">
+          <div class="box-title">宝贵之物</div>
+          <div class="box-body">马库斯留下的银色怀表，背面刻着'给A.M.W.'。</div>
+        </article>
+        
+        <article class="story-card">
+          <div class="box-title">特质</div>
+          <div class="box-body">强迫症般地整理线索，所有文件必须按字母顺序排列。</div>
+        </article>
+        
+        <article class="story-card">
+          <div class="box-title">伤口与疤痕</div>
+          <div class="box-body">左肩枪伤，来自去年的码头枪战。</div>
+        </article>
+        
+        <article class="story-card">
+          <div class="box-title">精神症状</div>
+          <div class="box-body"> </div>
+        </article>
+        
       </div>
     </div>
-    <div class="paper-section" style="flex: 1;">
-      <div class="header"><h1><span class="title">战斗</span><span class="subtitle">Combat</span></h1></div>
-      <div class="body battle-body">
-        <div class="wr"><div class="lbl"><div class="lbl-t">伤害加值</div><div class="lbl-h">DB</div></div><div class="val">0</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">体格</div></div><div class="val">0</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">护甲</div></div><div class="val"></div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">移动力</div></div><div class="val">7</div></div>
+  </section>
+
+  <div class="back-info">
+    <section class="panel items-panel">
+      <div class="panel-title">随身物品<span class="panel-subtitle">Items</span></div>
+      <div class="tag-list">
+        
+        
+        <span class="tag">手电筒</span>
+        
+        <span class="tag">笔记本</span>
+        
+        <span class="tag">香烟</span>
+        
+        <span class="tag">怀表</span>
+        
+        <span class="tag">照相机</span>
+        
+        
       </div>
-    </div>
+    </section>
+
+    <section class="panel assets-panel">
+      <div class="panel-title">资产<span class="panel-subtitle">Assets</span></div>
+      <table class="asset-table">
+        <tbody>
+          
+          <tr>
+            <th>消费水平</th>
+            <td>贫困</td>
+          </tr>
+          
+          <tr>
+            <th>现金</th>
+            <td>$25</td>
+          </tr>
+          
+          <tr>
+            <th>总资产</th>
+            <td>$1500</td>
+          </tr>
+          
+          <tr>
+            <th>资产详情</th>
+            <td>一间狭小的公寓、一辆旧汽车</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel mythos-panel">
+      <div class="panel-title">神话<span class="panel-subtitle">Mythos</span></div>
+      <div class="mythos-value">0</div>
+    </section>
   </div>
 
-  <div class="inspiration">
-    <span>COC 7th Edition &middot; 480购点制</span>
-    <span>亚瑟·布莱克伍德 &middot; 私家侦探</span>
-  </div>
-</div>
-
-<!-- ==================== BACK PAGE ==================== -->
-<div class="page">
-
-  <!-- Background Story -->
-  <div class="paper-section">
-    <div class="header"><h1><span class="title">背景故事</span><span class="subtitle">Story</span></h1></div>
-    <div class="body story-body">
-      <!-- Left: Personal Description (large block) -->
-      <div class="story-desc-col">
-        <div class="warea" style="flex: 1;">
-          <div class="wlbl">个人介绍</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 24.0em;">亚瑟曾是波士顿警局的明日之星，直到他执意调查一桩'已结案'的权贵谋杀案。如今他是这座城市阴影中的猎犬，专门嗅出那些被人刻意掩埋的真相。</div>
-        </div>
+  <div class="back-notes">
+    <section class="panel contacts-panel">
+      <div class="panel-title">好友与联系人<span class="panel-subtitle">Contacts</span></div>
+      <div class="text-box">
+        <div class="box-body">警局的旧同事汤姆、线人小混混杰米</div>
       </div>
-      <!-- Right: 8 story fields in 2 columns -->
-      <div class="story-grid">
-        
-        <div class="warea">
-          <div class="wlbl">形象描述</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 4.5em;">总是穿着皱巴巴的灰色风衣，帽檐压得很低，右手食指有长期吸烟留下的焦黄痕迹。</div>
-        </div>
-        
-        <div class="warea">
-          <div class="wlbl">思想与信念</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 4.5em;">真相值得一切代价，即使代价是自己。</div>
-        </div>
-        
-        <div class="warea">
-          <div class="wlbl">重要之人</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 4.5em;">已故的搭档马库斯·韦恩，三年前在一场所谓的'意外'中丧生。</div>
-        </div>
-        
-        <div class="warea">
-          <div class="wlbl">意义非凡之地</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 4.5em;">老城区的'黑猫'地下酒吧，他和马库斯曾经常去的地方。</div>
-        </div>
-        
-        <div class="warea">
-          <div class="wlbl">宝贵之物</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 4.5em;">马库斯留下的银色怀表，背面刻着'给A.M.W.'。</div>
-        </div>
-        
-        <div class="warea">
-          <div class="wlbl">特质</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 4.5em;">强迫症般地整理线索，所有文件必须按字母顺序排列。</div>
-        </div>
-        
-        <div class="warea">
-          <div class="wlbl">伤口与疤痕</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 4.5em;">左肩枪伤，来自去年的码头枪战。</div>
-        </div>
-        
-        <div class="warea">
-          <div class="wlbl">精神症状</div>
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 4.5em;"></div>
-        </div>
-        
+    </section>
+    <section class="panel experience-panel">
+      <div class="panel-title">经历模组<span class="panel-subtitle">Experience</span></div>
+      <div class="text-box">
+        <div class="box-body">《敦威治的恐怖》</div>
       </div>
-    </div>
+    </section>
   </div>
 
-  <!-- Items / Assets / Mythos -->
-  <div class="section-row">
-    <div class="back-grid" style="flex: 2; flex-direction: column;">
-      <div class="section-row" style="flex: 1;">
-        <div class="paper-section" style="flex: 1;">
-          <div class="header"><h1><span class="title">随身物品</span><span class="subtitle">Items</span></h1></div>
-          <div class="body" style="padding: 0.3em;">
-            <div class="bitem" style="border: none; padding: 0;">
-              <div class="bval">手电筒、笔记本、香烟、怀表、照相机</div>
-            </div>
-          </div>
-        </div>
-        <div class="paper-section" style="flex: 1;">
-          <div class="header"><h1><span class="title">资产</span><span class="subtitle">Assets</span></h1></div>
-          <div class="body" style="padding: 0.3em; gap: 0.2em;">
-            <div class="wr"><div class="lbl"><div class="lbl-t">消费水平</div></div><div class="val">贫困</div></div>
-            <div class="wr"><div class="lbl"><div class="lbl-t">现金</div></div><div class="val">$25</div></div>
-            <div class="wr"><div class="lbl"><div class="lbl-t">资产</div></div><div class="val">$1500</div></div>
-            <div class="wr"><div class="lbl"><div class="lbl-t">资产详情</div></div><div class="val"><built-in method items of dict object at 0x000001E174052080></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="paper-section mythos-box" style="flex: 1;">
-      <div class="header"><h1><span class="title">克苏鲁神话</span><span class="subtitle">Mythos</span></h1></div>
-      <div class="body" style="padding: 0.4em; align-items: center; justify-content: center;">
-        <div style="font-size: 1.8em; font-weight: bold; color: #800;">0</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Friends / Experience -->
-  <div class="section-row" style="flex: 1;">
-    <div class="paper-section" style="flex: 2;">
-      <div class="header"><h1><span class="title">好友与联系人</span><span class="subtitle">Friends</span></h1></div>
-      <div class="body" style="padding: 0.4em;">
-        <div class="warea">
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 15em;">警局的旧同事汤姆、线人小混混杰米</div>
-        </div>
-      </div>
-    </div>
-    <div class="paper-section" style="flex: 1;">
-      <div class="header"><h1><span class="title">经历模组</span><span class="subtitle">Experience</span></h1></div>
-      <div class="body" style="padding: 0.4em;">
-        <div class="warea">
-          <div class="wlines">
-            <div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div><div class="wline"></div>
-          </div>
-          <div class="wtxt" style="min-height: 15em;">《敦威治的恐怖》</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="inspiration">
-    <span>COC 7th Edition &middot; 480购点制</span>
-    <span>背面 &middot; 亚瑟·布莱克伍德 &middot; 私家侦探</span>
-  </div>
-</div>
+  <footer class="sheet-foot">
+    <span>背面 / 阅读式背景档案</span>
+    <span>亚瑟·布莱克伍德 / 私家侦探</span>
+  </footer>
+</section>
 
 </body>
 </html>
