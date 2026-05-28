@@ -1,6 +1,5 @@
 """HTML renderer for character cards."""
 
-import math
 from pathlib import Path
 
 from jinja2 import Template
@@ -134,7 +133,7 @@ def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
 def _enrich_weapons(weapons: list[dict], skill_totals: dict[str, int]) -> list[dict]:
     """Add computed success_rate to each weapon based on its skill."""
     result = []
-    for w in weapons:
+    for w in weapons[:5]:
         wc = dict(w)
         skill_name = wc.get("skill", "")
         wc["success_rate"] = skill_totals.get(skill_name, "")
@@ -156,6 +155,14 @@ STORY_LEFT_ITEMS = [
     ("伤口与疤痕", "scar"),
     ("精神症状", "madness"),
 ]
+
+
+def _text(value: object, fallback: str = "") -> str:
+    """Return display-safe text without changing the source data contract."""
+    if value is None:
+        return fallback
+    value = str(value).strip()
+    return value if value else fallback
 
 
 def render(data: dict) -> str:
@@ -193,19 +200,64 @@ def render(data: dict) -> str:
     skill_table_left, skill_table_right = build_skill_tables(data)
     weapons = _enrich_weapons(data.get("weapons", []) or [], skill_totals)
 
-    # Background story items (fixed 3 lines each for consistent layout)
     background = data.get("background", {}) or {}
+    assets = data.get("assets", {}) or {}
+
+    identity_fields = [
+        {"label": "姓名", "value": _text(basic.get("name"))},
+        {"label": "职业", "value": _text(basic.get("job"))},
+        {"label": "玩家", "value": _text(basic.get("player"))},
+        {"label": "时代", "value": _text(basic.get("era"), "1920s")},
+        {"label": "年龄", "value": _text(basic.get("age"))},
+        {"label": "性别", "value": _text(basic.get("gender"))},
+        {"label": "住地", "value": _text(basic.get("location"))},
+        {"label": "故乡", "value": _text(basic.get("hometown"))},
+    ]
+
+    attr_panels = [
+        {"key": key.upper(), "label": ATTR_NAMES[key], "value": attrs.get(key, 0)}
+        for key in ATTR_KEYS
+    ]
+
+    derived_panels = [
+        {"label": "理智", "sub": "SAN", "value": derived["san"]},
+        {"label": "生命", "sub": "HP", "value": derived["hp"]},
+        {"label": "魔法", "sub": "MP", "value": derived["mp"]},
+        {"label": "幸运", "sub": "Luck", "value": luck},
+        {"label": "闪避", "sub": "Dodge", "value": derived["dodge"]},
+        {"label": "移动", "sub": "MOV", "value": derived["mov"]},
+        {"label": "伤害加值", "sub": "DB", "value": derived["db"]},
+        {"label": "体格", "sub": "Build", "value": derived["build"]},
+    ]
+
+    status_groups = [
+        {"title": "身体状态", "items": ["重伤", "昏迷", "濒死", "死亡"]},
+        {"title": "精神状态", "items": ["临时疯狂", "不定期疯狂", "永久疯狂"]},
+    ]
+
     story_left = []
     for label, key in STORY_LEFT_ITEMS:
         val = background.get(key, "")
-        story_left.append({"label": label, "value": val, "lines": 3})
+        story_left.append({"label": label, "value": val})
     
     desc = background.get("description", "")
-    desc_lines = 16
+
+    asset_rows = [
+        {"label": "消费水平", "value": assets.get("consumption", "")},
+        {"label": "现金", "value": assets.get("cash", "")},
+        {"label": "总资产", "value": assets.get("assets", "")},
+        {"label": "资产详情", "value": assets.get("items", "")},
+    ]
+
+    item_tags = [_text(item) for item in (data.get("items", []) or []) if _text(item)]
 
     context = {
         "basic": basic,
         "attrs": attrs,
+        "identity_fields": identity_fields,
+        "attr_panels": attr_panels,
+        "derived_panels": derived_panels,
+        "status_groups": status_groups,
         "attr_names": ATTR_NAMES,
         "attr_keys": ATTR_KEYS,
         "luck": luck,
@@ -224,15 +276,16 @@ def render(data: dict) -> str:
         "skill_table_left": skill_table_left,
         "skill_table_right": skill_table_right,
         "background": background,
-        "assets": data.get("assets", {}) or {},
+        "assets": assets,
+        "asset_rows": asset_rows,
         "weapons": weapons,
         "items": data.get("items", []) or [],
+        "item_tags": item_tags,
         "mythos": data.get("mythos", 0),
         "friends": data.get("friends", "") or "",
         "experienced_modules": data.get("experienced_modules", "") or "",
         "story_left": story_left,
         "desc": desc,
-        "desc_lines": desc_lines,
     }
 
     template_path = Path(__file__).parent / "data" / "templates" / "card.html"

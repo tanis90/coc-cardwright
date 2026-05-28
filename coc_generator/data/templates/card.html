@@ -2,717 +2,762 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>{{ basic.name }} - COC 7th 角色卡</title>
+<title>{{ basic.name }} - COC 7th 角色档案卡</title>
 <style>
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #22211f;
+  --muted: #706b62;
+  --line: #d8d2c8;
+  --line-strong: #797065;
+  --paper: #fbfaf6;
+  --panel: #fffefa;
+  --wash: #f1ede5;
+  --accent: #8a2f2b;
+  --accent-soft: #f3e6e2;
+}
 
 body {
-  font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 8.5pt;
-  line-height: 1.3;
-  color: #222;
-  background: #e8e8e8;
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", Arial, sans-serif;
+  font-size: 8pt;
+  line-height: 1.35;
+  color: var(--ink);
+  background: #d9d9d6;
 }
 
 .page {
   width: 210mm;
   height: 297mm;
-  padding: 6mm 8mm;
+  padding: 7mm 8mm;
   margin: 0 auto 8mm;
-  background: #fff;
-  position: relative;
+  background: var(--paper);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.4em;
+  gap: 3mm;
+  position: relative;
 }
 
 @media print {
+  :root {
+    --ink: #000;
+    --muted: #444;
+    --line: #b0b0b0;
+    --line-strong: #222;
+    --paper: #fff;
+    --panel: #fff;
+    --wash: #f5f5f5;
+    --accent: #111;
+    --accent-soft: #ededed;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   body { background: #fff; }
-  .page { margin: 0; box-shadow: none; page-break-after: always; }
-  .page:last-child { page-break-after: auto; }
+  .page {
+    margin: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+  .page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+  .portrait {
+    background:
+      linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.12) 50%, transparent 50.6%),
+      linear-gradient(45deg, transparent 49.4%, rgba(0,0,0,0.12) 50%, transparent 50.6%),
+      #fff;
+  }
+  .skill-table tbody tr:nth-child(even) td {
+    background: #f7f7f7;
+  }
 }
 
-/* ---------- PaperSection ---------- */
-.paper-section {
+.sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1.4pt solid var(--ink);
+  padding-bottom: 2mm;
+  min-height: 12mm;
+}
+.sheet-title {
+  font-family: "SimSun", "Songti SC", serif;
+  font-size: 19pt;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.sheet-meta {
+  color: var(--muted);
+  font-size: 7pt;
+  text-align: right;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top-color: var(--line-strong);
+  min-width: 0;
+  overflow: hidden;
+}
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 1.6mm;
+  min-height: 7mm;
+  padding: 1.2mm 2mm 0.9mm;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.panel-title::before {
+  content: "";
+  width: 1.2mm;
+  height: 4mm;
+  background: var(--accent);
+  border-radius: 1px;
+  flex: 0 0 auto;
+}
+.panel-subtitle {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 6.5pt;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.front-grid {
+  display: grid;
+  grid-template-columns: 78mm 66mm 1fr;
+  gap: 3mm;
+  height: 48mm;
+}
+.identity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9mm;
+  padding: 1.4mm;
+}
+.field {
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 0.7mm 1.2mm;
+  min-height: 6.5mm;
+}
+.field-label {
+  display: block;
+  color: var(--muted);
+  font-size: 6.2pt;
+  line-height: 1;
+  margin-bottom: 0.5mm;
+}
+.field-value {
+  display: block;
+  font-size: 8pt;
+  line-height: 1.2;
+  min-height: 3.4mm;
+  word-break: break-word;
+}
+.field-wide { grid-column: span 3; }
+
+.attr-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4mm;
+  padding: 2mm;
+}
+.stat-box,
+.metric {
+  border: 1px solid var(--line);
+  background: #fff;
+  min-width: 0;
+  text-align: center;
+}
+.stat-box {
+  min-height: 15mm;
+  padding: 1.3mm 1mm;
+}
+.stat-key {
+  color: var(--accent);
+  font-size: 6.3pt;
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-label {
+  color: var(--muted);
+  font-size: 6pt;
+  margin-top: 0.7mm;
+}
+.stat-value {
+  font-size: 14pt;
+  font-weight: 700;
+  line-height: 1.05;
+  margin-top: 0.8mm;
+}
+
+.portrait-panel {
   display: flex;
   flex-direction: column;
-  outline: 1pt solid #222;
 }
-.paper-section > .header {
+.portrait {
+  margin: 2mm;
+  flex: 1;
+  border: 1px solid var(--line-strong);
+  background:
+    linear-gradient(135deg, transparent 49.4%, rgba(34,33,31,0.08) 50%, transparent 50.6%),
+    linear-gradient(45deg, transparent 49.4%, rgba(34,33,31,0.08) 50%, transparent 50.6%),
+    #fffefa;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #222;
-  color: #fff;
-  padding: 0.35em 0.6em;
-  line-height: 1;
-}
-.paper-section > .header h1 {
-  font-size: 1em;
-  font-weight: normal;
-  display: flex;
-  gap: 0.3em;
-  align-items: baseline;
-}
-.paper-section > .header .title { font-size: 1.15em; }
-.paper-section > .header .subtitle { font-size: 0.9em; opacity: 0.85; }
-.paper-section > .body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 0.25em 0.4em 0.3em;
+  color: rgba(34,33,31,0.22);
+  font-family: "SimSun", "Songti SC", serif;
+  font-size: 24pt;
 }
 
-/* ---------- Layout rows ---------- */
-.section-row {
-  display: flex;
-  gap: 0.5em;
-  align-items: stretch;
-  flex-wrap: wrap;
+.status-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 3mm;
+  height: 30mm;
 }
-
-/* ---------- WritableRow ---------- */
-.wr {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.3em;
-  line-height: 1.2;
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4mm;
+  padding: 2mm;
 }
-.wr .lbl {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-shrink: 0;
+.metric {
+  min-height: 9.5mm;
+  padding: 1mm;
+}
+.metric-label {
+  color: var(--muted);
+  font-size: 6pt;
   white-space: nowrap;
 }
-.wr .lbl-t { font-size: 1em; }
-.wr .lbl-h { font-size: 0.6em; color: #666; margin-top: -0.1em; }
-.wr .val {
+.metric-value {
+  font-weight: 700;
+  font-size: 11pt;
+  line-height: 1.05;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.3mm;
+  padding: 2mm;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 1mm;
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 1mm 1.4mm;
+  min-height: 6.5mm;
+  white-space: nowrap;
+}
+.chip::before {
+  content: "";
+  width: 3mm;
+  height: 3mm;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+}
+
+.skill-panel {
   flex: 1 1 auto;
-  border-bottom: 1px solid #b2b2b2;
-  min-width: 1.5em;
-  text-align: center;
-  padding: 0.05em 0;
-}
-
-/* ---------- Derived attributes ---------- */
-.units {
-  display: flex;
-  gap: 0.3em;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0.2em;
-}
-.unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.05em;
-}
-.unit .l { font-size: 0.8em; }
-.unit .v { font-size: 1.1em; font-weight: bold; }
-.udiv { width: 1px; background: #ccc; align-self: stretch; }
-
-/* ---------- Status checkboxes ---------- */
-.status-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  padding: 0.15em;
-}
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 0.25em;
-  padding: 0.15em 0.3em;
-  font-size: 0.8em;
-}
-.status-item:nth-child(odd) { background: #f5f5f5; }
-.status-item:nth-child(even) { background: #ddd; }
-.cb { width: 0.85em; height: 0.85em; border: 1px solid #222; background: #fff; flex-shrink: 0; }
-
-/* ---------- Skill section ---------- */
-.skill-section { flex: 1 1 auto; min-height: 0; }
-.skill-section > .header {
-  justify-content: space-between;
-  padding: 0.3em 0.5em;
-}
-.skill-hl, .skill-hr {
-  display: flex;
-  gap: 0.3em;
-  align-items: center;
-  font-size: 0.82em;
-}
-.pbox {
-  background: #fff;
-  color: #222;
-  padding: 0.1em 0.35em;
-  display: flex;
-  align-items: center;
-  gap: 0.2em;
-}
-.pbox b { font-weight: bold; }
-.lbox {
-  background: #fff;
-  color: #222;
-  padding: 0.1em 0.3em;
-  font-size: 0.9em;
-}
-
-.skill-body {
-  display: flex;
-  flex: 1;
   min-height: 0;
 }
-
-/* Skill tables */
-.skt {
-  flex: 1;
+.skill-panel .panel-title {
+  min-height: 8mm;
+}
+.point-summary {
+  display: flex;
+  gap: 1.5mm;
+  align-items: center;
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 6.5pt;
+  font-weight: 400;
+}
+.point-pill {
+  border: 1px solid var(--line);
+  background: var(--wash);
+  padding: 0.6mm 1.3mm;
+}
+.skill-body {
+  height: calc(100% - 8mm);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm;
+  padding: 1.6mm;
+  min-height: 0;
+}
+.skill-table {
+  width: 100%;
   border-collapse: collapse;
-  font-size: 0.82em;
-  color: #222;
-  --c0: #fff; --c1: #eee; --c2: #ddd; --c3: #ccc;
-  --lh: 1.35em;
+  table-layout: fixed;
+  font-size: 6.65pt;
+  line-height: 1.15;
 }
-.skt th {
-  line-height: calc(var(--lh) + 0.1em);
-  padding: 0.05em 0.2em;
+.skill-table th {
+  color: var(--muted);
+  font-weight: 400;
+  border-bottom: 1px solid var(--line-strong);
+  padding: 0.8mm 0.6mm;
   text-align: center;
-  font-weight: normal;
 }
-.skt td {
-  line-height: var(--lh);
-  padding: 0 0.2em;
+.skill-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.55mm 0.6mm;
   text-align: center;
-  border: none;
+  height: 4.4mm;
 }
-.td3 { background: var(--c3); }
-.td2 { background: var(--c2); }
-.td1 { background: var(--c1); }
-.td0 { background: var(--c0); }
-
-.gname {
-  width: 1.2em;
-  padding: 0.15em;
-  line-height: 1.3em;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  border: 1pt solid #222;
-  border-left: none;
-  border-bottom: none;
-  font-size: 0.9em;
+.skill-table tbody tr:nth-child(even) td {
+  background: #faf7f0;
 }
-.sname {
-  text-align: left;
-  width: 6.5em;
-  padding-left: 0.2em;
+.skill-table .group-cell {
+  width: 7.5mm;
+  color: var(--accent);
+  font-weight: 700;
+  border-right: 1px solid var(--line);
+  background: var(--accent-soft);
+}
+.skill-name {
+  text-align: left !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.sname .mk {
+.skill-name .mark {
   display: inline-block;
-  width: 0.75em;
-  height: 0.75em;
-  border: 1px solid #222;
-  margin-right: 0.15em;
+  width: 2mm;
+  height: 2mm;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  margin-right: 1mm;
   vertical-align: middle;
 }
-.sname .mk.on { background: #222; }
-.grow-box {
+.skill-name .mark.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.grow {
   display: inline-block;
-  width: 0.75em;
-  height: 0.75em;
-  border: 1px solid #222;
+  width: 2.4mm;
+  height: 2.4mm;
+  border: 1px solid var(--line-strong);
   vertical-align: middle;
 }
 
-.skill-divider {
-  width: 1px;
-  background: #222;
-  align-self: stretch;
+.combat-row {
+  display: grid;
+  grid-template-columns: 1fr 52mm;
+  gap: 3mm;
+  height: 32mm;
 }
-
-/* ---------- Weapon ---------- */
-.wpn-body { padding: 0; }
-.wpn-table {
+.weapon-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.78em;
-  color: #222;
-  --wc0: #fff; --wc1: #eee; --wc2: #ddd; --wc3: #ccc;
   table-layout: fixed;
+  font-size: 6.8pt;
 }
-.wpn-table th:first-child, .wpn-table td:first-child { width: 16%; }
-.wpn-table th:nth-child(2), .wpn-table td:nth-child(2) { width: 14%; }
-.wpn-table th:nth-child(3), .wpn-table td:nth-child(3) { width: 8%; }
-.wpn-table th:nth-child(4), .wpn-table td:nth-child(4) { width: 12%; }
-.wpn-table th:nth-child(5), .wpn-table td:nth-child(5) { width: 10%; }
-.wpn-table th:nth-child(6), .wpn-table td:nth-child(6) { width: 8%; }
-.wpn-table th:nth-child(7), .wpn-table td:nth-child(7) { width: 8%; }
-.wpn-table th:nth-child(8), .wpn-table td:nth-child(8) { width: 8%; }
-.wpn-table th:nth-child(9), .wpn-table td:nth-child(9) { width: 8%; }
-.wpn-table th {
-  padding: 0.25em 0.15em;
+.weapon-table th,
+.weapon-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.9mm 0.6mm;
   text-align: center;
-  font-weight: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.wpn-table td {
-  padding: 0.15em 0.15em;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
+.weapon-table th {
+  color: var(--muted);
+  font-weight: 400;
 }
-.wc3 { background: var(--wc3); }
-.wc2 { background: var(--wc2); }
-
-/* ---------- Battle ---------- */
-.battle-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.25em;
-  padding: 0.3em 0.3em 0.5em;
+.weapon-table td:first-child,
+.weapon-table th:first-child {
+  text-align: left;
 }
-
-/* ---------- Back page ---------- */
-.story-body {
-  display: flex;
-  gap: 0.5em;
-  padding: 0.3em 0.4em;
-  align-items: flex-start;
-}
-.story-desc-col {
-  flex: 1.3;
-  display: flex;
-  flex-direction: column;
-}
-.story-grid {
-  flex: 1;
+.combat-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.2em;
-  align-content: start;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5mm;
+  padding: 2mm;
 }
 
-.warea {
-  position: relative;
-  border-bottom: 1px solid #b2b2b2;
+.back-story {
+  height: 146mm;
 }
-.warea .wlbl {
-  position: absolute;
-  top: 0; left: 0.2em;
-  font-weight: bold;
-  font-size: 0.85em;
-  line-height: 1.5em;
-  z-index: 2;
+.story-layout {
+  height: calc(100% - 7mm);
+  display: grid;
+  grid-template-columns: 72mm 1fr;
+  gap: 3mm;
+  padding: 2mm;
 }
-.warea .wlines {
-  position: absolute;
-  top: 1.5em; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
+.text-box,
+.story-card {
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 2mm;
+  overflow: hidden;
+  min-width: 0;
 }
-.warea .wline { border-bottom: 1px solid #ddd; height: 1.5em; }
-.warea .wtxt {
-  position: relative;
-  z-index: 1;
-  padding: 1.5em 0.2em 0.1em 3.2em;
-  line-height: 1.5em;
-  font-size: 0.85em;
-  word-break: break-all;
+.text-box {
+  height: 100%;
+}
+.box-title {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 7.2pt;
+  margin-bottom: 1.4mm;
+}
+.box-body {
+  color: #302d29;
+  font-size: 7.2pt;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.story-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2mm;
+  min-height: 0;
+}
+.story-card {
+  min-height: 31mm;
+}
+.story-card .box-body {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.back-grid {
+.back-info {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 30mm;
+  gap: 3mm;
+  height: 54mm;
+}
+.tag-list {
   display: flex;
-  gap: 0.5em;
+  flex-wrap: wrap;
+  gap: 1.5mm;
+  padding: 2mm;
+  align-content: flex-start;
 }
-.back-col { display: flex; flex-direction: column; gap: 0.3em; }
-
-.bitem {
-  border: 1pt solid #222;
-  padding: 0.3em;
+.tag {
+  border: 1px solid var(--line);
+  background: var(--wash);
+  padding: 1mm 1.5mm;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.bitem .blbl { font-size: 0.8em; margin-bottom: 0.1em; }
-.bitem .bval { font-size: 0.9em; word-break: break-all; }
-
-.mythos-box {
-  border: 1pt solid #800;
-  background: #fff8f8;
+.asset-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 7.2pt;
 }
-.mythos-box > .header { background: #800; }
-
-.inspiration {
-  margin-top: auto;
+.asset-table th,
+.asset-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 1.4mm 1.5mm;
+  vertical-align: top;
+  word-break: break-word;
+}
+.asset-table th {
+  width: 20mm;
+  color: var(--muted);
+  font-weight: 400;
+  text-align: left;
+}
+.mythos-value {
   display: flex;
-  justify-content: space-between;
-  font-size: 0.7em;
-  color: #888;
-  padding: 0.2em 0;
-}
-
-/* Avatar placeholder */
-.avatar-box {
-  width: 7em;
-  min-height: 8em;
-  border: 1pt solid #222;
-  display: flex;
+  height: calc(100% - 7mm);
   align-items: center;
   justify-content: center;
-  color: #888;
-  font-size: 0.85em;
-  flex-shrink: 0;
+  color: var(--accent);
+  font-size: 24pt;
+  font-weight: 700;
+}
+.back-notes {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm;
+}
+.back-notes .text-box {
+  height: calc(100% - 7mm);
+}
+
+.sheet-foot {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 6.5pt;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1mm;
 }
 </style>
 </head>
 <body>
 
-<!-- ==================== FRONT PAGE ==================== -->
-<div class="page">
-
-  <!-- Row 1: Investigator | Attributes | Luck | Avatar -->
-  <div class="section-row">
-    <!-- Investigator -->
-    <div class="paper-section" style="flex: 3.2;">
-      <div class="header"><h1><span class="title">调查员</span><span class="subtitle">Investigator</span></h1></div>
-      <div class="body" style="gap: 0.15em; justify-content: space-between;">
-        <div class="wr"><div class="lbl"><div class="lbl-t">姓名</div></div><div class="val">{{ basic.name }}</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">玩家</div></div><div class="val">{{ basic.player }}</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">时代</div></div><div class="val">{{ basic.era or '1920s' }}</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">职业</div></div><div class="val">{{ basic.job }}</div></div>
-        <div class="section-row" style="gap: 0.4em;">
-          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">年龄</div></div><div class="val">{{ basic.age }}</div></div>
-          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">性别</div></div><div class="val">{{ basic.gender }}</div></div>
-        </div>
-        <div class="section-row" style="gap: 0.4em;">
-          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">住地</div></div><div class="val">{{ basic.location or '' }}</div></div>
-          <div class="wr" style="flex: 1;"><div class="lbl"><div class="lbl-t">故乡</div></div><div class="val">{{ basic.hometown or '' }}</div></div>
-        </div>
-      </div>
+<section class="page">
+  <header class="sheet-head">
+    <div>
+      <div class="sheet-title">调查员档案</div>
+      <div class="sheet-meta">Call of Cthulhu 7th Edition / 480 Point Buy</div>
     </div>
+    <div class="sheet-meta">{{ basic.name }} / {{ basic.job }}</div>
+  </header>
 
-    <!-- Attributes -->
-    <div class="paper-section" style="flex: 2.6;">
-      <div class="header"><h1><span class="title">属性</span><span class="subtitle">Characteristics</span></h1></div>
-      <div class="body" style="flex-direction: row; gap: 0.4em; padding: 0.3em 0.4em;">
-        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.1em;">
-          {% for key in ['str','con','dex','app','pow'] %}
-          <div class="wr"><div class="lbl"><div class="lbl-t">{{ attr_names[key] }}</div><div class="lbl-h">{{ key.upper() }}</div></div><div class="val">{{ attrs.get(key,0) }}</div></div>
-          {% endfor %}
+  <div class="front-grid">
+    <section class="panel">
+      <div class="panel-title">身份记录<span class="panel-subtitle">Identity</span></div>
+      <div class="identity-grid">
+        {% for field in identity_fields %}
+        <div class="field{% if field.label in ['姓名', '职业'] %} field-wide{% endif %}">
+          <span class="field-label">{{ field.label }}</span>
+          <span class="field-value">{{ field.value }}</span>
         </div>
-        <div style="width: 1px; background: #ccc;"></div>
-        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.1em;">
-          {% for key in ['siz','edu','int'] %}
-          <div class="wr"><div class="lbl"><div class="lbl-t">{{ attr_names[key] }}</div><div class="lbl-h">{{ key.upper() }}{% if key=='edu' %} 知识{% endif %}{% if key=='int' %} 灵感{% endif %}</div></div><div class="val">{{ attrs.get(key,0) }}</div></div>
-          {% endfor %}
-          <div style="flex: 1;"></div>
-          <div class="wr"><div class="lbl"><div class="lbl-t">总点数</div></div><div class="val">480</div></div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">属性<span class="panel-subtitle">Characteristics</span></div>
+      <div class="attr-grid">
+        {% for stat in attr_panels %}
+        <div class="stat-box">
+          <div class="stat-key">{{ stat.key }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+          <div class="stat-value">{{ stat.value }}</div>
         </div>
+        {% endfor %}
       </div>
-    </div>
+    </section>
 
-    <!-- Luck -->
-    <div class="paper-section" style="flex: 1.2;">
-      <div class="header"><h1><span class="title">幸运</span><span class="subtitle">Luck</span></h1></div>
-      <div class="body" style="align-items: center; justify-content: center;">
-        <div class="wr" style="width: 100%;"><div class="lbl"><div class="lbl-t">幸运</div></div><div class="val">{{ luck }}</div></div>
-        <div style="font-size: 0.75em; color: #666; margin-top: 0.3em;">3D6×5</div>
-      </div>
-    </div>
-
-    <!-- Avatar -->
-    <div class="avatar-box">形象</div>
+    <section class="panel portrait-panel">
+      <div class="panel-title">档案照片<span class="panel-subtitle">Portrait</span></div>
+      <div class="portrait">{{ basic.name[:1] if basic.name else "" }}</div>
+    </section>
   </div>
 
-  <!-- Row 2: Derived attributes -->
-  <div class="section-row">
-    <div class="paper-section" style="flex: 1.6;">
-      <div class="header"><h1><span class="title">理智值</span><span class="subtitle">Sanity</span></h1></div>
-      <div class="body"><div class="units">
-        <div class="unit"><div class="l">当前理智</div><div class="v">{{ derived.san }}</div></div>
-        <div class="udiv"></div>
-        <div class="unit"><div class="l">起始理智</div><div class="v">{{ derived.san }}</div></div>
-        <div class="udiv"></div>
-        <div class="unit"><div class="l">最大理智</div><div class="v">{{ derived.san }}</div></div>
-      </div></div>
-    </div>
-    <div class="paper-section" style="flex: 1.2;">
-      <div class="header"><h1><span class="title">生命值</span><span class="subtitle">HP</span></h1></div>
-      <div class="body"><div class="units">
-        <div class="unit"><div class="l">当前生命</div><div class="v">{{ derived.hp }}</div></div>
-        <div class="udiv"></div>
-        <div class="unit"><div class="l">最大生命</div><div class="v">{{ derived.hp }}</div></div>
-      </div></div>
-    </div>
-    <div class="paper-section" style="flex: 1.2;">
-      <div class="header"><h1><span class="title">魔法值</span><span class="subtitle">MP</span></h1></div>
-      <div class="body"><div class="units">
-        <div class="unit"><div class="l">当前魔法</div><div class="v">{{ derived.mp }}</div></div>
-        <div class="udiv"></div>
-        <div class="unit"><div class="l">最大魔法</div><div class="v">{{ derived.mp }}</div></div>
-      </div></div>
-    </div>
-    <div class="paper-section" style="flex: 1.3;">
-      <div class="header"><h1><span class="title">身体状态</span></h1></div>
-      <div class="body" style="padding: 0.1em;"><div class="status-grid">
-        <div class="status-item"><div class="cb"></div><span>重伤</span></div>
-        <div class="status-item"><div class="cb"></div><span>昏迷</span></div>
-        <div class="status-item"><div class="cb"></div><span>濒死</span></div>
-        <div class="status-item"><div class="cb"></div><span>死亡</span></div>
-      </div></div>
-    </div>
-    <div class="paper-section" style="flex: 1.3;">
-      <div class="header"><h1><span class="title">精神状态</span></h1></div>
-      <div class="body" style="padding: 0.1em;"><div class="status-grid">
-        <div class="status-item"><div class="cb"></div><span>临时疯狂</span></div>
-        <div class="status-item"><div class="cb"></div><span>永久疯狂</span></div>
-        <div class="status-item" style="grid-column: span 2;"><div class="cb"></div><span>不定期疯狂</span></div>
-      </div></div>
-    </div>
+  <div class="status-row">
+    <section class="panel">
+      <div class="panel-title">状态与衍生值<span class="panel-subtitle">Vitals</span></div>
+      <div class="metrics-grid">
+        {% for metric in derived_panels %}
+        <div class="metric">
+          <div class="metric-label">{{ metric.label }} / {{ metric.sub }}</div>
+          <div class="metric-value">{{ metric.value }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% for group in status_groups %}
+    <section class="panel">
+      <div class="panel-title">{{ group.title }}</div>
+      <div class="chips">
+        {% for item in group["items"] %}
+        <span class="chip">{{ item }}</span>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
   </div>
 
-  <!-- Skill Section -->
-  <div class="paper-section skill-section">
-    <div class="header">
-      <div class="skill-hl">
-        <div class="pbox">职业点数 <b>{{ pro_used }}</b> / {{ pro_total }}</div>
-        <div class="pbox">兴趣点数 <b>{{ interest_used }}</b> / {{ interest_total }}</div>
-      </div>
-      <h1><span class="title">技能表</span><span class="subtitle">Skill</span></h1>
-      <div class="skill-hr">
-        <span>技能成功率上限</span>
-        <div class="lbox">本职 {{ pro_cap }}</div>
-        <div class="lbox">其它 {{ interest_cap }}</div>
+  <section class="panel skill-panel">
+    <div class="panel-title">
+      技能
+      <span class="panel-subtitle">Skills</span>
+      <div class="point-summary">
+        <span class="point-pill">职业 {{ pro_used }} / {{ pro_total }}</span>
+        <span class="point-pill">兴趣 {{ interest_used }} / {{ interest_total }}</span>
+        <span class="point-pill">上限 {{ pro_cap }} / {{ interest_cap }}</span>
       </div>
     </div>
-    <div class="body skill-body">
-
-      <!-- Left column -->
-      <table class="skt">
+    <div class="skill-body">
+      {% for table in [skill_table_left, skill_table_right] %}
+      <table class="skill-table">
         <thead>
           <tr>
-            <th class="td3"></th>
-            <th class="td3" style="text-align:left;">技能</th>
-            <th class="td2">基础%</th>
-            <th class="td3">职业%</th>
-            <th class="td2">兴趣%</th>
-            <th class="td3">成长%</th>
-            <th class="td2">成功率%</th>
+            <th style="width:7.5mm;"></th>
+            <th style="width:auto;text-align:left;">技能</th>
+            <th style="width:10mm;">基础</th>
+            <th style="width:10mm;">职业</th>
+            <th style="width:10mm;">兴趣</th>
+            <th style="width:9mm;">成长</th>
+            <th style="width:11mm;">成功</th>
           </tr>
         </thead>
         <tbody>
-        {% for group in skill_table_left %}
-          {% set group_start = loop.index0 %}
+          {% for group in table %}
           {% for skill in group.skills %}
           <tr>
             {% if loop.first %}
-            <td class="gname" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
+            <td class="group-cell" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
             {% endif %}
-            <td class="sname td{{ skill.stripe }}">
-              <span class="mk{% if skill.is_occupation %} on{% endif %}"></span>{{ skill.name }}
-            </td>
-            <td class="td{{ 1 - skill.stripe }}">{{ skill.init }}</td>
-            <td class="td{{ skill.stripe }}">{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
-            <td class="td{{ 1 - skill.stripe }}">{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
-            <td class="td{{ skill.stripe }}"><span class="grow-box"></span></td>
-            <td class="td{{ 1 - skill.stripe }}">{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
+            <td class="skill-name"><span class="mark{% if skill.is_occupation %} on{% endif %}"></span>{{ skill.name }}</td>
+            <td>{{ skill.init }}</td>
+            <td>{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
+            <td>{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
+            <td><span class="grow"></span></td>
+            <td>{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
           </tr>
           {% endfor %}
-        {% endfor %}
+          {% endfor %}
         </tbody>
       </table>
+      {% endfor %}
+    </div>
+  </section>
 
-      <div class="skill-divider"></div>
-
-      <!-- Right column -->
-      <table class="skt">
+  <div class="combat-row">
+    <section class="panel">
+      <div class="panel-title">武器与装备动作<span class="panel-subtitle">Weapons</span></div>
+      <table class="weapon-table">
         <thead>
           <tr>
-            <th class="td3"></th>
-            <th class="td3" style="text-align:left;">技能</th>
-            <th class="td2">基础%</th>
-            <th class="td3">职业%</th>
-            <th class="td2">兴趣%</th>
-            <th class="td3">成长%</th>
-            <th class="td2">成功率%</th>
+            <th style="width:23%;">名称</th>
+            <th style="width:20%;">技能</th>
+            <th style="width:8%;">%</th>
+            <th style="width:16%;">伤害</th>
+            <th style="width:10%;">射程</th>
+            <th style="width:8%;">贯穿</th>
+            <th style="width:7%;">次数</th>
+            <th style="width:8%;">故障</th>
           </tr>
         </thead>
         <tbody>
-        {% for group in skill_table_right %}
-          {% for skill in group.skills %}
+          {% for i in range(5) %}
+          {% set w = weapons[i] if i < weapons|length else None %}
           <tr>
-            {% if loop.first %}
-            <td class="gname" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
-            {% endif %}
-            <td class="sname td{{ skill.stripe }}">
-              <span class="mk{% if skill.is_occupation %} on{% endif %}"></span>{{ skill.name }}
-            </td>
-            <td class="td{{ 1 - skill.stripe }}">{{ skill.init }}</td>
-            <td class="td{{ skill.stripe }}">{% if skill.pro > 0 %}{{ skill.pro }}{% endif %}</td>
-            <td class="td{{ 1 - skill.stripe }}">{% if skill.interest > 0 %}{{ skill.interest }}{% endif %}</td>
-            <td class="td{{ skill.stripe }}"><span class="grow-box"></span></td>
-            <td class="td{{ 1 - skill.stripe }}">{% if skill.total > skill.init or skill.is_occupation %}{{ skill.total }}{% endif %}</td>
+            <td>{{ w.name if w else "" }}</td>
+            <td>{{ w.skill if w else "" }}</td>
+            <td>{{ w.success_rate if w else "" }}</td>
+            <td>{{ w.damage if w else "" }}</td>
+            <td>{{ w.range if w else "" }}</td>
+            <td>{{ w.penetration if w and w.penetration is defined else "" }}</td>
+            <td>{{ w.attacks if w else "" }}</td>
+            <td>{{ w.malf if w else "" }}</td>
           </tr>
           {% endfor %}
-        {% endfor %}
         </tbody>
       </table>
-    </div>
+    </section>
+    <section class="panel">
+      <div class="panel-title">战斗摘要<span class="panel-subtitle">Combat</span></div>
+      <div class="combat-grid">
+        <div class="metric"><div class="metric-label">DB</div><div class="metric-value">{{ derived.db }}</div></div>
+        <div class="metric"><div class="metric-label">体格</div><div class="metric-value">{{ derived.build }}</div></div>
+        <div class="metric"><div class="metric-label">MOV</div><div class="metric-value">{{ derived.mov }}</div></div>
+        <div class="metric"><div class="metric-label">闪避</div><div class="metric-value">{{ derived.dodge }}</div></div>
+      </div>
+    </section>
   </div>
 
-  <!-- Row: Weapon + Battle -->
-  <div class="section-row">
-    <div class="paper-section" style="flex: 3;">
-      <div class="header"><h1><span class="title">武器</span><span class="subtitle">Weapons</span></h1></div>
-      <div class="body wpn-body">
-        <table class="wpn-table">
-          <thead>
-            <tr>
-              <th class="wc3">武器名称</th>
-              <th class="wc2">使用技能</th>
-              <th class="wc3">%</th>
-              <th class="wc2">伤害</th>
-              <th class="wc3">射程</th>
-              <th class="wc2">贯穿</th>
-              <th class="wc3">次数</th>
-              <th class="wc2">装弹量</th>
-              <th class="wc3">故障</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for i in range(5) %}
-            {% set w = weapons[i] if i < weapons|length else None %}
-            <tr>
-              <td>{{ w.name if w else '' }}</td>
-              <td>{{ w.skill if w else '' }}</td>
-              <td>{{ w.success_rate if w else '' }}</td>
-              <td>{{ w.damage if w else '' }}</td>
-              <td>{{ w.range if w else '' }}</td>
-              <td>{{ w.penetration if w else '' }}</td>
-              <td>{{ w.attacks if w else '' }}</td>
-              <td>{{ w.ammo if w else '' }}</td>
-              <td>{{ w.malf if w else '' }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+  <footer class="sheet-foot">
+    <span>正面 / 生成式 HTML 角色档案卡</span>
+    <span>{{ basic.name }} / {{ basic.job }}</span>
+  </footer>
+</section>
+
+<section class="page">
+  <header class="sheet-head">
+    <div>
+      <div class="sheet-title">背景档案</div>
+      <div class="sheet-meta">Personal History / Connections / Assets</div>
     </div>
-    <div class="paper-section" style="flex: 1;">
-      <div class="header"><h1><span class="title">战斗</span><span class="subtitle">Combat</span></h1></div>
-      <div class="body battle-body">
-        <div class="wr"><div class="lbl"><div class="lbl-t">伤害加值</div><div class="lbl-h">DB</div></div><div class="val">{{ derived.db }}</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">体格</div></div><div class="val">{{ derived.build }}</div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">护甲</div></div><div class="val"></div></div>
-        <div class="wr"><div class="lbl"><div class="lbl-t">移动力</div></div><div class="val">{{ derived.mov }}</div></div>
+    <div class="sheet-meta">{{ basic.name }} / {{ basic.job }}</div>
+  </header>
+
+  <section class="panel back-story">
+    <div class="panel-title">个人介绍与背景条目<span class="panel-subtitle">Story</span></div>
+    <div class="story-layout">
+      <div class="text-box">
+        <div class="box-title">个人介绍</div>
+        <div class="box-body">{{ desc or " " }}</div>
       </div>
-    </div>
-  </div>
-
-  <div class="inspiration">
-    <span>COC 7th Edition &middot; 480购点制</span>
-    <span>{{ basic.name }} &middot; {{ basic.job }}</span>
-  </div>
-</div>
-
-<!-- ==================== BACK PAGE ==================== -->
-<div class="page">
-
-  <!-- Background Story -->
-  <div class="paper-section">
-    <div class="header"><h1><span class="title">背景故事</span><span class="subtitle">Story</span></h1></div>
-    <div class="body story-body">
-      <!-- Left: Personal Description (large block) -->
-      <div class="story-desc-col">
-        <div class="warea" style="flex: 1;">
-          <div class="wlbl">个人介绍</div>
-          <div class="wlines">
-            {% for i in range(desc_lines) %}<div class="wline"></div>{% endfor %}
-          </div>
-          <div class="wtxt" style="min-height: {{ desc_lines * 1.5 }}em;">{{ desc }}</div>
-        </div>
-      </div>
-      <!-- Right: 8 story fields in 2 columns -->
-      <div class="story-grid">
+      <div class="story-cards">
         {% for item in story_left %}
-        <div class="warea">
-          <div class="wlbl">{{ item.label }}</div>
-          <div class="wlines">
-            {% for i in range(item.lines) %}<div class="wline"></div>{% endfor %}
-          </div>
-          <div class="wtxt" style="min-height: {{ item.lines * 1.5 }}em;">{{ item.value }}</div>
-        </div>
+        <article class="story-card">
+          <div class="box-title">{{ item.label }}</div>
+          <div class="box-body">{{ item.value or " " }}</div>
+        </article>
         {% endfor %}
       </div>
     </div>
+  </section>
+
+  <div class="back-info">
+    <section class="panel">
+      <div class="panel-title">随身物品<span class="panel-subtitle">Items</span></div>
+      <div class="tag-list">
+        {% if item_tags %}
+        {% for item in item_tags %}
+        <span class="tag">{{ item }}</span>
+        {% endfor %}
+        {% else %}
+        <span class="tag"> </span>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">资产<span class="panel-subtitle">Assets</span></div>
+      <table class="asset-table">
+        <tbody>
+          {% for row in asset_rows %}
+          <tr>
+            <th>{{ row.label }}</th>
+            <td>{{ row.value or " " }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">神话<span class="panel-subtitle">Mythos</span></div>
+      <div class="mythos-value">{{ mythos }}</div>
+    </section>
   </div>
 
-  <!-- Items / Assets / Mythos -->
-  <div class="section-row">
-    <div class="back-grid" style="flex: 2; flex-direction: column;">
-      <div class="section-row" style="flex: 1;">
-        <div class="paper-section" style="flex: 1;">
-          <div class="header"><h1><span class="title">随身物品</span><span class="subtitle">Items</span></h1></div>
-          <div class="body" style="padding: 0.3em;">
-            <div class="bitem" style="border: none; padding: 0;">
-              <div class="bval">{% if items %}{% for item in items %}{{ item }}{% if not loop.last %}、{% endif %}{% endfor %}{% else %}—{% endif %}</div>
-            </div>
-          </div>
-        </div>
-        <div class="paper-section" style="flex: 1;">
-          <div class="header"><h1><span class="title">资产</span><span class="subtitle">Assets</span></h1></div>
-          <div class="body" style="padding: 0.3em; gap: 0.2em;">
-            <div class="wr"><div class="lbl"><div class="lbl-t">消费水平</div></div><div class="val">{{ assets.consumption or '' }}</div></div>
-            <div class="wr"><div class="lbl"><div class="lbl-t">现金</div></div><div class="val">{{ assets.cash or '' }}</div></div>
-            <div class="wr"><div class="lbl"><div class="lbl-t">资产</div></div><div class="val">{{ assets.assets or '' }}</div></div>
-            <div class="wr"><div class="lbl"><div class="lbl-t">资产详情</div></div><div class="val">{{ assets.items or '' }}</div></div>
-          </div>
-        </div>
+  <div class="back-notes">
+    <section class="panel">
+      <div class="panel-title">好友与联系人<span class="panel-subtitle">Contacts</span></div>
+      <div class="text-box">
+        <div class="box-body">{{ friends or " " }}</div>
       </div>
-    </div>
-    <div class="paper-section mythos-box" style="flex: 1;">
-      <div class="header"><h1><span class="title">克苏鲁神话</span><span class="subtitle">Mythos</span></h1></div>
-      <div class="body" style="padding: 0.4em; align-items: center; justify-content: center;">
-        <div style="font-size: 1.8em; font-weight: bold; color: #800;">{{ mythos }}</div>
+    </section>
+    <section class="panel">
+      <div class="panel-title">经历模组<span class="panel-subtitle">Experience</span></div>
+      <div class="text-box">
+        <div class="box-body">{{ experienced_modules or " " }}</div>
       </div>
-    </div>
+    </section>
   </div>
 
-  <!-- Friends / Experience -->
-  <div class="section-row" style="flex: 1;">
-    <div class="paper-section" style="flex: 2;">
-      <div class="header"><h1><span class="title">好友与联系人</span><span class="subtitle">Friends</span></h1></div>
-      <div class="body" style="padding: 0.4em;">
-        <div class="warea">
-          <div class="wlines">
-            {% for i in range(10) %}<div class="wline"></div>{% endfor %}
-          </div>
-          <div class="wtxt" style="min-height: 15em;">{{ friends or '—' }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="paper-section" style="flex: 1;">
-      <div class="header"><h1><span class="title">经历模组</span><span class="subtitle">Experience</span></h1></div>
-      <div class="body" style="padding: 0.4em;">
-        <div class="warea">
-          <div class="wlines">
-            {% for i in range(10) %}<div class="wline"></div>{% endfor %}
-          </div>
-          <div class="wtxt" style="min-height: 15em;">{{ experienced_modules or '—' }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="inspiration">
-    <span>COC 7th Edition &middot; 480购点制</span>
-    <span>背面 &middot; {{ basic.name }} &middot; {{ basic.job }}</span>
-  </div>
-</div>
+  <footer class="sheet-foot">
+    <span>背面 / 阅读式背景档案</span>
+    <span>{{ basic.name }} / {{ basic.job }}</span>
+  </footer>
+</section>
 
 </body>
 </html>
