@@ -19,6 +19,19 @@ LEFT_GROUP_NAMES = ["特殊", "探索", "社交", "战斗", "医疗", "运动"]
 # Right column groups (indices 6-9)
 RIGHT_GROUP_NAMES = ["知识", "技术", "操纵", "其它"]
 
+_GROUP_TONES = {
+    "特殊": "tone-red",
+    "探索": "tone-blue",
+    "社交": "tone-olive",
+    "战斗": "tone-rust",
+    "医疗": "tone-teal",
+    "运动": "tone-green",
+    "知识": "tone-indigo",
+    "技术": "tone-gold",
+    "操纵": "tone-slate",
+    "其它": "tone-neutral",
+}
+
 # Core skills shown in each group (mimics blank card layout)
 _CORE_SKILLS = {
     "特殊": ["信用评级", "克苏鲁神话"],
@@ -113,7 +126,12 @@ def build_skill_tables(data: dict) -> tuple[list[dict], list[dict]]:
                 "stripe": stripe_counter[0] % 2,
             })
             stripe_counter[0] += 1
-        return {"group_name": group_name, "skills": rows, "size": len(rows)}
+        return {
+            "group_name": group_name,
+            "skills": rows,
+            "size": len(rows),
+            "tone": _GROUP_TONES.get(group_name, "tone-neutral"),
+        }
     
     left_counter = [0]
     left_groups = [_build_group(g, left_counter) for g in LEFT_GROUP_NAMES]

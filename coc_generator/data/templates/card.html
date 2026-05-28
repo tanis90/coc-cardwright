@@ -7,19 +7,36 @@
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --ink: #22211f;
-  --muted: #706b62;
-  --line: #d8d2c8;
-  --line-strong: #797065;
-  --paper: #fbfaf6;
-  --panel: #fffefa;
-  --wash: #f1ede5;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC",
+    "WenQuanYi Micro Hei", sans-serif;
+  --font-title: "FangSong", "STFangsong", "Songti SC", "SimSun", serif;
+  --font-story: "Songti SC", "SimSun", "Noto Serif CJK SC",
+    "Source Han Serif SC", serif;
+  --font-number: Georgia, "Times New Roman", serif;
+  --ink: #241f1a;
+  --muted: #6e665d;
+  --line: #d8cdbd;
+  --line-strong: #7c6e5d;
+  --paper: #fbf4e8;
+  --panel: #fffdf7;
+  --wash: #f4eadb;
   --accent: #8a2f2b;
-  --accent-soft: #f3e6e2;
+  --accent-soft: #f3e3dc;
+  --red: #8a2f2b;
+  --blue: #3d657f;
+  --olive: #65723e;
+  --rust: #9a573a;
+  --teal: #3f756f;
+  --green: #56724c;
+  --indigo: #5e5f8c;
+  --gold: #9a762f;
+  --slate: #526a73;
+  --violet: #725a82;
 }
 
 body {
-  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", Arial, sans-serif;
+  font-family: var(--font-ui);
   font-size: 8pt;
   line-height: 1.35;
   color: var(--ink);
@@ -41,15 +58,15 @@ body {
 
 @media print {
   :root {
-    --ink: #000;
-    --muted: #444;
-    --line: #b0b0b0;
-    --line-strong: #222;
-    --paper: #fff;
-    --panel: #fff;
-    --wash: #f5f5f5;
-    --accent: #111;
-    --accent-soft: #ededed;
+    --ink: #241f1a;
+    --muted: #5f574e;
+    --line: #cdbcaa;
+    --line-strong: #6f5f4e;
+    --paper: #fff8ec;
+    --panel: #fffdf7;
+    --wash: #f5ead8;
+    --accent: #8a2f2b;
+    --accent-soft: #f3e3dc;
   }
   * {
     -webkit-print-color-adjust: exact;
@@ -68,12 +85,12 @@ body {
   }
   .portrait {
     background:
-      linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.12) 50%, transparent 50.6%),
-      linear-gradient(45deg, transparent 49.4%, rgba(0,0,0,0.12) 50%, transparent 50.6%),
+      linear-gradient(135deg, transparent 49.4%, rgba(154,118,47,0.18) 50%, transparent 50.6%),
+      linear-gradient(45deg, transparent 49.4%, rgba(154,118,47,0.18) 50%, transparent 50.6%),
       #fff;
   }
   .skill-table tbody tr:nth-child(even) td {
-    background: #f7f7f7;
+    background: #fbf3e7;
   }
 }
 
@@ -86,7 +103,7 @@ body {
   min-height: 12mm;
 }
 .sheet-title {
-  font-family: "SimSun", "Songti SC", serif;
+  font-family: var(--font-title);
   font-size: 19pt;
   line-height: 1;
   letter-spacing: 0;
@@ -98,9 +115,11 @@ body {
 }
 
 .panel {
+  --panel-accent: var(--accent);
+  --panel-tint: var(--accent-soft);
   background: var(--panel);
   border: 1px solid var(--line);
-  border-top-color: var(--line-strong);
+  border-top: 2px solid var(--panel-accent);
   min-width: 0;
   overflow: hidden;
 }
@@ -111,6 +130,7 @@ body {
   min-height: 7mm;
   padding: 1.2mm 2mm 0.9mm;
   border-bottom: 1px solid var(--line);
+  background: var(--panel-tint);
   color: var(--ink);
   font-weight: 700;
   white-space: nowrap;
@@ -119,17 +139,33 @@ body {
   content: "";
   width: 1.2mm;
   height: 4mm;
-  background: var(--accent);
+  background: var(--panel-accent);
   border-radius: 1px;
   flex: 0 0 auto;
 }
 .panel-subtitle {
   margin-left: auto;
-  color: var(--muted);
+  color: var(--panel-accent);
   font-size: 6.5pt;
   font-weight: 400;
   text-transform: uppercase;
 }
+
+.identity-panel { --panel-accent: var(--red); --panel-tint: #f5e5de; }
+.attr-panel { --panel-accent: var(--blue); --panel-tint: #e6eef2; }
+.portrait-panel { --panel-accent: var(--gold); --panel-tint: #f3ead5; }
+.vitals-panel { --panel-accent: var(--green); --panel-tint: #e8f0e3; }
+.body-panel { --panel-accent: var(--rust); --panel-tint: #f2e4db; }
+.mind-panel { --panel-accent: var(--violet); --panel-tint: #eee5f1; }
+.skills-panel { --panel-accent: var(--red); --panel-tint: #f5e5de; }
+.weapons-panel { --panel-accent: var(--slate); --panel-tint: #e7eef0; }
+.combat-panel { --panel-accent: var(--rust); --panel-tint: #f2e4db; }
+.story-panel { --panel-accent: var(--red); --panel-tint: #f5e5de; }
+.items-panel { --panel-accent: var(--gold); --panel-tint: #f4ecd5; }
+.assets-panel { --panel-accent: var(--green); --panel-tint: #e8f0e3; }
+.mythos-panel { --panel-accent: var(--red); --panel-tint: #f6dfdc; }
+.contacts-panel { --panel-accent: var(--blue); --panel-tint: #e6eef2; }
+.experience-panel { --panel-accent: var(--indigo); --panel-tint: #e8e8f4; }
 
 .front-grid {
   display: grid;
@@ -152,7 +188,7 @@ body {
 }
 .field-label {
   display: block;
-  color: var(--muted);
+  color: var(--panel-accent);
   font-size: 6.2pt;
   line-height: 1;
   margin-bottom: 0.5mm;
@@ -180,11 +216,12 @@ body {
   text-align: center;
 }
 .stat-box {
+  border-top: 2px solid color-mix(in srgb, var(--panel-accent) 72%, white);
   min-height: 15mm;
   padding: 1.3mm 1mm;
 }
 .stat-key {
-  color: var(--accent);
+  color: var(--panel-accent);
   font-size: 6.3pt;
   font-weight: 700;
   line-height: 1;
@@ -195,6 +232,8 @@ body {
   margin-top: 0.7mm;
 }
 .stat-value {
+  font-family: var(--font-number);
+  font-variant-numeric: tabular-nums;
   font-size: 14pt;
   font-weight: 700;
   line-height: 1.05;
@@ -236,6 +275,7 @@ body {
 .metric {
   min-height: 9.5mm;
   padding: 1mm;
+  border-top: 2px solid color-mix(in srgb, var(--panel-accent) 65%, white);
 }
 .metric-label {
   color: var(--muted);
@@ -243,6 +283,8 @@ body {
   white-space: nowrap;
 }
 .metric-value {
+  font-family: var(--font-number);
+  font-variant-numeric: tabular-nums;
   font-weight: 700;
   font-size: 11pt;
   line-height: 1.05;
@@ -258,7 +300,7 @@ body {
   align-items: center;
   gap: 1mm;
   border: 1px solid var(--line);
-  background: #fff;
+  background: color-mix(in srgb, var(--panel-tint) 70%, white);
   padding: 1mm 1.4mm;
   min-height: 6.5mm;
   white-space: nowrap;
@@ -289,7 +331,7 @@ body {
 }
 .point-pill {
   border: 1px solid var(--line);
-  background: var(--wash);
+  background: #fff8ef;
   padding: 0.6mm 1.3mm;
 }
 .skill-body {
@@ -301,6 +343,7 @@ body {
   min-height: 0;
 }
 .skill-table {
+  font-family: var(--font-ui);
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
@@ -325,11 +368,22 @@ body {
 }
 .skill-table .group-cell {
   width: 7.5mm;
-  color: var(--accent);
+  color: var(--group-ink, var(--accent));
   font-weight: 700;
   border-right: 1px solid var(--line);
-  background: var(--accent-soft);
+  border-left: 2px solid var(--group-ink, var(--accent));
+  background: var(--group-bg, var(--accent-soft));
 }
+.tone-red { --group-ink: var(--red); --group-bg: #f4e1dc; }
+.tone-blue { --group-ink: var(--blue); --group-bg: #e4edf2; }
+.tone-olive { --group-ink: var(--olive); --group-bg: #edf0df; }
+.tone-rust { --group-ink: var(--rust); --group-bg: #f2e2d9; }
+.tone-teal { --group-ink: var(--teal); --group-bg: #e2efec; }
+.tone-green { --group-ink: var(--green); --group-bg: #e5efdf; }
+.tone-indigo { --group-ink: var(--indigo); --group-bg: #e8e8f4; }
+.tone-gold { --group-ink: var(--gold); --group-bg: #f3ead2; }
+.tone-slate { --group-ink: var(--slate); --group-bg: #e5ecee; }
+.tone-neutral { --group-ink: var(--muted); --group-bg: #ece8df; }
 .skill-name {
   text-align: left !important;
   white-space: nowrap;
@@ -346,8 +400,8 @@ body {
   vertical-align: middle;
 }
 .skill-name .mark.on {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--red);
+  border-color: var(--red);
 }
 .grow {
   display: inline-block;
@@ -364,6 +418,7 @@ body {
   height: 32mm;
 }
 .weapon-table {
+  font-family: var(--font-ui);
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
@@ -415,12 +470,13 @@ body {
   height: 100%;
 }
 .box-title {
-  color: var(--accent);
+  color: var(--card-accent, var(--panel-accent, var(--accent)));
   font-weight: 700;
   font-size: 7.2pt;
   margin-bottom: 1.4mm;
 }
 .box-body {
+  font-family: var(--font-story);
   color: #302d29;
   font-size: 7.2pt;
   line-height: 1.55;
@@ -434,8 +490,17 @@ body {
   min-height: 0;
 }
 .story-card {
+  --card-accent: var(--red);
   min-height: 31mm;
+  border-top: 2px solid var(--card-accent);
 }
+.story-card:nth-child(2) { --card-accent: var(--olive); }
+.story-card:nth-child(3) { --card-accent: var(--blue); }
+.story-card:nth-child(4) { --card-accent: var(--gold); }
+.story-card:nth-child(5) { --card-accent: var(--rust); }
+.story-card:nth-child(6) { --card-accent: var(--green); }
+.story-card:nth-child(7) { --card-accent: var(--teal); }
+.story-card:nth-child(8) { --card-accent: var(--violet); }
 .story-card .box-body {
   display: -webkit-box;
   -webkit-line-clamp: 5;
@@ -458,13 +523,15 @@ body {
 }
 .tag {
   border: 1px solid var(--line);
-  background: var(--wash);
+  background: #f7edd6;
+  color: #4e3b16;
   padding: 1mm 1.5mm;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .asset-table {
+  font-family: var(--font-ui);
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
@@ -484,11 +551,13 @@ body {
   text-align: left;
 }
 .mythos-value {
+  font-family: var(--font-number);
+  font-variant-numeric: tabular-nums;
   display: flex;
   height: calc(100% - 7mm);
   align-items: center;
   justify-content: center;
-  color: var(--accent);
+  color: var(--red);
   font-size: 24pt;
   font-weight: 700;
 }
@@ -526,7 +595,7 @@ body {
   </header>
 
   <div class="front-grid">
-    <section class="panel">
+    <section class="panel identity-panel">
       <div class="panel-title">身份记录<span class="panel-subtitle">Identity</span></div>
       <div class="identity-grid">
         {% for field in identity_fields %}
@@ -538,7 +607,7 @@ body {
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel attr-panel">
       <div class="panel-title">属性<span class="panel-subtitle">Characteristics</span></div>
       <div class="attr-grid">
         {% for stat in attr_panels %}
@@ -558,7 +627,7 @@ body {
   </div>
 
   <div class="status-row">
-    <section class="panel">
+    <section class="panel vitals-panel">
       <div class="panel-title">状态与衍生值<span class="panel-subtitle">Vitals</span></div>
       <div class="metrics-grid">
         {% for metric in derived_panels %}
@@ -570,7 +639,7 @@ body {
       </div>
     </section>
     {% for group in status_groups %}
-    <section class="panel">
+    <section class="panel {{ 'body-panel' if group.title == '身体状态' else 'mind-panel' }}">
       <div class="panel-title">{{ group.title }}</div>
       <div class="chips">
         {% for item in group["items"] %}
@@ -581,7 +650,7 @@ body {
     {% endfor %}
   </div>
 
-  <section class="panel skill-panel">
+  <section class="panel skill-panel skills-panel">
     <div class="panel-title">
       技能
       <span class="panel-subtitle">Skills</span>
@@ -610,7 +679,7 @@ body {
           {% for skill in group.skills %}
           <tr>
             {% if loop.first %}
-            <td class="group-cell" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
+            <td class="group-cell {{ group.tone }}" rowspan="{{ group.skills|length }}">{{ group.group_name }}</td>
             {% endif %}
             <td class="skill-name"><span class="mark{% if skill.is_occupation %} on{% endif %}"></span>{{ skill.name }}</td>
             <td>{{ skill.init }}</td>
@@ -628,7 +697,7 @@ body {
   </section>
 
   <div class="combat-row">
-    <section class="panel">
+    <section class="panel weapons-panel">
       <div class="panel-title">武器与装备动作<span class="panel-subtitle">Weapons</span></div>
       <table class="weapon-table">
         <thead>
@@ -644,23 +713,22 @@ body {
           </tr>
         </thead>
         <tbody>
-          {% for i in range(5) %}
-          {% set w = weapons[i] if i < weapons|length else None %}
+          {% for w in weapons %}
           <tr>
-            <td>{{ w.name if w else "" }}</td>
-            <td>{{ w.skill if w else "" }}</td>
-            <td>{{ w.success_rate if w else "" }}</td>
-            <td>{{ w.damage if w else "" }}</td>
-            <td>{{ w.range if w else "" }}</td>
-            <td>{{ w.penetration if w and w.penetration is defined else "" }}</td>
-            <td>{{ w.attacks if w else "" }}</td>
-            <td>{{ w.malf if w else "" }}</td>
+            <td>{{ w.name or "" }}</td>
+            <td>{{ w.skill or "" }}</td>
+            <td>{{ w.success_rate or "" }}</td>
+            <td>{{ w.damage or "" }}</td>
+            <td>{{ w.range or "" }}</td>
+            <td>{{ w.penetration if w.penetration is defined else "" }}</td>
+            <td>{{ w.attacks or "" }}</td>
+            <td>{{ w.malf or "" }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </section>
-    <section class="panel">
+    <section class="panel combat-panel">
       <div class="panel-title">战斗摘要<span class="panel-subtitle">Combat</span></div>
       <div class="combat-grid">
         <div class="metric"><div class="metric-label">DB</div><div class="metric-value">{{ derived.db }}</div></div>
@@ -686,7 +754,7 @@ body {
     <div class="sheet-meta">{{ basic.name }} / {{ basic.job }}</div>
   </header>
 
-  <section class="panel back-story">
+  <section class="panel back-story story-panel">
     <div class="panel-title">个人介绍与背景条目<span class="panel-subtitle">Story</span></div>
     <div class="story-layout">
       <div class="text-box">
@@ -705,7 +773,7 @@ body {
   </section>
 
   <div class="back-info">
-    <section class="panel">
+    <section class="panel items-panel">
       <div class="panel-title">随身物品<span class="panel-subtitle">Items</span></div>
       <div class="tag-list">
         {% if item_tags %}
@@ -718,7 +786,7 @@ body {
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel assets-panel">
       <div class="panel-title">资产<span class="panel-subtitle">Assets</span></div>
       <table class="asset-table">
         <tbody>
@@ -732,20 +800,20 @@ body {
       </table>
     </section>
 
-    <section class="panel">
+    <section class="panel mythos-panel">
       <div class="panel-title">神话<span class="panel-subtitle">Mythos</span></div>
       <div class="mythos-value">{{ mythos }}</div>
     </section>
   </div>
 
   <div class="back-notes">
-    <section class="panel">
+    <section class="panel contacts-panel">
       <div class="panel-title">好友与联系人<span class="panel-subtitle">Contacts</span></div>
       <div class="text-box">
         <div class="box-body">{{ friends or " " }}</div>
       </div>
     </section>
-    <section class="panel">
+    <section class="panel experience-panel">
       <div class="panel-title">经历模组<span class="panel-subtitle">Experience</span></div>
       <div class="text-box">
         <div class="box-body">{{ experienced_modules or " " }}</div>
