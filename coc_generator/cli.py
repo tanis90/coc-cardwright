@@ -40,7 +40,7 @@ def cmd_render(args):
         sys.exit(1)
 
     output_path = Path(args.output) if args.output else path.with_suffix(".html")
-    html = render(data)
+    html = render(data, style=args.style)
     output_path.write_text(html, encoding="utf-8")
     print(f"角色卡已生成: {output_path.absolute()}")
 
@@ -85,6 +85,12 @@ def main():
     render_parser = subparsers.add_parser("render", help="生成HTML角色卡")
     render_parser.add_argument("input", help="输入JSON文件路径")
     render_parser.add_argument("-o", "--output", help="输出HTML文件路径（默认同名.html）")
+    render_parser.add_argument(
+        "--style",
+        choices=("color", "mono"),
+        default="color",
+        help="打印样式：color=彩色，mono=黑白",
+    )
     render_parser.set_defaults(func=cmd_render)
 
     # jobs

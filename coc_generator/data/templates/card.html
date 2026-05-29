@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-style="{{ render_style }}">
 <head>
 <meta charset="UTF-8">
 <title>{{ basic.name }} - COC 7th 角色档案卡</title>
@@ -35,6 +35,28 @@
   --violet: #725a82;
 }
 
+html[data-style="mono"] {
+  --ink: #000;
+  --muted: #444;
+  --line: #b0b0b0;
+  --line-strong: #222;
+  --paper: #fff;
+  --panel: #fff;
+  --wash: #f5f5f5;
+  --accent: #111;
+  --accent-soft: #ededed;
+  --red: #111;
+  --blue: #111;
+  --olive: #111;
+  --rust: #111;
+  --teal: #111;
+  --green: #111;
+  --indigo: #111;
+  --gold: #111;
+  --slate: #111;
+  --violet: #111;
+}
+
 body {
   font-family: var(--font-ui);
   font-size: 8pt;
@@ -67,6 +89,17 @@ body {
     --wash: #f5ead8;
     --accent: #8a2f2b;
     --accent-soft: #f3e3dc;
+  }
+  html[data-style="mono"] {
+    --ink: #000;
+    --muted: #444;
+    --line: #b0b0b0;
+    --line-strong: #222;
+    --paper: #fff;
+    --panel: #fff;
+    --wash: #f5f5f5;
+    --accent: #111;
+    --accent-soft: #ededed;
   }
   * {
     -webkit-print-color-adjust: exact;
@@ -580,6 +613,66 @@ body {
   display: flex;
   justify-content: space-between;
   padding-top: 1mm;
+}
+
+html[data-style="mono"] .identity-panel,
+html[data-style="mono"] .attr-panel,
+html[data-style="mono"] .portrait-panel,
+html[data-style="mono"] .vitals-panel,
+html[data-style="mono"] .body-panel,
+html[data-style="mono"] .mind-panel,
+html[data-style="mono"] .skills-panel,
+html[data-style="mono"] .weapons-panel,
+html[data-style="mono"] .combat-panel,
+html[data-style="mono"] .story-panel,
+html[data-style="mono"] .items-panel,
+html[data-style="mono"] .assets-panel,
+html[data-style="mono"] .mythos-panel,
+html[data-style="mono"] .contacts-panel,
+html[data-style="mono"] .experience-panel {
+  --panel-accent: #111;
+  --panel-tint: #ededed;
+}
+
+html[data-style="mono"] .tone-red,
+html[data-style="mono"] .tone-blue,
+html[data-style="mono"] .tone-olive,
+html[data-style="mono"] .tone-rust,
+html[data-style="mono"] .tone-teal,
+html[data-style="mono"] .tone-green,
+html[data-style="mono"] .tone-indigo,
+html[data-style="mono"] .tone-gold,
+html[data-style="mono"] .tone-slate,
+html[data-style="mono"] .tone-neutral {
+  --group-ink: #111;
+  --group-bg: #ededed;
+}
+
+html[data-style="mono"] .story-card {
+  --card-accent: #111;
+}
+
+html[data-style="mono"] .portrait {
+  background:
+    linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.12) 50%, transparent 50.6%),
+    linear-gradient(45deg, transparent 49.4%, rgba(0,0,0,0.12) 50%, transparent 50.6%),
+    #fff;
+  color: rgba(0,0,0,0.22);
+}
+
+html[data-style="mono"] .chip,
+html[data-style="mono"] .point-pill,
+html[data-style="mono"] .tag {
+  background: #f5f5f5;
+  color: var(--ink);
+}
+
+html[data-style="mono"] .box-body {
+  color: var(--ink);
+}
+
+html[data-style="mono"] .skill-table tbody tr:nth-child(even) td {
+  background: #f7f7f7;
 }
 </style>
 </head>

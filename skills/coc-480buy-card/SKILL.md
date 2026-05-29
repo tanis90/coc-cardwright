@@ -1,6 +1,6 @@
 ---
 name: coc-480buy-card
-description: 生成《克苏鲁的呼唤》7 版中文调查员角色卡，使用 480 购点制，并输出合法 JSON 或可打印 HTML。用户提到 COC/CoC/克苏鲁的呼唤/跑团/调查员/车卡/角色卡/480buy/480购点/7版/可打印 HTML，或想要有弧光、有背景、有性格的调查员时应使用本 skill。角色卡模板、职业名、技能名和校验信息都以中文为主，因此不要自行翻译成英文职业或英文技能名；必须通过 GitHub 上的 coc-cardwright Python CLI 校验。不要只生成数值合法的空壳卡，角色卡里可写的部分都要完整、有质量，并且人物弧光要能从属性、技能、信用评级、物品和背景条目中互相印证。
+description: 生成《克苏鲁的呼唤》7 版中文调查员角色卡，使用 480 购点制，并输出合法 JSON 或可打印 HTML；HTML 可按需求渲染为彩色模式或纯黑白打印模式。用户提到 COC/CoC/克苏鲁的呼唤/跑团/调查员/车卡/角色卡/480buy/480购点/7版/可打印 HTML/黑白打印/彩色角色卡，或想要有弧光、有背景、有性格的调查员时应使用本 skill。角色卡模板、职业名、技能名和校验信息都以中文为主，因此不要自行翻译成英文职业或英文技能名；必须通过 GitHub 上的 coc-cardwright Python CLI 校验。不要只生成数值合法的空壳卡，角色卡里可写的部分都要完整、有质量，并且人物弧光要能从属性、技能、信用评级、物品和背景条目中互相印证。
 ---
 
 # COC 480 购点角色卡
@@ -54,7 +54,8 @@ CLI 是本 skill 的规则入口。它能做四类事情：
 - `jobs`：列出所有可用中文职业名，返回 JSON 数组。
 - `job "<职业名>"`：查看某个职业的职业点公式、信用评级范围、本职技能和技能说明。
 - `verify <json>`：校验角色 JSON，返回 `valid/errors/warnings/derived`。这是生成角色卡前必须通过的步骤。
-- `render <json> -o <html>`：在 JSON 校验通过后渲染双面 A4 可打印 HTML 角色卡。
+- `render <json> -o <html>`：在 JSON 校验通过后渲染双面 A4 可打印 HTML 角色卡，默认彩色模式。
+- `render <json> --style mono -o <html>`：渲染纯黑白打印模式，适合低墨量或不需要彩色的打印场景。
 
 不确定命令或参数时，先调用 CLI 自带 help，而不是猜参数：
 
@@ -81,6 +82,7 @@ coc jobs
 coc job "私家侦探"
 coc verify character.json
 coc render character.json -o character_card.html
+coc render character.json --style mono -o character_card_mono.html
 ```
 
 ## 角色编辑目标
@@ -244,8 +246,8 @@ coc render character.json -o character_card.html
 6. 把编辑提案翻译成属性、信用评级、职业技能、兴趣技能、武器、物品和资产。职业名和技能名必须使用 CLI 返回的中文名称，避免英文名或自造译名。
 7. 按下方结构起草 JSON 角色文件。所有可写字段都要填完整，并检查每个背景条目是否能回扣人物弧光。
 8. 运行 `coc verify <json>`。如果 `valid` 不是 `true`，根据错误信息修改 JSON 后再次校验；修正数值时不要破坏已经建立的人物逻辑。
-9. 只有校验通过后才运行 `coc render <json> -o <html>`，生成双面 A4 可打印 HTML。
-10. 回复用户时给出 JSON 路径、HTML 路径、人物弧光摘要、数值如何支撑人物，以及点数使用情况。
+9. 只有校验通过后才运行 `coc render <json> -o <html>`，生成双面 A4 可打印 HTML。默认用彩色模式；用户要求黑白、纯黑白、低墨量或适合普通打印机时，使用 `coc render <json> --style mono -o <html>`；用户明确要求两套时分别输出彩色和黑白两个 HTML。
+10. 回复用户时给出 JSON 路径、HTML 路径、渲染样式、人物弧光摘要、数值如何支撑人物，以及点数使用情况。
 
 ## 规则提醒
 
@@ -321,13 +323,14 @@ coc render character.json -o character_card.html
 
 用户要求生成角色卡时，默认在当前工作区创建文件；如果用户指定目录，则写入指定目录。文件名应清晰可读，例如 `investigator.json` 和 `investigator_card.html`。
 
-如果用户只要角色数据，生成并校验 JSON 后即可停止；如果用户要求可打印角色卡，还要渲染 HTML。
+如果用户只要角色数据，生成并校验 JSON 后即可停止；如果用户要求可打印角色卡，还要渲染 HTML。未指定样式时输出默认彩色 HTML；用户提到黑白打印、纯黑白、省墨、复印友好或普通激光打印机时，输出 `--style mono` 黑白 HTML；用户要求“彩色和黑白都要”时，同一份 JSON 渲染两份 HTML。
 
 ## 验收清单
 
 完成前逐项检查：
 
 - `coc verify` 返回 `valid: true`。
+- 可打印 HTML 的渲染样式符合用户要求：默认彩色，黑白需求使用 `--style mono`，双版本需求输出两份。
 - 角色卡中所有可写字段都已填充，没有无意义空白、模板占位或泛泛套话。
 - `description` 能在一段内说明身份、欲望、伤口和弧光问题。
 - 至少 3 个数值选择能从背景中找到证据，例如高 EDU、低 POW、信用评级、核心技能或武器选择。

@@ -13,9 +13,17 @@ Agent 只管创意和分配，CLI 是唯一的规则权威（rule engine）。�
 
 ## 效果预览
 
+### 彩色模式
+
 正面 | 背面
 :--:|:--:
-![正面](examples/preview_detective.png) | ![背面](examples/preview_detective_back.png)
+![彩色正面](examples/preview_detective_color.png) | ![彩色背面](examples/preview_detective_color_back.png)
+
+### 黑白模式
+
+正面 | 背面
+:--:|:--:
+![黑白正面](examples/preview_detective_mono.png) | ![黑白背面](examples/preview_detective_mono_back.png)
 
 - **正面**：调查员信息 / 属性 / 幸运 / 头像占位 / 衍生属性（HP/MP/SAN/状态） / 技能双栏表 / 武器 / 战斗
 - **背面**：背景故事（横线底纹，手写友好）/ 随身物品 / 资产 / 克苏鲁神话 / 好友 / 经历模组
@@ -36,6 +44,36 @@ pip install -e .
 
 ---
 
+## Codex Skill
+
+本项目内置了一个轻量 Codex skill：`coc-480buy-card`。它不会复制 Python 源码，而是指导 Codex/Code Agent 使用本仓库的 CLI 来完成三件事：
+
+1. 通过苏格拉底式提问和编剧思路，帮助玩家建立有弧光的中文调查员。
+2. 将人物弧光落到属性、职业技能、兴趣技能、信用评级、物品和背面背景字段。
+3. 调用 `coc verify` 严格校验 480 购点规则，再用 `coc render` 输出可打印 HTML。
+
+安装：
+
+```bash
+npx skills install https://github.com/tanis90/coc-cardwright/tree/main/skills/coc-480buy-card
+```
+
+如果你的 skills installer 使用 repo/path 参数形式，也可以：
+
+```bash
+npx skills install --repo tanis90/coc-cardwright --path skills/coc-480buy-card
+```
+
+安装后重启 Codex，然后直接对 Codex 说：
+
+```text
+帮我生成一张 2007 年东北警探的 COC 7版 480buy 角色卡，并输出可打印 HTML。
+```
+
+skill 会引导 Agent 先确认人物欲望、伤口、重要之人、宝贵之物和弧光问题，再安装/复用 `coc-cardwright` CLI，最终生成合法 JSON 和 HTML。
+
+---
+
 ## CLI 命令速查
 
 ```bash
@@ -50,6 +88,9 @@ coc verify character.json
 
 # 4. 生成 HTML 角色卡（校验不通过会拒绝）
 coc render character.json -o card.html
+
+# 5. 生成黑白打印版
+coc render character.json --style mono -o card-mono.html
 ```
 
 ---
@@ -136,17 +177,21 @@ $ coc verify detective.json
 
 每条 error 都有 `code`（机器可读）、`field`（字段路径）、`expected`（期望值）、`actual`（实际值）、`message`（人类可读）。Agent 可以自动解析并修正。
 
-### `coc render <json> [-o output.html]` — 生成 HTML 角色卡
+### `coc render <json> [-o output.html] [--style color|mono]` — 生成 HTML 角色卡
 
 **必须先通过 `verify` 才能渲染**。生成双面 A4 HTML，浏览器打印即可。
 
 ```bash
 $ coc render detective.json -o detective_card.html
 角色卡已生成: /path/to/detective_card.html
+
+$ coc render detective.json --style mono -o detective_card_mono.html
+角色卡已生成: /path/to/detective_card_mono.html
 ```
 
 HTML 特点：
 - 精确 A4 尺寸（210mm × 297mm）
+- 支持 `--style color` 彩色模式和 `--style mono` 黑白打印模式
 - 技能表左右双栏，50 个核心技能全展示，带斑马纹、分组竖排标签、本职技能复选框
 - 背面背景故事带横线底纹，方便手写补充
 - 状态栏（重伤/昏迷/濒死/死亡/临时疯狂/永久疯狂/不定期疯狂）带勾选框

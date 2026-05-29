@@ -2,7 +2,10 @@ import copy
 import json
 from pathlib import Path
 
+import pytest
+
 from coc_generator.engine import calc_pro_points, get_skill_init, validate
+from coc_generator.renderer import render
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,3 +82,17 @@ def test_open_ended_occupation_skill_accepts_concrete_specialization():
 
     assert result.valid
     assert get_skill_init("技艺(木工)", data["attributes"]) == 5
+
+
+def test_render_style_is_written_to_html_root():
+    data = load_example("valid_detective.json")
+
+    assert 'data-style="color"' in render(data)
+    assert 'data-style="mono"' in render(data, style="mono")
+
+
+def test_render_rejects_unknown_style():
+    data = load_example("valid_detective.json")
+
+    with pytest.raises(ValueError):
+        render(data, style="sepia")

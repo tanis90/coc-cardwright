@@ -201,8 +201,11 @@ def _text(value: object, fallback: str = "") -> str:
     return value if value else fallback
 
 
-def render(data: dict) -> str:
+def render(data: dict, style: str = "color") -> str:
     """Render character sheet data to HTML string."""
+    if style not in {"color", "mono"}:
+        raise ValueError(f"unsupported render style: {style}")
+
     basic = data.get("basic", {})
     attrs = data.get("attributes", {})
     luck = data.get("luck", 0)
@@ -323,6 +326,7 @@ def render(data: dict) -> str:
         "experienced_modules": data.get("experienced_modules", "") or "",
         "story_left": story_left,
         "desc": desc,
+        "render_style": style,
     }
 
     template_path = Path(__file__).parent / "data" / "templates" / "card.html"
