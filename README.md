@@ -91,6 +91,9 @@ coc render character.json -o card.html
 
 # 5. 生成黑白打印版
 coc render character.json --style mono -o card-mono.html
+
+# 6. 渲染时留空幸运，方便玩家现场掷幸运
+coc render character.json --blank-luck -o card-blank-luck.html
 ```
 
 ---
@@ -177,7 +180,7 @@ $ coc verify detective.json
 
 每条 error 都有 `code`（机器可读）、`field`（字段路径）、`expected`（期望值）、`actual`（实际值）、`message`（人类可读）。Agent 可以自动解析并修正。
 
-### `coc render <json> [-o output.html] [--style color|mono]` — 生成 HTML 角色卡
+### `coc render <json> [-o output.html] [--style color|mono] [--blank-luck]` — 生成 HTML 角色卡
 
 **必须先通过 `verify` 才能渲染**。生成双面 A4 HTML，浏览器打印即可。
 
@@ -187,11 +190,15 @@ $ coc render detective.json -o detective_card.html
 
 $ coc render detective.json --style mono -o detective_card_mono.html
 角色卡已生成: /path/to/detective_card_mono.html
+
+$ coc render detective.json --blank-luck -o detective_card_blank_luck.html
+角色卡已生成: /path/to/detective_card_blank_luck.html
 ```
 
 HTML 特点：
 - 精确 A4 尺寸（210mm × 297mm）
 - 支持 `--style color` 彩色模式和 `--style mono` 黑白打印模式
+- 支持 `--blank-luck` 在渲染时留空幸运值，便于玩家现场掷幸运；校验仍要求 JSON 中提供合法幸运值
 - 技能表左右双栏，50 个核心技能全展示，带斑马纹、分组竖排标签、本职技能复选框
 - 背面背景故事带横线底纹，方便手写补充
 - 状态栏（重伤/昏迷/濒死/死亡/临时疯狂/永久疯狂/不定期疯狂）带勾选框

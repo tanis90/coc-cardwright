@@ -40,7 +40,7 @@ def cmd_render(args):
         sys.exit(1)
 
     output_path = Path(args.output) if args.output else path.with_suffix(".html")
-    html = render(data, style=args.style)
+    html = render(data, style=args.style, show_luck=not args.blank_luck)
     output_path.write_text(html, encoding="utf-8")
     print(f"角色卡已生成: {output_path.absolute()}")
 
@@ -90,6 +90,11 @@ def main():
         choices=("color", "mono"),
         default="color",
         help="打印样式：color=彩色，mono=黑白",
+    )
+    render_parser.add_argument(
+        "--blank-luck",
+        action="store_true",
+        help="渲染时留空幸运值，便于玩家现场掷幸运；不影响校验",
     )
     render_parser.set_defaults(func=cmd_render)
 

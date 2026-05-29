@@ -201,7 +201,7 @@ def _text(value: object, fallback: str = "") -> str:
     return value if value else fallback
 
 
-def render(data: dict, style: str = "color") -> str:
+def render(data: dict, style: str = "color", show_luck: bool = True) -> str:
     """Render character sheet data to HTML string."""
     if style not in {"color", "mono"}:
         raise ValueError(f"unsupported render style: {style}")
@@ -263,7 +263,7 @@ def render(data: dict, style: str = "color") -> str:
         {"label": "理智", "sub": "SAN", "value": derived["san"]},
         {"label": "生命", "sub": "HP", "value": derived["hp"]},
         {"label": "魔法", "sub": "MP", "value": derived["mp"]},
-        {"label": "幸运", "sub": "Luck", "value": luck},
+        {"label": "幸运", "sub": "Luck", "value": luck if show_luck else ""},
         {"label": "闪避", "sub": "Dodge", "value": derived["dodge"]},
         {"label": "移动", "sub": "MOV", "value": derived["mov"]},
         {"label": "伤害加值", "sub": "DB", "value": derived["db"]},
@@ -301,6 +301,7 @@ def render(data: dict, style: str = "color") -> str:
         "attr_names": ATTR_NAMES,
         "attr_keys": ATTR_KEYS,
         "luck": luck,
+        "show_luck": show_luck,
         "derived": derived,
         "job": job,
         "job_name": job_name,

@@ -91,6 +91,18 @@ def test_render_style_is_written_to_html_root():
     assert 'data-style="mono"' in render(data, style="mono")
 
 
+def test_render_can_blank_luck_without_changing_validation():
+    data = load_example("valid_detective.json")
+
+    assert validate(copy.deepcopy(data)).valid
+
+    html = render(data, show_luck=False)
+
+    assert '<div class="metric-label">幸运 / Luck</div>' in html
+    assert '<div class="metric-value"></div>' in html
+    assert 'data-style="color"' in html
+
+
 def test_render_rejects_unknown_style():
     data = load_example("valid_detective.json")
 
