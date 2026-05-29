@@ -5,8 +5,7 @@ import json
 import sys
 from pathlib import Path
 
-from .engine import calc_derived, calc_interest_points, calc_pro_points, format_validation_result, validate
-from .renderer import render
+from .engine import format_validation_result, validate
 from .data.jobs import JOBS, JOB_NAMES
 
 
@@ -26,6 +25,8 @@ def cmd_verify(args):
 
 def cmd_render(args):
     """Render a character JSON file to HTML."""
+    from .renderer import render
+
     path = Path(args.input)
     if not path.exists():
         print(f"错误: 文件不存在: {path}", file=sys.stderr)

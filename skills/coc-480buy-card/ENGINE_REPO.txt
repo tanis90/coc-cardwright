@@ -1,0 +1,1 @@
+https://github.com/tanis90/coc-cardwright.git
