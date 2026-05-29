@@ -34,4 +34,11 @@ coc jobs
 coc job "私家侦探"
 coc verify character.json
 coc render character.json -o character_card.html
+coc render character.json --style mono -o character_card_mono.html
+coc render character.json --blank-luck -o character_card_blank_luck.html
 ```
+
+常用渲染选项：
+
+- `--style mono`：输出纯黑白打印版。
+- `--blank-luck`：卡面幸运留空，方便玩家现场掷幸运；JSON 仍需要写合法 `luck` 并通过 `coc verify`。
